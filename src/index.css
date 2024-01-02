@@ -1,0 +1,23 @@
+/* fonts */
+@import url("https://fonts.googleapis.com/css2?family=Italiana&family=Lato&family=Montserrat&family=Poppins&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* style utilities */
+:root {
+  --pink-gold: #eebfab;
+  --light-yellow: #fffbd0;
+  --light-gold: #e9d79c;
+  --italiana: "Italiana", sans-serif;
+  --lato: "Lato", sans-serif;
+  --poppins: "Poppins", sans-serif;
+  --montserrat: "Montserrat", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
