@@ -8,11 +8,13 @@ import Slider from "react-slick";
 const Categories = () => {
   const [categories, setCategories] = useState([]);
 
+  // TODO: load categories data from database
   useEffect(() => {
     axios.get("/categories.json").then((res) => setCategories(res.data));
   }, []);
 
   const settings = {
+    dots: true,
     infinite: true,
     speed: 800,
     slidesToShow: 5,
@@ -23,13 +25,13 @@ const Categories = () => {
   };
 
   return (
-    <section className="mb-16">
+    <section className="mb-20">
       <SectionTitle title={"Shop By Categories"} />
 
       {/* categories */}
       <Slider
         {...settings}
-        className="w-[85%] mx-auto mt-10 h-[300px] items-center"
+        className="w-[85%] mx-auto mt-12 h-[300px] items-center"
       >
         {categories.map((category) => (
           <CategoryCard key={category._id} category={category} />

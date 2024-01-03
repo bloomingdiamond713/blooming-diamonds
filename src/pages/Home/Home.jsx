@@ -4,6 +4,7 @@ import Hero from "./Hero/Hero";
 import MarqueeSection from "./MarqueeSection/MarqueeSection";
 import Categories from "./Categories/Categories";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
+import FlashSale from "./FlashSale/FlashSale";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <Hero />
       <MarqueeSection />
       <Categories />
+      <FlashSale />
     </div>
   );
 };

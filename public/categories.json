@@ -28,5 +28,15 @@
     "_id": 6,
     "categoryName": "Diamond Earring",
     "categoryPic": "https://i.ibb.co/gZ4zv9n/categories06.jpg"
+  },
+  {
+    "_id": 7,
+    "categoryName": "Bracelets",
+    "categoryPic": "https://tenpo.balcomsoft.com/wp-content/uploads/2023/07/bracelets-category-600x600.webp"
+  },
+  {
+    "_id": 8,
+    "categoryName": "Pendants",
+    "categoryPic": "https://tenpo.balcomsoft.com/wp-content/uploads/2023/07/pendants-category-600x600.webp"
   }
 ]
