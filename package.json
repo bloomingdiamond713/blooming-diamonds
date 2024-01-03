@@ -20,6 +20,7 @@
     "react-scroll": "^1.8.4",
     "react-slick": "^0.29.0",
     "react-textra": "^0.2.0",
+    "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0"
   },
   "devDependencies": {

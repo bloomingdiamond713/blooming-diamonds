@@ -1,0 +1,114 @@
+/* react slick slider custom styles */
+.slick-arrow,
+.slick-next,
+.slick-prev {
+  display: none !important;
+}
+
+/* hero slider styles */
+.hero-slide {
+  font-family: var(--montserrat);
+  position: relative;
+}
+
+.hero-slide div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hero-slide img {
+  transition: all 10s ease-out 0s;
+}
+.hero-slide div h1 {
+  font-family: var(--italiana);
+  font-size: 7.5rem;
+  font: bolder;
+  color: white;
+}
+.hero-slide div button {
+  width: 170px;
+  height: 45px;
+  font-weight: 600;
+  font-size: small;
+  background: black;
+  border: none;
+  outline: none;
+  color: white;
+  display: block;
+  margin-inline: auto;
+}
+
+/* active slide animations */
+.slick-active h1 {
+  -webkit-animation: tracking-in-contract 2.4s
+    cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  animation: tracking-in-contract 2.4s cubic-bezier(0.215, 0.61, 0.355, 1)
+    forwards;
+}
+
+.slick-active button {
+  -webkit-animation: fade-in 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation-delay: 1s;
+}
+
+.slick-current img {
+  transform: scale(1.2, 1.2);
+}
+
+/* text animation 1 */
+@-webkit-keyframes tracking-in-contract {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+@keyframes tracking-in-contract {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+
+/* slide in bottom */
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* zoom in animation */
+@keyframes zoom-in {
+  0% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1.3, 1.3);
+  }
+}

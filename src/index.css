@@ -8,8 +8,12 @@
 /* style utilities */
 :root {
   --pink-gold: #eebfab;
-  --light-yellow: #fffbd0;
+  --light-pink: #d4647c;
+  --deep-yellow: #dbca0e;
   --light-gold: #e9d79c;
+  --deep-brown: #ad8e72;
+  --light-brown: #95523d;
+  --charcoal: #363536;
   --italiana: "Italiana", sans-serif;
   --lato: "Lato", sans-serif;
   --poppins: "Poppins", sans-serif;

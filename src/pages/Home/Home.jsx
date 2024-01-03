@@ -1,12 +1,11 @@
 import React from "react";
+import "./Home.css";
+import Hero from "./Hero/Hero";
 
 const Home = () => {
   return (
-    <div>
-      <div id="hero" className="">
-        <h1>hello</h1>
-      </div>
-      <div className="mt-[1000px]"></div>
+    <div id="home">
+      <Hero />
     </div>
   );
 };
