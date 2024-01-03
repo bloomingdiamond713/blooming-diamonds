@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Hero.css";
 import Slider from "react-slick";
 import img1 from "../../../assets/carousel 1.jpg";

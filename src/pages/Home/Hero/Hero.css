@@ -18,7 +18,7 @@
   transform: translate(-50%, -50%);
 }
 .hero-slide img {
-  animation: kenburns-top 30s infinite ease-out both alternate;
+  animation: kenburns-top 20s infinite ease-out both alternate;
 }
 .hero-slide div h1 {
   font-family: var(--italiana);
@@ -40,14 +40,14 @@
 }
 
 /* active slide animations */
-.slick-active h1 {
+.hero-slide .slick-active h1 {
   -webkit-animation: tracking-in-contract 2.4s
     cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   animation: tracking-in-contract 2.4s cubic-bezier(0.215, 0.61, 0.355, 1)
     forwards;
 }
 
-.slick-active button {
+.hero-slide .slick-active button {
   -webkit-animation: fade-in 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-in 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation-delay: 1s;
