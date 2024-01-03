@@ -25,35 +25,35 @@ const Hero = () => {
       <Slider {...settings}>
         <div className="hero-slide">
           <img src={img1} alt="Slide 1" />
-          <div>
+          <div className="hero-text">
             <h1 className="">Romance</h1>
             <button>SHOP NOW</button>
           </div>
         </div>
         <div className="hero-slide">
           <img src={img2} alt="Slide 2" />
-          <div>
+          <div className="hero-text">
             <h1 className="">Charms</h1>
             <button>SHOP NOW</button>
           </div>
         </div>
         <div className="hero-slide">
           <img src={img3} alt="Slide 3" />
-          <div>
+          <div className="hero-text">
             <h1 className="">Pearls</h1>
             <button>SHOP NOW</button>
           </div>
         </div>
         <div className="hero-slide">
           <img src={img4} alt="Slide 4" />
-          <div>
+          <div className="hero-text">
             <h1 className="">Richstones</h1>
             <button>SHOP NOW</button>
           </div>
         </div>
         <div className="hero-slide">
           <img src={img5} alt="Slide 4" />
-          <div>
+          <div className="hero-text">
             <h1 className="">Diamonds</h1>
             <button>SHOP NOW</button>
           </div>

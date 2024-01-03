@@ -18,12 +18,12 @@
   transform: translate(-50%, -50%);
 }
 .hero-slide img {
-  animation: kenburns-top 20s infinite ease-out both alternate;
+  animation: kenburns-top 16s infinite ease-out both alternate;
 }
 .hero-slide div h1 {
   font-family: var(--italiana);
   font-size: 7.5rem;
-  font: bolder;
+  font: 900;
   color: white;
 }
 .hero-slide div button {
@@ -40,14 +40,14 @@
 }
 
 /* active slide animations */
-.hero-slide .slick-active h1 {
+.slick-active .hero-text h1 {
   -webkit-animation: tracking-in-contract 2.4s
     cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   animation: tracking-in-contract 2.4s cubic-bezier(0.215, 0.61, 0.355, 1)
     forwards;
 }
 
-.hero-slide .slick-active button {
+.slick-active .hero-text button {
   -webkit-animation: fade-in 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-in 2.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation-delay: 1s;

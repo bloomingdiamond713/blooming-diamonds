@@ -1,0 +1,32 @@
+[
+  {
+    "_id": 1,
+    "categoryName": "Necklace",
+    "categoryPic": "https://i.ibb.co/Vq10BGH/categories01.jpg"
+  },
+  {
+    "_id": 2,
+    "categoryName": "Gold Rings",
+    "categoryPic": "https://i.ibb.co/3fK4xqG/categorie02.jpg"
+  },
+  {
+    "_id": 3,
+    "categoryName": "Earring",
+    "categoryPic": "https://i.ibb.co/ZLGTZDN/categorie03.jpg"
+  },
+  {
+    "_id": 4,
+    "categoryName": "Rings",
+    "categoryPic": "https://i.ibb.co/0m7p7GF/categories04.jpg"
+  },
+  {
+    "_id": 5,
+    "categoryName": "Choker",
+    "categoryPic": "https://i.ibb.co/ZdZNrGb/categories05.jpg"
+  },
+  {
+    "_id": 6,
+    "categoryName": "Diamond Earring",
+    "categoryPic": "https://i.ibb.co/gZ4zv9n/categories06.jpg"
+  }
+]
