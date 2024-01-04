@@ -1,26 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./FlashSale.css";
-import flashSaleIcon from "../../../assets/flash sale products images/flashSale.jpg";
+import flashSaleIcon from "../../../assets/flash sale products images/flashSale.png";
 import axios from "axios";
-import useCountdownTimer from "../../../hooks/useCountDownTimer";
 import ProductCard from "../../../components/ProductCard/ProductCard";
+import CountDownTimer from "../../../components/CountDownTimer/CountDownTimer";
+import Slider from "react-slick";
+import { FaArrowRight } from "react-icons/fa6";
 
 const FlashSale = () => {
   // TODO: LOAD DATA FROM DATABASE
   const [flashSaleData, setFlashSaleData] = useState([]);
   useEffect(() => {
-    axios.get("/flashSale.json").then((res) => setFlashSaleData(res.data));
+    axios.get("/flashSale.json").then((res) => setFlashSaleData(res?.data));
   }, []);
 
   // countdown timer values
-  const { days, hours, minutes, seconds } = useCountdownTimer(
-    new Date(2024, 0, 10, 12, 0, 0, 0)
-  );
+  const targetDate = new Date(2024, 0, 10, 12, 0, 0, 0);
+
+  // slick slider settings
+  const sliderRef = useRef(null);
+
+  const next = () => {
+    sliderRef.current.slickNext();
+  };
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 2,
+    autoplay: true,
+  };
 
   return (
-    <div className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl">
+    <div className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex border items-center py-10 gap-8">
       <div
-        className="w-[30%] border text-center px-6 py-10"
+        className="w-[30%] text-center px-6"
         style={{ fontFamily: "var(--montserrat)" }}
       >
         <img
@@ -39,31 +54,22 @@ const FlashSale = () => {
           excitement, and let the savings party begin!💸🚀
         </p>
 
-        <div className="flex justify-between items-center mt-8">
-          <div className="rounded-lg w-[23%] bg-[#f7f7f7] text-center py-2">
-            <h4 className="text-3xl text-[#f8d340] font-bold">{days}</h4>
-            <p className="text-sm">Days</p>
-          </div>
-          <div className="rounded-lg w-[23%] bg-[#f7f7f7] text-center py-2">
-            <h4 className="text-3xl text-[#f8d340] font-bold">{hours}</h4>
-            <p className="text-sm">Days</p>
-          </div>
-          <div className="rounded-lg w-[23%] bg-[#f7f7f7] text-center py-2">
-            <h4 className="text-3xl text-[#f8d340] font-bold">{minutes}</h4>
-            <p className="text-sm">Minutes</p>
-          </div>
-          <div className="rounded-lg w-[23%] bg-[#f7f7f7] text-center py-2">
-            <h4 className="text-3xl text-[#f8d340] font-bold">{seconds}</h4>
-            <p className="text-sm">Seconds</p>
-          </div>
-        </div>
+        <CountDownTimer targetDate={targetDate} />
       </div>
 
-      <div className="w-[75%] border">
+      <div className="w-[70%] relative">
         {/* TODO: use _id as the key in the ProductCard */}
-        {flashSaleData.map((cardData) => (
-          <ProductCard key={cardData.img} cardData={cardData} />
-        ))}
+        <Slider ref={sliderRef} {...settings}>
+          {flashSaleData?.map((cardData, idx) => (
+            <ProductCard key={idx + 1} cardData={cardData} flashSale={true} />
+          ))}
+        </Slider>
+        <button
+          className="button absolute bottom-1/2 -right-16 translate-x-[-50%] translate-y-[-50%] bg-[#f8da2e] rounded-badge p-5 hover:bg-slate-300 transition-all duration-200"
+          onClick={next}
+        >
+          <FaArrowRight className="" />
+        </button>
       </div>
     </div>
   );

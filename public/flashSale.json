@@ -1,6 +1,6 @@
 [
   {
-    "img": "https://i.ibb.co/BqD1t6L/42-300x300.jpg",
+    "img": "/42-300x300.png",
     "name": "Sapphire Blossom Earrings",
     "category": "Diamond Earrings",
     "price": 899.99,
@@ -16,7 +16,7 @@
     ]
   },
   {
-    "img": "https://i.ibb.co/yS4BsVX/13-300x300.jpg",
+    "img": "05-300x300.png",
     "name": "Emerald Cascade Necklace",
     "category": "Necklace",
     "price": 1199.99,
@@ -38,7 +38,7 @@
     ]
   },
   {
-    "img": "https://i.ibb.co/MsG815h/05-300x300.jpg",
+    "img": "/07-300x300.png",
     "name": "Diamond Elegance Ring",
     "category": "Rings",
     "price": 799.99,
@@ -60,7 +60,7 @@
     ]
   },
   {
-    "img": "https://i.ibb.co/RSKcGRB/07-300x300.jpg",
+    "img": "/12-300x300.png",
     "name": "Ruby Sparkle Pendant",
     "category": "Pendants",
     "price": 899.99,
@@ -76,7 +76,7 @@
     ]
   },
   {
-    "img": "https://i.ibb.co/t2Y685Q/20-300x300.jpg",
+    "img": "/13-300x300.png",
     "name": "Amethyst Bliss Bracelet",
     "category": "Bracelets",
     "price": 1099.99,
@@ -92,7 +92,7 @@
     ]
   },
   {
-    "img": "https://i.ibb.co/jg3JGJw/12-300x300.jpg",
+    "img": "/20-300x300.png",
     "name": "Pearl Elegance Earrings",
     "category": "Earrings",
     "price": 799.99,
