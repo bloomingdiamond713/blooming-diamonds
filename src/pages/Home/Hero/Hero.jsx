@@ -21,7 +21,7 @@ const Hero = () => {
   };
 
   return (
-    <div>
+    <div id="hero">
       <Slider {...settings}>
         <div className="hero-slide">
           <img src={img1} alt="Slide 1" />

@@ -11,8 +11,7 @@ import {
 } from "react-icons/fa6";
 import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
-import { Link } from "react-scroll";
-import { Link as RouterLink } from "react-router-dom";
+import { Link, scrollSpy } from "react-scroll";
 
 const Header = () => {
   const [stickyNav, setStickyNav] = useState("");
@@ -38,6 +37,11 @@ const Header = () => {
     return () => {
       window.removeEventListener("scroll", changeNavStyle);
     };
+  }, []);
+
+  // update react-scroll on component render
+  useEffect(() => {
+    scrollSpy.update();
   }, []);
 
   // handle search bar
@@ -150,7 +154,7 @@ const Header = () => {
           <div className="drawer-content flex flex-col">
             {/* Sticky Navbar visible on scroll*/}
             <div
-              className={`w-full navbar opacity-0 invisible fixed top-0 left-0 bg-white ${stickyNav}`}
+              className={`w-full navbar opacity-0 invisible fixed top-0 left-0 bg-white ${stickyNav} shadow-lg`}
             >
               <div className="md:container text-center">
                 <div className="flex-none lg:hidden">
@@ -175,17 +179,18 @@ const Header = () => {
                   </label>
                 </div>
                 <div className="w-[25%] px-2 text-center">
-                  {/* <RouterLink to="/">
-                    <img src={logo} alt="logo" className="w-[170px] h-[90px]" />
-                  </RouterLink> */}
                   <Link
-                    to="home"
+                    to="hero"
                     offset={-250}
                     smooth={true}
                     spy={true}
                     duration={1000}
                   >
-                    <img src={logo} alt="logo" className="w-[170px] h-[90px]" />
+                    <img
+                      src={logo}
+                      alt="logo"
+                      className="w-[170px] h-[90px] cursor-pointer"
+                    />
                   </Link>
                 </div>
                 <div className="w-[50%] hidden lg:block text-center">
@@ -216,7 +221,7 @@ const Header = () => {
                       to="categories"
                       spy={true}
                       smooth={true}
-                      offset={-70}
+                      offset={-30}
                       duration={1000}
                     >
                       Categories
@@ -295,11 +300,18 @@ const Header = () => {
                   </label>
                 </div>
                 <div className="w-[25%] px-2 text-center">
-                  {/* <RouterLink to="/">
-                    <img src={logo} alt="logo" className="w-[170px] h-[90px]" />
-                  </RouterLink> */}
-                  <Link to="home" offset={-250}>
-                    <img src={logo} alt="logo" className="w-[170px] h-[90px]" />
+                  <Link
+                    to="hero"
+                    offset={-250}
+                    smooth={true}
+                    spy={true}
+                    duration={1000}
+                  >
+                    <img
+                      src={logo}
+                      alt="logo"
+                      className="w-[170px] h-[90px] cursor-pointer"
+                    />
                   </Link>
                 </div>
                 <div className="w-[50%] hidden lg:block text-center">
@@ -320,7 +332,6 @@ const Header = () => {
                       to="Shop"
                       spy={true}
                       smooth={true}
-                      offset={-70}
                       duration={1000}
                     >
                       Shop

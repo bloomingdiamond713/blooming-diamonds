@@ -25,13 +25,13 @@ svg {
   fill: #f70000 !important;
 }
 
-/* main navbar styles */
+/* sticky navbar styles */
 .sticky-nav {
   opacity: 1;
   visibility: visible;
   z-index: 1001;
   animation: animate_sticky 0.6s ease;
-  height: 80px !important;
+  height: 85px !important;
 }
 
 .navbar {
@@ -44,8 +44,10 @@ svg {
   font-family: var(--montserrat);
   font-weight: 700;
   cursor: pointer;
+  border-bottom: 2px solid transparent;
 }
 .menu .active {
+  transition: all 0.3s ease-out;
   border-bottom: 2px solid var(--pink-gold);
 }
 
@@ -57,7 +59,7 @@ svg {
   transition: transform 300ms ease-in-out;
 }
 
-.menu a:hover::after {
+.menu a:not(.active):hover::after {
   transform: scaleX(1);
 }
 

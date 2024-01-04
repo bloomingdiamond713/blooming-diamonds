@@ -38,5 +38,10 @@
     "_id": 8,
     "categoryName": "Pendants",
     "categoryPic": "https://tenpo.balcomsoft.com/wp-content/uploads/2023/07/pendants-category-600x600.webp"
+  },
+  {
+    "_id": 9,
+    "categoryName": "Diamond Rings",
+    "categoryPic": "https://i.ibb.co/KXyK8fj/category09.png"
   }
 ]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./MarqueeSection.css";
 import Marquee from "react-fast-marquee";
 
@@ -13,11 +13,12 @@ const MarqueeSection = () => {
     "Rich Heritage",
     "Trusted by Thousands",
     "Customer First Approach",
-    "Most Updated Prices",
+    "Most Exclusive Prices",
+    "Exciting Collection of Rare Pieces",
   ];
 
   return (
-    <div className="my-20 py-6 border-y-[1px] border-slate-700 scroll-m-0">
+    <div className="mt-24 py-6 border-y-[1px] border-slate-700 scroll-m-0">
       <Marquee speed={70} gradient gradientWidth={100} pauseOnHover>
         {marqueeData.map((data, idx) => (
           <div key={idx} className="flex items-center space-x-20">

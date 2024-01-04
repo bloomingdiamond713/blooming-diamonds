@@ -1,0 +1,110 @@
+[
+  {
+    "img": "https://i.ibb.co/BqD1t6L/42-300x300.jpg",
+    "name": "Sapphire Blossom Earrings",
+    "category": "Diamond Earrings",
+    "price": 899.99,
+    "discountPrice": 749.99,
+    "discountPercentage": 16.67,
+    "review": [
+      {
+        "reviewerName": "Liam Robinson",
+        "reviewerImg": "https://randomuser.me/api/portraits/women/52.jpg",
+        "rating": 4,
+        "reviewDate": "2023-08-14"
+      }
+    ]
+  },
+  {
+    "img": "https://i.ibb.co/yS4BsVX/13-300x300.jpg",
+    "name": "Emerald Cascade Necklace",
+    "category": "Necklace",
+    "price": 1199.99,
+    "discountPrice": 999.99,
+    "discountPercentage": 16.67,
+    "review": [
+      {
+        "reviewerName": "Eva Scott",
+        "reviewerImg": "https://randomuser.me/api/portraits/women/37.jpg",
+        "rating": 4.5,
+        "reviewDate": "2023-09-02"
+      },
+      {
+        "reviewerName": "Owen Carter",
+        "reviewerImg": "https://randomuser.me/api/portraits/men/19.jpg",
+        "rating": 5,
+        "reviewDate": "2023-12-28"
+      }
+    ]
+  },
+  {
+    "img": "https://i.ibb.co/MsG815h/05-300x300.jpg",
+    "name": "Diamond Elegance Ring",
+    "category": "Rings",
+    "price": 799.99,
+    "discountPrice": 699.99,
+    "discountPercentage": 12.5,
+    "review": [
+      {
+        "reviewerName": "Sophia Evans",
+        "reviewerImg": "https://randomuser.me/api/portraits/women/78.jpg",
+        "rating": 5,
+        "reviewDate": "2023-07-13"
+      },
+      {
+        "reviewerName": "Noah Wilson",
+        "reviewerImg": "https://randomuser.me/api/portraits/men/64.jpg",
+        "rating": 4.5,
+        "reviewDate": "2023-12-28"
+      }
+    ]
+  },
+  {
+    "img": "https://i.ibb.co/RSKcGRB/07-300x300.jpg",
+    "name": "Ruby Sparkle Pendant",
+    "category": "Pendants",
+    "price": 899.99,
+    "discountPrice": 749.99,
+    "discountPercentage": 16.67,
+    "review": [
+      {
+        "reviewerName": "Aria Turner",
+        "reviewerImg": "https://randomuser.me/api/portraits/women/28.jpg",
+        "rating": 4,
+        "reviewDate": "2023-09-18"
+      }
+    ]
+  },
+  {
+    "img": "https://i.ibb.co/t2Y685Q/20-300x300.jpg",
+    "name": "Amethyst Bliss Bracelet",
+    "category": "Bracelets",
+    "price": 1099.99,
+    "discountPrice": 899.99,
+    "discountPercentage": 18.18,
+    "review": [
+      {
+        "reviewerName": "Ella Adams",
+        "reviewerImg": "https://randomuser.me/api/portraits/men/43.jpg",
+        "rating": 4.5,
+        "reviewDate": "2023-12-18"
+      }
+    ]
+  },
+  {
+    "img": "https://i.ibb.co/jg3JGJw/12-300x300.jpg",
+    "name": "Pearl Elegance Earrings",
+    "category": "Earrings",
+    "price": 799.99,
+    "discountPrice": 699.99,
+    "discountPercentage": 12.5,
+    "review": [
+      {
+        "reviewerName": "Emma Turner",
+        "reviewerImg": "https://randomuser.me/api/portraits/women/22.jpg",
+        "rating": 5,
+        "reviewDate": "2023-10-05"
+      }
+    ]
+  }
+]
