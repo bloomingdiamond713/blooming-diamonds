@@ -25,7 +25,7 @@ const Categories = () => {
   };
 
   return (
-    <section className="pt-24 mb-60" id="categories">
+    <section className="pt-24" id="categories">
       <SectionTitle title={"Shop By Categories"} />
 
       {/* categories */}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css";
-import logo from "/logo1.svg";
+import logo from "/logo1light.svg";
 import { FiPhone, FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 import {
   FaFacebookF,
