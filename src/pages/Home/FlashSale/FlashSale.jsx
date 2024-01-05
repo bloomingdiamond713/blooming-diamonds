@@ -30,6 +30,7 @@ const FlashSale = () => {
     slidesToShow: 3,
     slidesToScroll: 2,
     autoplay: true,
+    autoplaySpeed: 3000,
   };
 
   return (

@@ -1,0 +1,53 @@
+/* icon over the image styles */
+.product-card {
+  cursor: pointer;
+}
+
+.product-img-overlay {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.265);
+  opacity: 0;
+}
+.product-card:hover .product-img-overlay {
+  opacity: 1;
+  transition: all 0.4s;
+}
+
+.heart-icon-con,
+.eye-icon-con {
+  padding: 8px;
+  border-radius: 10px;
+}
+.product-card:hover .heart-icon-con {
+  background-color: white;
+  transition: all 0.4s;
+}
+
+.eye-icon-con {
+  transform: translateX(123%);
+  opacity: 0;
+  visibility: hidden;
+}
+.product-card:hover .eye-icon-con {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  background-color: white;
+  transition: all 0.4s;
+}
+
+.add-to-cart-con {
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+.product-card:hover .add-to-cart-con {
+  height: 35px;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.4s;
+}
