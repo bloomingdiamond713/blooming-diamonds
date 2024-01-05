@@ -5,6 +5,8 @@ import MarqueeSection from "./MarqueeSection/MarqueeSection";
 import Categories from "./Categories/Categories";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 import FlashSale from "./FlashSale/FlashSale";
+import NewProducts from "./NewProducts/NewProducts";
+import Featured from "./Featured/Featured";
 
 const Home = () => {
   return (
@@ -14,6 +16,8 @@ const Home = () => {
       <MarqueeSection />
       <Categories />
       <FlashSale />
+      <NewProducts />
+      <Featured />
     </div>
   );
 };

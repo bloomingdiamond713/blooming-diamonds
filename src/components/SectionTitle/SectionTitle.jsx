@@ -10,7 +10,7 @@ const SectionTitle = ({ title }) => {
       </div>
 
       <h1
-        className="text-3xl font-extrabold text-black"
+        className="text-4xl font-extrabold text-black tracking-wide"
         style={{ fontFamily: "var(--italiana)" }}
       >
         {title}

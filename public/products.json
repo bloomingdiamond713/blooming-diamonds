@@ -1,8 +1,10 @@
 [
   {
-    "img": "https://i.ibb.co/SfZh3YB/h1-shop-list-img-5-768x790.jpg",
-    "name": "Elegant Diamond Necklace",
-    "category": "Necklace",
+    "img": "https://i.ibb.co/8Bbq7JP/1.png",
+    "name": "Elegant Diamond Earring",
+    "category": "Earrings",
+    "newArrival": true,
+    "badge": "HOT",
     "price": 2499.99,
     "review": [
       {
@@ -17,13 +19,18 @@
         "rating": 5,
         "reviewDate": "2023-08-22"
       }
-    ]
+    ],
+    "id": 0,
+    "sold": 289
   },
   {
-    "img": "https://i.ibb.co/5vLHXY3/h1-slider-list-i-5-768x744.jpg",
-    "name": "Radiant Starburst Gold Ring",
-    "category": "Gold Rings",
+    "img": "https://i.ibb.co/pP0fHr6/2.png",
+    "name": "Radiant Starburst Pendant",
+    "category": "Pendants",
+    "newArrival": true,
     "price": 899.99,
+    "discountPrice": 799.99,
+    "discountPercentage": 11.12,
     "review": [
       {
         "reviewerName": "Sophia Miller",
@@ -37,10 +44,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-18"
       }
-    ]
+    ],
+    "id": 1,
+    "sold": 49
   },
   {
-    "img": "https://i.ibb.co/DzpMy43/h3-shop-list-new4-291x300.jpg",
+    "img": "https://i.ibb.co/sj8z8y6/3.png",
     "name": "Diamond Elegance Pendant",
     "category": "Pendants",
     "price": 1599.99,
@@ -57,10 +66,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-05"
       }
-    ]
+    ],
+    "id": 2,
+    "sold": 9
   },
   {
-    "img": "https://i.ibb.co/ZHHqpj3/h1-shop-list-img-3-768x792.jpg",
+    "img": "https://i.ibb.co/TYgR1NS/instagram-gallery-img-6-768x804.png",
     "name": "Gold Plated Charm Bracelet",
     "category": "Bracelets",
     "price": 499.99,
@@ -77,13 +88,16 @@
         "rating": 3.5,
         "reviewDate": "2024-01-02"
       }
-    ]
+    ],
+    "id": 3,
+    "sold": 492
   },
   {
-    "img": "https://i.ibb.co/SfZh3YB/h1-shop-list-img-5-768x790.jpg",
+    "img": "https://i.ibb.co/8PnS3XT/5.png",
     "name": "Elegant Diamond Necklace",
     "category": "Necklace",
     "price": 2499.99,
+    "featured": true,
     "review": [
       {
         "reviewerName": "Alice Johnson",
@@ -97,12 +111,15 @@
         "rating": 5,
         "reviewDate": "2023-08-22"
       }
-    ]
+    ],
+    "id": 4,
+    "sold": 131
   },
   {
-    "img": "https://i.ibb.co/5vLHXY3/h1-slider-list-i-5-768x744.jpg",
+    "img": "https://i.ibb.co/WtN1XNb/6.png",
     "name": "Radiant Starburst Gold Ring",
     "category": "Gold Rings",
+    "newArrival": true,
     "price": 899.99,
     "review": [
       {
@@ -117,10 +134,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-18"
       }
-    ]
+    ],
+    "id": 5,
+    "sold": 472
   },
   {
-    "img": "https://i.ibb.co/DzpMy43/h3-shop-list-new4-291x300.jpg",
+    "img": "https://i.ibb.co/5hFXLw5/7.png",
     "name": "Diamond Elegance Pendant",
     "category": "Pendants",
     "price": 1599.99,
@@ -137,10 +156,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-05"
       }
-    ]
+    ],
+    "id": 6,
+    "sold": 166
   },
   {
-    "img": "https://i.ibb.co/xFjbCXT/h3-shop-list-new4-768x792.jpg",
+    "img": "https://i.ibb.co/sJ8gx1X/earrings-category.png",
     "name": "Crystal Harmony Earrings",
     "category": "Earrings",
     "price": 799.99,
@@ -157,13 +178,18 @@
         "rating": 5,
         "reviewDate": "2023-12-30"
       }
-    ]
+    ],
+    "id": 7,
+    "sold": 155
   },
   {
-    "img": "https://i.ibb.co/KXVyCsK/instagram-gallery-img-2-768x804.jpg",
+    "img": "https://i.ibb.co/mHKyM04/8.png",
     "name": "Chic Diamond Choker",
     "category": "Choker",
+    "newArrival": true,
     "price": 1199.99,
+    "discountPrice": 899.99,
+    "discountPercentage": 25,
     "review": [
       {
         "reviewerName": "Ava Wilson",
@@ -177,13 +203,16 @@
         "rating": 5,
         "reviewDate": "2023-10-25"
       }
-    ]
+    ],
+    "id": 8,
+    "sold": 416
   },
   {
-    "img": "https://i.ibb.co/V3yhZbP/instagram-gallery-img-3-768x806.jpg",
+    "img": "https://i.ibb.co/sKd58y3/slider-list-img-new-5.png",
     "name": "Diamond Sparkle Gold Ring",
     "category": "Diamond Rings",
     "price": 1899.99,
+    "featured": true,
     "review": [
       {
         "reviewerName": "Harper Hernandez",
@@ -197,12 +226,15 @@
         "rating": 4,
         "reviewDate": "2023-09-29"
       }
-    ]
+    ],
+    "id": 9,
+    "sold": 237
   },
   {
-    "img": "https://i.ibb.co/Nm7Sq9X/instagram-gallery-img-4-768x804.jpg",
+    "img": "https://i.ibb.co/VYZgVn1/9.png",
     "name": "Pearl Elegance Necklace",
     "category": "Necklace",
+    "newArrival": true,
     "price": 1699.99,
     "review": [
       {
@@ -217,10 +249,12 @@
         "rating": 5,
         "reviewDate": "2023-11-28"
       }
-    ]
+    ],
+    "id": 10,
+    "sold": 89
   },
   {
-    "img": "https://i.ibb.co/6gnM3Nz/instagram-gallery-img-6-768x804.jpg",
+    "img": "https://i.ibb.co/C70GRjw/10.png",
     "name": "Silver Dangle Earrings",
     "category": "Earrings",
     "price": 499.99,
@@ -237,10 +271,12 @@
         "rating": 4,
         "reviewDate": "2023-12-12"
       }
-    ]
+    ],
+    "id": 11,
+    "sold": 259
   },
   {
-    "img": "https://i.ibb.co/8MvF59s/jewelry-scale1.png",
+    "img": "https://i.ibb.co/Q6G0zw8/12.png",
     "name": "Classic Diamond Ring",
     "category": "Diamond Rings",
     "price": 1499.99,
@@ -257,10 +293,12 @@
         "rating": 4.5,
         "reviewDate": "2023-10-14"
       }
-    ]
+    ],
+    "id": 12,
+    "sold": 373
   },
   {
-    "img": "https://i.ibb.co/JtfBZXM/luxurious-star-main1-768x768.png",
+    "img": "https://i.ibb.co/ftRVGpj/13.png",
     "name": "Luxurious Star Pendant",
     "category": "Pendants",
     "price": 2199.99,
@@ -277,10 +315,12 @@
         "rating": 5,
         "reviewDate": "2023-11-22"
       }
-    ]
+    ],
+    "id": 13,
+    "sold": 46
   },
   {
-    "img": "https://i.ibb.co/p1cZP1N/mother-of-pearl-chara-main1-650x650.png",
+    "img": "https://i.ibb.co/QCpJshN/jewelry-scale1.png",
     "name": "Mother of Pearl Charm Bracelet",
     "category": "Bracelets",
     "price": 699.99,
@@ -297,10 +337,12 @@
         "rating": 4,
         "reviewDate": "2023-12-05"
       }
-    ]
+    ],
+    "id": 14,
+    "sold": 382
   },
   {
-    "img": "https://i.ibb.co/BVcrxv7/necklaces-category-1.png",
+    "img": "https://i.ibb.co/MSTBbYw/15.png",
     "name": "Diamond Solitaire Necklace",
     "category": "Necklace",
     "price": 2899.99,
@@ -317,10 +359,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-16"
       }
-    ]
+    ],
+    "id": 15,
+    "sold": 136
   },
   {
-    "img": "https://i.ibb.co/9bKHjq6/pendants-category.png",
+    "img": "https://i.ibb.co/2nhLSXN/17.png",
     "name": "Sapphire Drop Pendant",
     "category": "Pendants",
     "price": 1299.99,
@@ -337,12 +381,15 @@
         "rating": 5,
         "reviewDate": "2023-12-02"
       }
-    ]
+    ],
+    "id": 16,
+    "sold": 494
   },
   {
-    "img": "https://i.ibb.co/qpjJDxW/rhodolite-garnet-and-diamond-earrings1-768x768.png",
+    "img": "https://i.ibb.co/WcY0R1k/19.png",
     "name": "Rhodolite Garnet Earrings",
     "category": "Diamond Earrings",
+    "newArrival": true,
     "price": 999.99,
     "review": [
       {
@@ -357,10 +404,12 @@
         "rating": 4,
         "reviewDate": "2023-10-28"
       }
-    ]
+    ],
+    "id": 17,
+    "sold": 383
   },
   {
-    "img": "https://i.ibb.co/wBdypS6/rings-standing.png",
+    "img": "https://i.ibb.co/ftqh4MG/amethyst-refinement-main1-768x768.png",
     "name": "Classic Gold Band Ring",
     "category": "Rings",
     "price": 699.99,
@@ -377,10 +426,12 @@
         "rating": 5,
         "reviewDate": "2023-09-10"
       }
-    ]
+    ],
+    "id": 18,
+    "sold": 396
   },
   {
-    "img": "https://i.ibb.co/fCwpQ6x/slider-list-img-new-2.jpg",
+    "img": "https://i.ibb.co/Z2bTH98/bracelets-category.png",
     "name": "Diamond Halo Engagement Ring",
     "category": "Diamond Rings",
     "price": 3499.99,
@@ -397,10 +448,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-30"
       }
-    ]
+    ],
+    "id": 19,
+    "sold": 131
   },
   {
-    "img": "https://i.ibb.co/kGqR5T4/slider-list-img-new-5.jpg",
+    "img": "https://i.ibb.co/mtWmDRS/crystal-elegance-main1-1-650x650.png",
     "name": "Rose Gold Love Pendant",
     "category": "Pendants",
     "price": 899.99,
@@ -417,10 +470,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-15"
       }
-    ]
+    ],
+    "id": 20,
+    "sold": 478
   },
   {
-    "img": "https://i.ibb.co/ZTg3h5z/slider-list-img-new-6.jpg",
+    "img": "https://i.ibb.co/cYF0XtW/crystal-harmony-main1-768x768.png",
     "name": "Emerald Elegance Necklace",
     "category": "Necklace",
     "price": 1799.99,
@@ -437,10 +492,12 @@
         "rating": 5,
         "reviewDate": "2023-11-20"
       }
-    ]
+    ],
+    "id": 21,
+    "sold": 92
   },
   {
-    "img": "https://i.ibb.co/F3x60WX/slider-list-img-new-7.jpg",
+    "img": "https://i.ibb.co/F8zGH9m/diamond-shine-main1-768x768.png",
     "name": "Diamond Solitaire Earrings",
     "category": "Diamond Earrings",
     "price": 1299.99,
@@ -457,13 +514,16 @@
         "rating": 5,
         "reviewDate": "2023-10-08"
       }
-    ]
+    ],
+    "id": 22,
+    "sold": 427
   },
   {
-    "img": "https://i.ibb.co/wBdypS6/rings-standing.png",
+    "img": "https://i.ibb.co/sJ8gx1X/earrings-category.png",
     "name": "Standing Silver Rings Set",
     "category": "Rings",
     "price": 599.99,
+    "featured": true,
     "review": [
       {
         "reviewerName": "Chloe Turner",
@@ -477,10 +537,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-10"
       }
-    ]
+    ],
+    "id": 23,
+    "sold": 127
   },
   {
-    "img": "https://i.ibb.co/fCwpQ6x/slider-list-img-new-2.jpg",
+    "img": "https://i.ibb.co/t8QLfBL/eternal-love-main1-768x768.png",
     "name": "Diamond Halo Engagement Ring",
     "category": "Diamond Rings",
     "price": 2999.99,
@@ -497,10 +559,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-25"
       }
-    ]
+    ],
+    "id": 24,
+    "sold": 329
   },
   {
-    "img": "https://i.ibb.co/kGqR5T4/slider-list-img-new-5.jpg",
+    "img": "https://i.ibb.co/t2Mp4zn/Frame-1000001387-1-scaled-1.png",
     "name": "Rose Gold Love Pendant",
     "category": "Pendants",
     "price": 1299.99,
@@ -517,10 +581,12 @@
         "rating": 5,
         "reviewDate": "2023-10-02"
       }
-    ]
+    ],
+    "id": 25,
+    "sold": 10
   },
   {
-    "img": "https://i.ibb.co/ZTg3h5z/slider-list-img-new-6.jpg",
+    "img": "https://i.ibb.co/db0nYZN/golden-curls1-450x450.png",
     "name": "Sapphire Dream Earrings",
     "category": "Diamond Earrings",
     "price": 799.99,
@@ -537,10 +603,12 @@
         "rating": 4,
         "reviewDate": "2023-12-14"
       }
-    ]
+    ],
+    "id": 26,
+    "sold": 498
   },
   {
-    "img": "https://i.ibb.co/F3x60WX/slider-list-img-new-7.jpg",
+    "img": "https://i.ibb.co/VWG8gK3/goldplated-crystal-flower-leverback1-650x650.png",
     "name": "Vintage Diamond Choker",
     "category": "Choker",
     "price": 1699.99,
@@ -557,10 +625,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-20"
       }
-    ]
+    ],
+    "id": 27,
+    "sold": 168
   },
   {
-    "img": "https://i.ibb.co/H7JQcLF/slider-list-img-new-9-300x291.jpg",
+    "img": "https://i.ibb.co/vBwycNd/h1-baner-1-480x327.png",
     "name": "Elegant Silver Necklace",
     "category": "Necklace",
     "price": 1199.99,
@@ -577,10 +647,12 @@
         "rating": 5,
         "reviewDate": "2023-12-28"
       }
-    ]
+    ],
+    "id": 28,
+    "sold": 223
   },
   {
-    "img": "https://i.ibb.co/bK3LWc8/slider-list-img-new-10.jpg",
+    "img": "https://i.ibb.co/yQRk0BG/h1-baner-2-480x326.png",
     "name": "Art Deco Diamond Bracelet",
     "category": "Bracelets",
     "price": 899.99,
@@ -597,10 +669,12 @@
         "rating": 4,
         "reviewDate": "2023-11-15"
       }
-    ]
+    ],
+    "id": 29,
+    "sold": 400
   },
   {
-    "img": "https://i.ibb.co/ZxLDqzT/Sparkling-Waterfall1-768x768.png",
+    "img": "https://i.ibb.co/pfgLggv/h1-cat-product-image-2-400x487.png",
     "name": "Sparkling Waterfall Necklace",
     "category": "Necklace",
     "price": 2499.99,
@@ -617,10 +691,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-08"
       }
-    ]
+    ],
+    "id": 30,
+    "sold": 18
   },
   {
-    "img": "https://i.ibb.co/s1rFBCb/1.jpg",
+    "img": "https://i.ibb.co/crJKMSP/h1-shop-list-img-2-768x792.png",
     "name": "Modern Gold Plated Ring",
     "category": "Gold Rings",
     "price": 749.99,
@@ -637,10 +713,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-26"
       }
-    ]
+    ],
+    "id": 31,
+    "sold": 402
   },
   {
-    "img": "https://i.ibb.co/SrPRGBj/2.jpg",
+    "img": "https://i.ibb.co/tLGbWZc/h1-shop-list-img-3-768x792.png",
     "name": "Emerald Cut Diamond Ring",
     "category": "Diamond Rings",
     "price": 1799.99,
@@ -657,10 +735,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-03"
       }
-    ]
+    ],
+    "id": 32,
+    "sold": 452
   },
   {
-    "img": "https://i.ibb.co/1Zj431J/3.jpg",
+    "img": "https://i.ibb.co/Lr4f6PS/h1-shop-list-img-5-768x790.png",
     "name": "Sapphire Elegance Necklace",
     "category": "Necklace",
     "price": 1399.99,
@@ -677,10 +757,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-18"
       }
-    ]
+    ],
+    "id": 33,
+    "sold": 131
   },
   {
-    "img": "https://i.ibb.co/cYB8sqm/5.jpg",
+    "img": "https://i.ibb.co/xF9rDN8/h1-slider-list-i-5-768x744.png",
     "name": "Diamond Cascade Earrings",
     "category": "Diamond Earrings",
     "price": 899.99,
@@ -697,10 +779,12 @@
         "rating": 5,
         "reviewDate": "2023-10-10"
       }
-    ]
+    ],
+    "id": 34,
+    "sold": 33
   },
   {
-    "img": "https://i.ibb.co/1QpYXrs/6.jpg",
+    "img": "https://i.ibb.co/K7G5TQ0/h3-shop-list-new4-291x300.png",
     "name": "Diamond Floral Choker",
     "category": "Choker",
     "price": 1299.99,
@@ -717,10 +801,12 @@
         "rating": 5,
         "reviewDate": "2023-12-30"
       }
-    ]
+    ],
+    "id": 35,
+    "sold": 105
   },
   {
-    "img": "https://i.ibb.co/x22GTbn/7.jpg",
+    "img": "https://i.ibb.co/M14jFJ3/h3-shop-list-new4-768x792.png",
     "name": "Rose Gold Infinity Bracelet",
     "category": "Bracelets",
     "price": 699.99,
@@ -737,10 +823,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-24"
       }
-    ]
+    ],
+    "id": 36,
+    "sold": 283
   },
   {
-    "img": "https://i.ibb.co/WPCKRVs/8.jpg",
+    "img": "https://i.ibb.co/zF21f2t/instagram-gallery-img-2-768x804.png",
     "name": "Diamond Starburst Pendant",
     "category": "Pendants",
     "price": 1599.99,
@@ -757,10 +845,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-28"
       }
-    ]
+    ],
+    "id": 37,
+    "sold": 113
   },
   {
-    "img": "https://i.ibb.co/3YzXDs4/9.jpg",
+    "img": "https://i.ibb.co/B6Vz5X3/instagram-gallery-img-3-768x806.png",
     "name": "Diamond Halo Engagement Ring",
     "category": "Diamond Rings",
     "price": 2999.99,
@@ -777,10 +867,12 @@
         "rating": 5,
         "reviewDate": "2023-10-03"
       }
-    ]
+    ],
+    "id": 38,
+    "sold": 351
   },
   {
-    "img": "https://i.ibb.co/9TQ5SLW/10.jpg",
+    "img": "https://i.ibb.co/87LJLP7/instagram-gallery-img-4-768x804.png",
     "name": "Classic Diamond Stud Earrings",
     "category": "Diamond Earrings",
     "price": 749.99,
@@ -797,10 +889,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-05"
       }
-    ]
+    ],
+    "id": 39,
+    "sold": 359
   },
   {
-    "img": "https://i.ibb.co/86rXb2S/12.jpg",
+    "img": "https://i.ibb.co/TYgR1NS/instagram-gallery-img-6-768x804.png",
     "name": "Vintage Diamond Ring",
     "category": "Diamond Rings",
     "price": 1899.99,
@@ -817,10 +911,12 @@
         "rating": 5,
         "reviewDate": "2023-11-15"
       }
-    ]
+    ],
+    "id": 40,
+    "sold": 410
   },
   {
-    "img": "https://i.ibb.co/82T3V6h/13.jpg",
+    "img": "https://i.ibb.co/ftRVGpj/13.png",
     "name": "Diamond Cascade Necklace",
     "category": "Necklace",
     "price": 2099.99,
@@ -837,10 +933,12 @@
         "rating": 5,
         "reviewDate": "2023-11-28"
       }
-    ]
+    ],
+    "id": 41,
+    "sold": 277
   },
   {
-    "img": "https://i.ibb.co/GsghDVY/15.jpg",
+    "img": "https://i.ibb.co/QCpJshN/jewelry-scale1.png",
     "name": "Elegant Sapphire Bracelet",
     "category": "Bracelets",
     "price": 1199.99,
@@ -851,13 +949,16 @@
         "rating": 4,
         "reviewDate": "2023-09-05"
       }
-    ]
+    ],
+    "id": 42,
+    "sold": 379
   },
   {
-    "img": "https://i.ibb.co/NF09vVt/17.jpg",
+    "img": "https://i.ibb.co/MSTBbYw/15.png",
     "name": "Ruby Halo Pendant",
     "category": "Pendants",
     "price": 1499.99,
+    "featured": true,
     "review": [
       {
         "reviewerName": "Logan Carter",
@@ -871,13 +972,17 @@
         "rating": 4,
         "reviewDate": "2023-12-12"
       }
-    ]
+    ],
+    "id": 43,
+    "sold": 290
   },
   {
-    "img": "https://i.ibb.co/VpfCJh7/19.jpg",
+    "img": "https://i.ibb.co/gM8KGmf/luxurious-star-main1-768x768.png",
     "name": "Diamond Cross Earrings",
     "category": "Diamond Earrings",
     "price": 899.99,
+    "discountPrice": 799.99,
+    "discountPercentage": 12.5,
     "review": [
       {
         "reviewerName": "Aiden Robinson",
@@ -891,10 +996,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-22"
       }
-    ]
+    ],
+    "id": 44,
+    "sold": 140
   },
   {
-    "img": "https://i.ibb.co/6sTCygR/amethyst-refinement-main1-768x768.png",
+    "img": "https://i.ibb.co/qBfhBkc/mother-of-pearl-chara-main1-650x650.png",
     "name": "Amethyst Refinement Ring",
     "category": "Rings",
     "price": 799.99,
@@ -905,10 +1012,12 @@
         "rating": 4,
         "reviewDate": "2023-08-10"
       }
-    ]
+    ],
+    "id": 45,
+    "sold": 216
   },
   {
-    "img": "https://i.ibb.co/2vznV7B/bracelets-category.png",
+    "img": "https://i.ibb.co/hLR7SH5/necklaces-category-1.png",
     "name": "Golden Charm Bracelet",
     "category": "Bracelets",
     "price": 899.99,
@@ -919,10 +1028,12 @@
         "rating": 4,
         "reviewDate": "2023-08-14"
       }
-    ]
+    ],
+    "id": 46,
+    "sold": 145
   },
   {
-    "img": "https://i.ibb.co/T1Jf9dN/crystal-elegance-main1-1-650x650.png",
+    "img": "https://i.ibb.co/PrvvjBc/pendants-category.png",
     "name": "Crystal Elegance Necklace",
     "category": "Necklace",
     "price": 1299.99,
@@ -939,10 +1050,12 @@
         "rating": 5,
         "reviewDate": "2023-12-28"
       }
-    ]
+    ],
+    "id": 47,
+    "sold": 402
   },
   {
-    "img": "https://i.ibb.co/h9XJ1HH/crystal-harmony-main1-768x768.png",
+    "img": "https://i.ibb.co/8P7sx2v/rhodolite-garnet-and-diamond-earrings1-768x768.png",
     "name": "Crystal Harmony Ring",
     "category": "Rings",
     "price": 799.99,
@@ -959,10 +1072,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-28"
       }
-    ]
+    ],
+    "id": 48,
+    "sold": 72
   },
   {
-    "img": "https://i.ibb.co/87RrHJY/diamond-shine-main1-768x768.png",
+    "img": "https://i.ibb.co/FncDLvt/rings-standing.png",
     "name": "Diamond Shine Earrings",
     "category": "Diamond Earrings",
     "price": 899.99,
@@ -979,10 +1094,12 @@
         "rating": 4.5,
         "reviewDate": "2023-11-22"
       }
-    ]
+    ],
+    "id": 49,
+    "sold": 385
   },
   {
-    "img": "https://i.ibb.co/RSqRvkZ/earrings-category.png",
+    "img": "https://i.ibb.co/jz9BnMc/slider-list-img-new-2.png",
     "name": "Sapphire Drop Earrings",
     "category": "Diamond Earrings",
     "price": 799.99,
@@ -993,10 +1110,12 @@
         "rating": 4,
         "reviewDate": "2023-08-10"
       }
-    ]
+    ],
+    "id": 50,
+    "sold": 244
   },
   {
-    "img": "https://i.ibb.co/4FsHrvZ/eternal-love-main1-768x768.png",
+    "img": "https://i.ibb.co/sKd58y3/slider-list-img-new-5.png",
     "name": "Eternal Love Diamond Ring",
     "category": "Diamond Rings",
     "price": 1499.99,
@@ -1007,10 +1126,12 @@
         "rating": 5,
         "reviewDate": "2023-11-28"
       }
-    ]
+    ],
+    "id": 51,
+    "sold": 300
   },
   {
-    "img": "https://i.ibb.co/PGdwh6D/Frame-1000001387-1-scaled-1.png",
+    "img": "https://i.ibb.co/VYYGhsm/slider-list-img-new-6.png",
     "name": "Golden Charm Frame Pendant",
     "category": "Pendants",
     "price": 1099.99,
@@ -1027,10 +1148,12 @@
         "rating": 5,
         "reviewDate": "2023-12-10"
       }
-    ]
+    ],
+    "id": 52,
+    "sold": 206
   },
   {
-    "img": "https://i.ibb.co/1XZGH54/golden-curls1-450x450.png",
+    "img": "https://i.ibb.co/fqmX79r/slider-list-img-new-7.png",
     "name": "Golden Curls Necklace",
     "category": "Necklace",
     "price": 1099.99,
@@ -1041,10 +1164,12 @@
         "rating": 4.5,
         "reviewDate": "2023-09-08"
       }
-    ]
+    ],
+    "id": 53,
+    "sold": 102
   },
   {
-    "img": "https://i.ibb.co/mBg26PN/goldplated-crystal-flower-leverback1-650x650.png",
+    "img": "https://i.ibb.co/Qbm7wb0/slider-list-img-new-9.png",
     "name": "Gold-plated Crystal Flower Leverback Earrings",
     "category": "Earrings",
     "price": 899.99,
@@ -1061,10 +1186,12 @@
         "rating": 4.5,
         "reviewDate": "2023-10-01"
       }
-    ]
+    ],
+    "id": 54,
+    "sold": 97
   },
   {
-    "img": "https://i.ibb.co/9TqQ32S/h1-baner-1-480x327.jpg",
+    "img": "https://i.ibb.co/ZVPFxZ8/slider-list-img-new-9-300x291.png",
     "name": "Diamond Halo Bracelet",
     "category": "Bracelets",
     "price": 999.99,
@@ -1081,10 +1208,12 @@
         "rating": 4.5,
         "reviewDate": "2023-12-18"
       }
-    ]
+    ],
+    "id": 55,
+    "sold": 474
   },
   {
-    "img": "https://i.ibb.co/PWQWzrY/h1-baner-2-480x326.jpg",
+    "img": "https://i.ibb.co/V98fL7d/slider-list-img-new-10.png",
     "name": "Golden Charm Pendant",
     "category": "Pendants",
     "price": 1099.99,
@@ -1101,10 +1230,12 @@
         "rating": 5,
         "reviewDate": "2023-12-10"
       }
-    ]
+    ],
+    "id": 56,
+    "sold": 365
   },
   {
-    "img": "https://i.ibb.co/GPtNYb3/h1-cat-product-image-2-400x487.jpg",
+    "img": "https://i.ibb.co/t2Mp4zn/Frame-1000001387-1-scaled-1.png",
     "name": "Elegant Diamond Necklace",
     "category": "Necklace",
     "price": 1499.99,
@@ -1115,10 +1246,12 @@
         "rating": 4,
         "reviewDate": "2023-09-18"
       }
-    ]
+    ],
+    "id": 57,
+    "sold": 78
   },
   {
-    "img": "https://i.ibb.co/TkJ3RM4/h1-shop-list-img-2-768x792.jpg",
+    "img": "https://i.ibb.co/QY8k0zc/Sparkling-Waterfall1-768x768.png",
     "name": "Sapphire Drop Earrings",
     "category": "Diamond Earrings",
     "price": 799.99,
@@ -1129,10 +1262,12 @@
         "rating": 4,
         "reviewDate": "2023-08-10"
       }
-    ]
+    ],
+    "id": 58,
+    "sold": 34
   },
   {
-    "img": "https://i.ibb.co/ZHHqpj3/h1-shop-list-img-3-768x792.jpg",
+    "img": "https://i.ibb.co/Lr4f6PS/h1-shop-list-img-5-768x790.png",
     "name": "Crystal Elegance Ring",
     "category": "Rings",
     "price": 899.99,
@@ -1149,6 +1284,8 @@
         "rating": 4.5,
         "reviewDate": "2023-12-28"
       }
-    ]
+    ],
+    "id": 59,
+    "sold": 394
   }
 ]

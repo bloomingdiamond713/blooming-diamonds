@@ -16,10 +16,11 @@ import { Link, scrollSpy } from "react-scroll";
 const Header = () => {
   const [stickyNav, setStickyNav] = useState("");
   const [navNotifications, setNavNotifications] = useState([
-    "ub-jewellers",
-    "uzzal",
-    "All week from 9 am to 5 pm",
-    "shuvo",
+    "Flash Sale Going On Till 5th January!",
+    "Discount up to 35% for first purchase only this month.",
+    "Free Shipping! First in Town.",
+    "Exclusive prices only for the month",
+    "Black Friday Coming. Hurry Up!",
   ]);
 
   // to close drawer(on mobile devices) upon link click
@@ -201,7 +202,7 @@ const Header = () => {
                       to="hero"
                       spy={true}
                       smooth={true}
-                      offset={-70}
+                      offset={-50}
                       duration={1000}
                     >
                       Home
@@ -221,7 +222,7 @@ const Header = () => {
                       to="categories"
                       spy={true}
                       smooth={true}
-                      offset={-30}
+                      offset={-40}
                       duration={1000}
                     >
                       Categories

@@ -3,7 +3,6 @@ import "./ProductCard.css";
 import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegHeart, FaRegEye } from "react-icons/fa6";
-import { BsCart } from "react-icons/bs";
 import { FaShoppingCart } from "react-icons/fa";
 
 const ProductCard = ({ cardData, flashSale }) => {
@@ -15,31 +14,41 @@ const ProductCard = ({ cardData, flashSale }) => {
     review,
     discountPrice,
     discountPercentage,
+    badge,
   } = cardData;
 
   const { averageRating } = useDynamicRating(review);
 
   return (
     <div
-      className={`${flashSale && "w-[270px]"} product-card`}
+      className={`${flashSale ? "w-[270px]" : " w-[350px]"} product-card`}
       style={{ fontFamily: "var(--poppins)" }}
     >
       <div className="relative">
         <div
           className={`product-img-overlay ${
-            flashSale && "h-[280px]"
+            flashSale ? "h-[280px]" : "h-[340px]"
           } rounded-lg`}
         ></div>
         <img
           src={img}
           alt={name}
           className={`w-[100%] ${
-            flashSale && "h-[280px]"
-          } bg-[#f8faf9] rounded-lg product-img`}
+            flashSale ? "h-[280px]" : "h-[340px]"
+          } bg-[#ebebed] rounded-lg product-img`}
         />
-        <div className="badge badge-error rounded-full py-3 absolute top-3 left-3">
-          <h6 className="text-white text-xs">-{discountPercentage}%</h6>
-        </div>
+
+        {discountPercentage && (
+          <div className="badge badge-error rounded-full py-3 absolute top-3 left-3">
+            <h6 className="text-white text-xs">-{discountPercentage}%</h6>
+          </div>
+        )}
+
+        {badge && (
+          <div className="badge bg-[red] rounded-full py-3 absolute top-3 left-3 font-bold">
+            <h6 className="text-white text-xs uppercase">{badge}</h6>
+          </div>
+        )}
 
         {/* icons */}
         <div className="absolute top-3 right-3 space-y-3">
@@ -68,9 +77,11 @@ const ProductCard = ({ cardData, flashSale }) => {
         <p className="text-gray-600 mt-1 mb-3">{category}</p>
         <div className="flex items-baseline justify-start gap-3">
           <h4 className="text-lg font-bold mb-2">${price}</h4>
-          <h5 className="text-base text-gray-400 line-through">
-            {discountPrice && `$${discountPrice}`}
-          </h5>
+          {discountPrice && (
+            <h5 className="text-base text-gray-400 line-through">
+              -{discountPrice}&
+            </h5>
+          )}
         </div>
         <div className="flex items-center gap-4">
           <StarRatings
