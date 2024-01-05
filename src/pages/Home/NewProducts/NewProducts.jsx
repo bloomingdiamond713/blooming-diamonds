@@ -21,7 +21,7 @@ const NewProducts = () => {
 
   console.log(newProducts);
   return (
-    <section id="products" className="mb-24 pt-10">
+    <section className="mb-24 pt-10">
       <SectionTitle title={"New Arrivals"} />
 
       <div className="grid grid-cols-3 gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">

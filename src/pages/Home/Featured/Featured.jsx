@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Featured.css";
 import useProducts from "../../../hooks/useProducts";
+import featuredBanner from "../../../assets/featuredBanner.jpg";
+import FeaturedCard from "./FeaturedCard/FeaturedCard";
 
 const Featured = () => {
   const [products] = useProducts();
-  const [featuredBanner, setFeaturedBanner] = useState("");
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
 
@@ -14,14 +15,12 @@ const Featured = () => {
        * ********
        * Logics *
        * ********
-       * Banner: to produce a banner img we are randomly selecting a product using js random number method and then setting that product as banner
        *
        * FeaturedProducts: only those products that have the featured key set to true
        *
        * BestSellers: We are sorting the products array based on Sold(a key) value of the products from max to min and slicing the first 4 items.
        */
 
-      setFeaturedBanner(products[Math.floor(Math.random() * products.length)]);
       setFeaturedProducts(
         products.filter((product) => product.featured === true)
       );
@@ -30,12 +29,60 @@ const Featured = () => {
       setBestSellers(sortedArray.slice(0, 4));
     }
   }, [products]);
-  console.log("best: ", bestSellers);
 
   return (
-    <div className="container grid grid-cols-2 border">
-      <div className="border">
-        <img src={featuredBanner.img} alt="" />
+    <div className="container grid grid-cols-2 gap-x-6 mb-24">
+      <div className="h-[450px] relative">
+        <img
+          src={featuredBanner}
+          className="border w-full h-full hover:scale-[1.01] transition-all duration-150 ease"
+        />
+        <div
+          className="absolute bottom-36 left-8 text-center"
+          style={{ fontFamily: "var(--poppins)" }}
+        >
+          <h5 className="text-lg text-gray-500">BEAUTIFUL</h5>
+          <h4
+            className="text-4xl font-bold text-black mt-2 mb-6"
+            style={{ fontFamily: "var(--italiana)" }}
+          >
+            Wedding Rings
+          </h4>
+
+          <button className="border-b-2 border-b-black hover:border-b-[var(--pink-gold)] hover:text-[var(--pink-gold)] transition-all duration-150 ease">
+            Shop Now
+          </button>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center gap-x-4">
+        <div>
+          <h4
+            className="font-bold text-2xl mb-4"
+            style={{ fontFamily: "var(--italiana)" }}
+          >
+            Featured Products
+          </h4>
+          <div className="space-y-3">
+            {featuredProducts?.map((product) => (
+              <FeaturedCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h4
+            className="font-bold text-2xl mb-4"
+            style={{ fontFamily: "var(--italiana)" }}
+          >
+            Best Sellers
+          </h4>
+          <div className="space-y-3">
+            {bestSellers?.map((product) => (
+              <FeaturedCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

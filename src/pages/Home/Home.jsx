@@ -16,8 +16,10 @@ const Home = () => {
       <MarqueeSection />
       <Categories />
       <FlashSale />
-      <NewProducts />
-      <Featured />
+      <div id="products">
+        <NewProducts />
+        <Featured />
+      </div>
     </div>
   );
 };
