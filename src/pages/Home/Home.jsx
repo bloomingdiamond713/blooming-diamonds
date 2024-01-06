@@ -8,6 +8,7 @@ import FlashSale from "./FlashSale/FlashSale";
 import NewProducts from "./NewProducts/NewProducts";
 import Featured from "./Featured/Featured";
 import Reviews from "./Reviews/Reviews";
+import Instagram from "./Instagram/Instagram";
 
 const Home = () => {
   return (
@@ -22,6 +23,7 @@ const Home = () => {
         <Featured />
       </div>
       <Reviews />
+      <Instagram />
     </div>
   );
 };

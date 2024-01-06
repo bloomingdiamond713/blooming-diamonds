@@ -4,7 +4,7 @@ import StarRatings from "react-star-ratings";
 const ReviewCard = ({ reviewObj }) => {
   const { name, img, review, rating, location } = reviewObj;
   return (
-    <div className="border border-black w-[80%] mx-auto flex items-center gap-4 p-8 bg-white">
+    <div className="border border-black w-[80%] mx-auto flex items-center gap-4 p-10 bg-white">
       <div className="w-[20%]">
         <img src={img} alt={name} className="rounded-full " />
       </div>
