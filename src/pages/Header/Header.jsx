@@ -294,19 +294,13 @@ const Header = () => {
                   </label>
                 </div>
                 <div className="w-[25%] px-2 text-center">
-                  <HashLink
-                    to="hero"
-                    offset={-250}
-                    smooth={true}
-                    spy={true}
-                    duration={1000}
-                  >
+                  <Link to="/">
                     <img
                       src={logo}
                       alt="logo"
                       className="w-[170px] h-[90px] cursor-pointer"
                     />
-                  </HashLink>
+                  </Link>
                 </div>
                 <div className="w-[55%] hidden lg:block text-center">
                   <ul className="menu menu-horizontal space-x-8">
@@ -372,14 +366,7 @@ const Header = () => {
             ></label>
             <ul className="menu p-4 w-80 min-h-full bg-base-200">
               {/* Sidebar content here */}
-              <HashLink
-                to="something"
-                spy={true}
-                smooth={true}
-                offset={-70}
-                duration={1000}
-                onClick={handleLinkClicked}
-              >
+              <HashLink to="/#something" onClick={handleLinkClicked}>
                 Something2
               </HashLink>
             </ul>
