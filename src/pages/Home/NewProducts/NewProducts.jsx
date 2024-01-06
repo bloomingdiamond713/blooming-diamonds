@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./NewProducts.css";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
-import axios from "axios";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import useProducts from "../../../hooks/useProducts";
 
@@ -19,7 +18,6 @@ const NewProducts = () => {
     setNewProducts(filteredNewProducts?.slice(0, 6));
   }, [products]);
 
-  console.log(newProducts);
   return (
     <section className="mb-24 pt-10">
       <SectionTitle title={"New Arrivals"} />

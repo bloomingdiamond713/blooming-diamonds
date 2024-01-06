@@ -79,7 +79,7 @@ const ProductCard = ({ cardData, flashSale }) => {
           <h4 className="text-lg font-bold mb-2">${price}</h4>
           {discountPrice && (
             <h5 className="text-base text-gray-400 line-through">
-              -{discountPrice}&
+              -{discountPrice}
             </h5>
           )}
         </div>

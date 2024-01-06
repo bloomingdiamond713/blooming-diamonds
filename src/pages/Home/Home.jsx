@@ -7,6 +7,7 @@ import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 import FlashSale from "./FlashSale/FlashSale";
 import NewProducts from "./NewProducts/NewProducts";
 import Featured from "./Featured/Featured";
+import Reviews from "./Reviews/Reviews";
 
 const Home = () => {
   return (
@@ -20,6 +21,7 @@ const Home = () => {
         <NewProducts />
         <Featured />
       </div>
+      <Reviews />
     </div>
   );
 };

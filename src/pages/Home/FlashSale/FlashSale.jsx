@@ -34,7 +34,10 @@ const FlashSale = () => {
   };
 
   return (
-    <div className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex border items-center py-10 gap-8">
+    <div
+      id="flashSale"
+      className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex border items-center py-10 gap-8"
+    >
       <div
         className="w-[30%] text-center px-6"
         style={{ fontFamily: "var(--montserrat)" }}

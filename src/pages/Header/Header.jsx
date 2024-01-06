@@ -227,6 +227,27 @@ const Header = () => {
                     >
                       Categories
                     </Link>
+                    <div className="flex items-baseline gap-1">
+                      <Link
+                        activeClass="active"
+                        to="flashSale"
+                        spy={true}
+                        smooth={true}
+                        offset={-100}
+                        duration={1000}
+                      >
+                        Sale
+                      </Link>
+                      <div
+                        className="badge badge-warning text-white rounded-md uppercase font-bold"
+                        style={{
+                          fontFamily: "var(--montserrat)",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Hot
+                      </div>
+                    </div>
                     <Link
                       activeClass="active"
                       to="products"
@@ -315,7 +336,7 @@ const Header = () => {
                     />
                   </Link>
                 </div>
-                <div className="w-[50%] hidden lg:block text-center">
+                <div className="w-[55%] hidden lg:block text-center">
                   <ul className="menu menu-horizontal space-x-8">
                     {/* Navbar menu content here */}
                     <Link
@@ -347,6 +368,27 @@ const Header = () => {
                     >
                       Categories
                     </Link>
+                    <div className="flex items-baseline gap-1">
+                      <Link
+                        activeClass="active"
+                        to="flashSale"
+                        spy={true}
+                        smooth={true}
+                        offset={-100}
+                        duration={1000}
+                      >
+                        Sale
+                      </Link>
+                      <div
+                        className="badge badge-warning text-white rounded-md uppercase font-bold"
+                        style={{
+                          fontFamily: "var(--montserrat)",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Hot
+                      </div>
+                    </div>
                     <Link
                       activeClass="active"
                       to="products"
@@ -380,7 +422,7 @@ const Header = () => {
                   </ul>
                 </div>
 
-                <div className="w-[25%] hidden lg:flex justify-end items-center space-x-5 text-center">
+                <div className="w-[20%] hidden lg:flex justify-end items-center space-x-5 text-center">
                   <FiSearch
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
