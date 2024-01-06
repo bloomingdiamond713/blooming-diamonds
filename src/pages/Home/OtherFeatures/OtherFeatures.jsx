@@ -8,7 +8,7 @@ import { BiSupport } from "react-icons/bi";
 const OtherFeatures = () => {
   return (
     <div
-      className="bg-[var(--pink-gold)] border grid grid-cols-4 gap-x-3 px-16 py-6 mb-24"
+      className="bg-[var(--pink-gold)] grid grid-cols-4 gap-x-3 px-16 py-8 mt-32 rounded-t-3xl"
       style={{ fontFamily: "var(--poppins)" }}
     >
       <div className="flex items-center gap-6 border-r-2 border-black">
