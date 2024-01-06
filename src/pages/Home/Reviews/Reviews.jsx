@@ -37,7 +37,7 @@ const Reviews = () => {
   };
 
   return (
-    <div id="reviews" className="mb-40 pt-6">
+    <div id="reviews" className="mb-32 pt-6">
       <SectionTitle title={"Customers Say"} />
       <div className="container relative mt-16">
         <Slider {...settings} ref={sliderRef}>

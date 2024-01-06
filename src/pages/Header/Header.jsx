@@ -273,7 +273,7 @@ const Header = () => {
                       to="connect"
                       spy={true}
                       smooth={true}
-                      offset={-70}
+                      offset={-60}
                       duration={1000}
                     >
                       Connect Us

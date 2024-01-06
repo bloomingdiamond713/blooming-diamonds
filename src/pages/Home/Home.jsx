@@ -9,6 +9,7 @@ import NewProducts from "./NewProducts/NewProducts";
 import Featured from "./Featured/Featured";
 import Reviews from "./Reviews/Reviews";
 import Instagram from "./Instagram/Instagram";
+import OtherFeatures from "./OtherFeatures/OtherFeatures";
 
 const Home = () => {
   return (
@@ -24,6 +25,7 @@ const Home = () => {
       </div>
       <Reviews />
       <Instagram />
+      <OtherFeatures />
     </div>
   );
 };
