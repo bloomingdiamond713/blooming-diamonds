@@ -11,16 +11,18 @@ import {
 } from "react-icons/fa6";
 import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
-import { Link, scrollSpy } from "react-scroll";
+import { HashLink } from "react-router-hash-link";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [stickyNav, setStickyNav] = useState("");
-  const [navNotifications, setNavNotifications] = useState([
+  const [navNotifications] = useState([
     "Flash Sale Going On Till 5th January!",
     "Discount up to 35% for first purchase only this month.",
     "Free Shipping! First in Town.",
     "Exclusive prices only for the month",
     "Black Friday Coming. Hurry Up!",
+    "Best offers every week! 40% Off!",
   ]);
 
   // to close drawer(on mobile devices) upon link click
@@ -40,17 +42,17 @@ const Header = () => {
     };
   }, []);
 
-  // update react-scroll on component render
-  useEffect(() => {
-    scrollSpy.update();
-  }, []);
-
   // handle search bar
   const [searchBar, setSearchBar] = useState("closed");
   const handleSearchIcon = () => {
     setSearchBar("open");
   };
 
+  const scrollWithOffset = (el) =>
+    window.scrollTo({
+      top: el.getBoundingClientRect().top + window.pageYOffset - 85,
+      behavior: "smooth",
+    });
   return (
     <div className="relative">
       {/* upper navbar */}
@@ -180,13 +182,7 @@ const Header = () => {
                   </label>
                 </div>
                 <div className="w-[25%] px-2 text-center">
-                  <Link
-                    to="hero"
-                    offset={-250}
-                    smooth={true}
-                    spy={true}
-                    duration={1000}
-                  >
+                  <Link to="/">
                     <img
                       src={logo}
                       alt="logo"
@@ -197,47 +193,29 @@ const Header = () => {
                 <div className="w-[50%] hidden lg:block text-center">
                   <ul className="menu menu-horizontal space-x-8">
                     {/* Navbar menu content here */}
-                    <Link
-                      activeClass="active"
-                      to="hero"
-                      spy={true}
-                      smooth={true}
-                      offset={-50}
-                      duration={1000}
+                    <HashLink
+                      to="/#hero"
+                      smooth
+                      scroll={(el) => scrollWithOffset(el)}
                     >
                       Home
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="Shop"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
-                    >
-                      Shop
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="categories"
-                      spy={true}
-                      smooth={true}
-                      offset={-40}
-                      duration={1000}
+                    </HashLink>
+                    <Link to="/Shop">Shop</Link>
+                    <HashLink
+                      to="/#categories"
+                      smooth
+                      scroll={(el) => scrollWithOffset(el)}
                     >
                       Categories
-                    </Link>
+                    </HashLink>
                     <div className="flex items-baseline gap-1">
-                      <Link
-                        activeClass="active"
-                        to="flashSale"
-                        spy={true}
-                        smooth={true}
-                        offset={-100}
-                        duration={1000}
+                      <HashLink
+                        smooth
+                        scroll={(el) => scrollWithOffset(el)}
+                        to="/#flashSale"
                       >
                         Sale
-                      </Link>
+                      </HashLink>
                       <div
                         className="badge badge-warning text-white rounded-md uppercase font-bold"
                         style={{
@@ -248,36 +226,27 @@ const Header = () => {
                         Hot
                       </div>
                     </div>
-                    <Link
-                      activeClass="active"
-                      to="products"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
+                    <HashLink
+                      to="/#products"
+                      smooth
+                      scroll={(el) => scrollWithOffset(el)}
                     >
                       Products
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="reviews"
-                      spy={true}
-                      smooth={true}
-                      offset={-100}
-                      duration={1000}
+                    </HashLink>
+                    <HashLink
+                      to="/#reviews"
+                      smooth
+                      scroll={(el) => scrollWithOffset(el)}
                     >
                       Reviews
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="connect"
-                      spy={true}
-                      smooth={true}
-                      offset={-60}
-                      duration={1000}
+                    </HashLink>
+                    <HashLink
+                      to="/#connect"
+                      smooth
+                      scroll={(el) => scrollWithOffset(el)}
                     >
                       Connect Us
-                    </Link>
+                    </HashLink>
                   </ul>
                 </div>
 
@@ -286,7 +255,10 @@ const Header = () => {
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
-                  <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                  <Link to="/login">
+                    <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                  </Link>
+
                   <div className="indicator">
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
                       0
@@ -322,7 +294,7 @@ const Header = () => {
                   </label>
                 </div>
                 <div className="w-[25%] px-2 text-center">
-                  <Link
+                  <HashLink
                     to="hero"
                     offset={-250}
                     smooth={true}
@@ -334,51 +306,22 @@ const Header = () => {
                       alt="logo"
                       className="w-[170px] h-[90px] cursor-pointer"
                     />
-                  </Link>
+                  </HashLink>
                 </div>
                 <div className="w-[55%] hidden lg:block text-center">
                   <ul className="menu menu-horizontal space-x-8">
                     {/* Navbar menu content here */}
-                    <Link
-                      activeClass="active"
-                      to="hero"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
-                    >
+                    <HashLink to="/#hero" smooth>
                       Home
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="Shop"
-                      spy={true}
-                      smooth={true}
-                      duration={1000}
-                    >
-                      Shop
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="categories"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
-                    >
+                    </HashLink>
+                    <Link to="/Shop">Shop</Link>
+                    <HashLink to="/#categories" smooth>
                       Categories
-                    </Link>
+                    </HashLink>
                     <div className="flex items-baseline gap-1">
-                      <Link
-                        activeClass="active"
-                        to="flashSale"
-                        spy={true}
-                        smooth={true}
-                        offset={-100}
-                        duration={1000}
-                      >
+                      <HashLink smooth to="/#flashSale">
                         Sale
-                      </Link>
+                      </HashLink>
                       <div
                         className="badge badge-warning text-white rounded-md uppercase font-bold"
                         style={{
@@ -389,36 +332,15 @@ const Header = () => {
                         Hot
                       </div>
                     </div>
-                    <Link
-                      activeClass="active"
-                      to="products"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
-                    >
+                    <HashLink to="/#products" smooth>
                       Products
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="reviews"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
-                    >
+                    </HashLink>
+                    <HashLink to="/#reviews" smooth>
                       Reviews
-                    </Link>
-                    <Link
-                      activeClass="active"
-                      to="connect"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={1000}
-                    >
+                    </HashLink>
+                    <HashLink to="/#connect" smooth>
                       Connect Us
-                    </Link>
+                    </HashLink>
                   </ul>
                 </div>
 
@@ -427,7 +349,9 @@ const Header = () => {
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
-                  <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                  <Link to="/login">
+                    <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                  </Link>
                   <div className="indicator">
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
                       0
@@ -448,7 +372,7 @@ const Header = () => {
             ></label>
             <ul className="menu p-4 w-80 min-h-full bg-base-200">
               {/* Sidebar content here */}
-              <Link
+              <HashLink
                 to="something"
                 spy={true}
                 smooth={true}
@@ -457,7 +381,7 @@ const Header = () => {
                 onClick={handleLinkClicked}
               >
                 Something2
-              </Link>
+              </HashLink>
             </ul>
           </div>
         </div>

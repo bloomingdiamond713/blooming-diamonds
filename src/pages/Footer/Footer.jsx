@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Footer.css";
 import logo from "/logo1dark.svg";
 import { IoHomeOutline, IoMailOutline, IoCallOutline } from "react-icons/io5";
@@ -9,10 +9,17 @@ import {
   FaLinkedin,
   FaPinterest,
 } from "react-icons/fa6";
-import { Link } from "react-scroll";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  // todo: load category data from data
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    fetch("/categories.json")
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
+  }, []);
+
   return (
     <div
       className="bg-[#f7f7f7] px-12 pt-16 pb-4"
@@ -48,22 +55,12 @@ const Footer = () => {
         </div>
 
         <div className="w-[23%]">
-          <h4>Explore Us</h4>
-          <Link to="hero" smooth spy className="mt-4 text-gray-600">
-            Home
-          </Link>
-          <Link to="categories" smooth spy className="mt-2 text-gray-600">
-            Categories
-          </Link>
-          <Link to="products" smooth spy className="mt-2 text-gray-600">
-            New Products
-          </Link>
-          <RouterLink to="/shop" className="mt-2 text-gray-600">
-            Shop
-          </RouterLink>
-          <Link to="connect" smooth spy className="mt-2 text-gray-600">
-            Connect With Us
-          </Link>
+          <h4>All Departments</h4>
+          {categories?.map((category) => (
+            <Link key={category._id} to="#" className="mt-4 text-gray-600">
+              {category.categoryName}
+            </Link>
+          ))}
         </div>
 
         <div className="w-[23%]">
