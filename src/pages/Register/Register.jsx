@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../Login/Login.css";
 import { useForm } from "react-hook-form";
 import {
@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 
 const Register = () => {
-  const { signUp } = useAuthContext();
+  const { signUp, updateUserProfile } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [fileDragged, setFileDragged] = useState(false);
@@ -22,20 +22,13 @@ const Register = () => {
     register,
     watch,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    const { name, email, password, photo } = data;
-    console.log(name, email, password, photo);
-  };
-
-  //   profile pic file upload
-  const inputRef = useRef(null);
-  const [profilePicFile, setProfilePicFile] = useState(null);
-
   const handleFileDragOver = (e) => {
     e.preventDefault();
+    setFileDragged(true);
   };
   const handleFileDragEnter = (e) => {
     e.preventDefault();
@@ -46,13 +39,68 @@ const Register = () => {
     setFileDragged(false);
   };
 
-  const handleFileDrop = (e) => {
-    e.preventDefault();
+  const handleFileDrop = (event) => {
+    event.preventDefault();
     setFileDragged(false);
-    setProfilePicFile(e.dataTransfer.files);
+    setProfilePicFile(event.dataTransfer.files);
+
+    // setting input(file type) as well to remove required error
+    document.getElementById("profilePicture").files = event.dataTransfer.files;
   };
 
-  console.log(errors);
+  /**
+   **** Profile Pic file upload logic: (two ways) ****
+   * 1) profilePicFile is set when user click browse image button because in input(file) tag's onChange event setProfilePicFile is called.
+   *
+   * 2) Again, profilePicFile is set when user dragOver the pic and the dragOver function is called
+   *
+   * 3) So, in both ways file is set to profilePicFile and when close btn is clicked
+   * profilePicFile is set to null and also input(file) tag value is reset to null using
+   * input.value=""
+   */
+  const [profilePicFile, setProfilePicFile] = useState(null);
+
+  // form output
+  const [registerLoading, setRegisterLoading] = useState(false);
+  const [registerError, setRegisterError] = useState(null);
+
+  const onSubmit = (data) => {
+    setRegisterLoading(true);
+
+    const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMGHOSTINGKEY
+    }`;
+
+    const formData = new FormData();
+    formData.append("image", profilePicFile[0]); // as profile pic is getting set in profilePicFile the data.profilePic is not necessary to use here.
+
+    fetch(imgHostingUrl, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imgHostingResponse) => {
+        if (imgHostingResponse.success) {
+          data["profilePic"] = imgHostingResponse.data.display_url;
+
+          // sign up user with email, password
+          signUp(data.email, data.password)
+            .then((res) => {
+              // update user's profile
+              if (res.user?.uid) {
+                updateUserProfile(data.name, data.profilePic)
+                  .then(() => {
+                    console.log(res.user);
+                    reset(); // reset the form
+                    setProfilePicFile(null); // reset profile pic state
+                  })
+                  .catch((error) => setRegisterError(error));
+              }
+            })
+            .catch((error) => setRegisterError(error));
+        }
+      });
+  };
 
   return (
     <div
@@ -99,7 +147,11 @@ const Register = () => {
           <p className="text-gray-600">Password *</p>
           <input
             type={showPass ? "text" : "password"}
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: true,
+              pattern:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            })}
             className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
           {errors.confirmPassword?.message === "unmatched password" && (
@@ -108,9 +160,16 @@ const Register = () => {
             </span>
           )}
 
-          {errors.password?.message === "" && (
+          {errors.password?.type === "required" && (
             <span className="text-red-500 mt-1 block">
               Password is required
+            </span>
+          )}
+
+          {!errors.confirmPassword && errors.password?.type === "pattern" && (
+            <span className="text-red-500 mt-1 block">
+              Password must have one uppercase, one lowercase, one number and
+              one special character
             </span>
           )}
           <div className="absolute top-10 right-1">
@@ -144,7 +203,7 @@ const Register = () => {
             className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
 
-          {errors.password?.message === "" && (
+          {errors.confirmPassword?.type === "required" && (
             <span className="text-red-500 mt-1 block">
               Confirm Password is required
             </span>
@@ -172,15 +231,24 @@ const Register = () => {
 
         {/* profile pic input */}
         <div className="w-full mt-8">
-          <p className="text-gray-600 mb-5">Profile Pic (optional)</p>
+          <p className="text-gray-600 mb-5">Profile Picture *</p>
           <input
             type="file"
-            {...register("profilePic", { required: false })}
-            onChange={(event) => setProfilePicFile(event.target.files)}
+            {...register("profilePic", {
+              required: true,
+              onChange: (e) => setProfilePicFile(e.target.files),
+            })}
+            id="profilePicture"
+            accept=".png, .jpg, .jpeg"
             hidden
-            defaultValue={""}
-            ref={inputRef}
           />
+
+          {errors.profilePic?.type === "required" &&
+            document.getElementById("profilePicture").value == "" && (
+              <span className="text-red-500 mt-1 block">
+                Your Profile Picture is required
+              </span>
+            )}
 
           {!profilePicFile ? (
             <button
@@ -191,7 +259,10 @@ const Register = () => {
               onDragEnter={handleFileDragEnter}
               onDragLeave={handleFileDragLeave}
               onDragOver={handleFileDragOver}
-              onClick={() => inputRef.current.click()}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("profilePicture").click();
+              }}
             >
               <div className="text-center space-y-4">
                 <IoCloudUploadOutline className="text-6xl text-[var(--pink-gold)] block mx-auto" />
@@ -203,8 +274,13 @@ const Register = () => {
             </button>
           ) : (
             <div className="border-2 border-gray-400 rounded-xl p-4 w-fit flex justify-between items-center gap-6">
-              <span>{profilePicFile[0].name}</span>
-              <button onClick={() => setProfilePicFile(null)}>
+              <span>{profilePicFile[0]?.name}</span>
+              <button
+                onClick={() => {
+                  document.getElementById("profilePicture").value = "";
+                  setProfilePicFile(null);
+                }}
+              >
                 <IoClose className="text-xl" />
               </button>
             </div>
