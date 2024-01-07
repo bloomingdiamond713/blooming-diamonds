@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import "../Login/Login.css";
 import { useForm } from "react-hook-form";
 import {
   FaFacebookF,
@@ -60,13 +61,13 @@ const Register = () => {
         Register
       </h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="">
-        <div className="w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="loginRegisterForm">
+        <div className="w-full auth-input-con">
           <p className="text-gray-600">Full Name *</p>
           <input
             type="name"
             {...register("name", { required: true })}
-            className="text-xl border-0 outline-none border-b-2 border-black w-full mt-3 pb-2"
+            className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
           {errors.name && (
             <span className="text-red-500 mt-1 block">
@@ -76,12 +77,12 @@ const Register = () => {
         </div>
 
         {/* email input */}
-        <div className="w-full mt-8">
+        <div className="w-full mt-8 auth-input-con">
           <p className="text-gray-600">Email address *</p>
           <input
             type="email"
             {...register("email", { required: true })}
-            className="text-xl border-0 outline-none border-b-2 border-black w-full mt-3 pb-2"
+            className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
           {errors.email && (
             <span className="text-red-500 mt-1 block">Email is required</span>
@@ -89,12 +90,12 @@ const Register = () => {
         </div>
 
         {/* password input */}
-        <div className="w-full mt-8 relative">
+        <div className="w-full mt-8 relative auth-input-con">
           <p className="text-gray-600">Password *</p>
           <input
             type={showPass ? "text" : "password"}
             {...register("password", { required: true })}
-            className="text-xl border-0 outline-none border-b-2 border-black w-full mt-3 pb-2"
+            className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
           {errors.password === "wrong-password" && (
             <span className="text-red-500 mt-1 block">
@@ -123,7 +124,7 @@ const Register = () => {
         </div>
 
         {/* confirm password input */}
-        <div className="w-full mt-8 relative">
+        <div className="w-full mt-8 relative auth-input-con">
           <p className="text-gray-600">Confirm Password *</p>
           <input
             type={showConfirmPass ? "text" : "password"}
@@ -135,7 +136,7 @@ const Register = () => {
                 }
               },
             })}
-            className="text-xl border-0 outline-none border-b-2 border-black w-full mt-3 pb-2"
+            className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
 
           {errors.password?.message === "" && (
@@ -195,7 +196,7 @@ const Register = () => {
               </div>
             </button>
           ) : (
-            <div className="border-2 border-black rounded-xl p-4 w-fit flex justify-between items-center gap-6">
+            <div className="border-2 border-gray-400 rounded-xl p-4 w-fit flex justify-between items-center gap-6">
               <span>{profilePicFile[0].name}</span>
               <button onClick={() => setProfilePicFile(null)}>
                 <IoClose className="text-xl" />

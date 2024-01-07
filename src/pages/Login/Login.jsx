@@ -35,24 +35,24 @@ const Login = () => {
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="">
-        <div className="w-full">
+        <div className="w-full auth-input-con">
           <p className="text-gray-600">Email address *</p>
           <input
             type="email"
             {...register("email", { required: true })}
-            className="text-xl border-0 outline-none border-b-2 border-black w-full mt-3 pb-2"
+            className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
           {errors.email && (
             <span className="text-red-500 mt-1 block">Email is required</span>
           )}
         </div>
 
-        <div className="w-full mt-8 relative">
+        <div className="w-full mt-8 relative auth-input-con">
           <p className="text-gray-600">Password *</p>
           <input
             type={showPass ? "text" : "password"}
             {...register("password", { required: true })}
-            className="text-xl border-0 outline-none border-b-2 border-black w-full mt-3 pb-2"
+            className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
           {errors.password && (
             <span className="text-red-500 mt-1 block">
