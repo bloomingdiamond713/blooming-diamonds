@@ -1,18 +1,9 @@
-.auth-input-con {
-  position: relative;
+.auth-input-con input {
+  outline: none;
+  transition: all 0.3s ease-out;
 }
 
-.auth-input-con::before {
-  content: "";
-  height: 2px;
-  background-color: black;
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  transition: all 0.5s ease-out;
-}
-
-.auth-input-con:hover::before {
-  width: 100% !important;
-  transition: all 0.5s ease-in;
+.auth-input-con input:focus {
+  border-bottom: 2px solid black;
+  transition: all 0.3s ease-in;
 }

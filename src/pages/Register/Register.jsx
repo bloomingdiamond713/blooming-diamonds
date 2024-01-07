@@ -9,8 +9,10 @@ import {
 } from "react-icons/fa6";
 import { IoCloudUploadOutline, IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const Register = () => {
+  const { signUp } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [fileDragged, setFileDragged] = useState(false);
@@ -24,7 +26,8 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { name, email, password, photo } = data;
+    console.log(name, email, password, photo);
   };
 
   //   profile pic file upload
@@ -48,6 +51,8 @@ const Register = () => {
     setFileDragged(false);
     setProfilePicFile(e.dataTransfer.files);
   };
+
+  console.log(errors);
 
   return (
     <div
@@ -97,7 +102,7 @@ const Register = () => {
             {...register("password", { required: true })}
             className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />
-          {errors.password === "wrong-password" && (
+          {errors.confirmPassword?.message === "unmatched password" && (
             <span className="text-red-500 mt-1 block">
               Your Password do not match
             </span>
@@ -132,7 +137,7 @@ const Register = () => {
               required: true,
               validate: (val) => {
                 if (watch("password") != val) {
-                  errors.password = "wrong-password";
+                  return "unmatched password";
                 }
               },
             })}
@@ -145,7 +150,7 @@ const Register = () => {
             </span>
           )}
 
-          {errors.password === "wrong-password" && (
+          {errors.confirmPassword?.message === "unmatched password" && (
             <span className="text-red-500 mt-1 block">
               Your passwords do not match
             </span>
@@ -173,6 +178,7 @@ const Register = () => {
             {...register("profilePic", { required: false })}
             onChange={(event) => setProfilePicFile(event.target.files)}
             hidden
+            defaultValue={""}
             ref={inputRef}
           />
 
