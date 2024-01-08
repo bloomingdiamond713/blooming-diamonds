@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const useDynamicRating = (review) => {
   const [averageRating, setAverageRating] = useState(0);
   useEffect(() => {
-    if (review.length) {
+    if (review?.length) {
       const totalRating = review?.reduce(
         (sum, reviewObj) => sum + reviewObj.rating,
         0

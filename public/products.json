@@ -21,7 +21,14 @@
       }
     ],
     "id": 0,
-    "sold": 289
+    "details": {
+      "description": "Sparkling diamonds delicately set in polished metal, these earrings exude timeless elegance. Perfect for day or night, they add a touch of sophistication to any ensemble.",
+      "advantages": [
+        "Crafted with genuine diamonds for brilliance and sparkle.",
+        "Versatile design complements both formal and casual attire.",
+        "Comfortable and secure for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/pP0fHr6/2.png",
@@ -46,7 +53,14 @@
       }
     ],
     "id": 1,
-    "sold": 49
+    "details": {
+      "description": "A starburst of dazzling stones captures the eye in this eye-catching pendant. Symbolizing hope and guidance, it makes a stunning statement piece.",
+      "advantages": [
+        "Multi-faceted stones create a dynamic play of light and color.",
+        "Unique design stands out and sparks conversation.",
+        "Available in various stone options to suit your personal style."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/sj8z8y6/3.png",
@@ -68,7 +82,14 @@
       }
     ],
     "id": 2,
-    "sold": 9
+    "details": {
+      "description": "A single, sparkling diamond takes center stage in this minimalist pendant. The epitome of understated luxury, it adds a touch of class to any neckline.",
+      "advantages": [
+        "Single diamond emphasizes quality and sophistication.",
+        "Classic design never goes out of style.",
+        "Pairs effortlessly with layered necklaces or worn alone."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/TYgR1NS/instagram-gallery-img-6-768x804.png",
@@ -90,14 +111,20 @@
       }
     ],
     "id": 3,
-    "sold": 492
+    "details": {
+      "description": "Delicate charms dangle from a gleaming gold-plated chain, creating a playful and personalized bracelet. Layer it with other bracelets or wear it solo for a touch of charm.",
+      "advantages": [
+        "Gold plating adds a touch of luxury at an affordable price.",
+        "Interchangeable charms allow for customization and storytelling.",
+        "Lightweight and comfortable for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/8PnS3XT/5.png",
     "name": "Elegant Diamond Necklace",
     "category": "Necklace",
     "price": 2499.99,
-    "featured": true,
     "review": [
       {
         "reviewerName": "Alice Johnson",
@@ -113,7 +140,14 @@
       }
     ],
     "id": 4,
-    "sold": 131
+    "details": {
+      "description": "A string of sparkling diamonds gracefully adorns the neck in this timeless necklace. It's a symbol of everlasting elegance and sophistication, perfect for special occasions.",
+      "advantages": [
+        "Genuine diamonds offer unmatched brilliance and fire.",
+        "Classic design complements any neckline and style.",
+        "Makes a memorable gift for a loved one."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/WtN1XNb/6.png",
@@ -136,7 +170,14 @@
       }
     ],
     "id": 5,
-    "sold": 472
+    "details": {
+      "description": "A dazzling burst of stones set in polished gold makes this ring a statement piece. Perfect for adding glamour to any outfit, it exudes confidence and individuality.",
+      "advantages": [
+        "Bold design makes a lasting impression.",
+        "Available in various metals and stones to suit your taste.",
+        "Comfortable fit for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/5hFXLw5/7.png",
@@ -158,7 +199,14 @@
       }
     ],
     "id": 6,
-    "sold": 166
+    "details": {
+      "description": "A single, sparkling diamond takes center stage in this minimalist pendant. The epitome of understated luxury, it adds a touch of class to any neckline.",
+      "advantages": [
+        "Single diamond emphasizes quality and sophistication.",
+        "Classic design never goes out of style.",
+        "Pairs effortlessly with layered necklaces or worn alone."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/sJ8gx1X/earrings-category.png",
@@ -180,7 +228,14 @@
       }
     ],
     "id": 7,
-    "sold": 155
+    "details": {
+      "description": "Shimmering crystals catch the light and create a sense of ethereal beauty in these earrings. Perfect for adding a touch of magic to any outfit, they inspire feelings of peace and serenity.",
+      "advantages": [
+        "Crystals offer an alternative to diamonds with unique light play.",
+        "Lightweight and comfortable for all-day wear.",
+        "Available in various crystal colors to match your mood."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/mHKyM04/8.png",
@@ -205,14 +260,20 @@
       }
     ],
     "id": 8,
-    "sold": 416
+    "details": {
+      "description": "A close-fitting band of sparkling diamonds adds a touch of edgy glamour to the neckline. This statement piece is sure to turn heads and make a lasting impression.",
+      "advantages": [
+        "Trendy choker style adds a modern twist to classic diamonds.",
+        "Makes a bold statement and draws attention.",
+        "Available in various diamond sizes and settings to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/sKd58y3/slider-list-img-new-5.png",
     "name": "Diamond Sparkle Gold Ring",
     "category": "Diamond Rings",
     "price": 1899.99,
-    "featured": true,
     "review": [
       {
         "reviewerName": "Harper Hernandez",
@@ -228,7 +289,14 @@
       }
     ],
     "id": 9,
-    "sold": 237
+    "details": {
+      "description": "A single row of pave diamonds encircles the band of this ring, creating a mesmerizing display of sparkle. Perfect for adding a touch of everyday luxury, it's a versatile piece for any occasion.",
+      "advantages": [
+        "Pave diamonds offer maximum sparkle and brilliance.",
+        "Sleek and sophisticated design complements any style.",
+        "Comfortable and versatile for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/VYZgVn1/9.png",
@@ -251,7 +319,14 @@
       }
     ],
     "id": 10,
-    "sold": 89
+    "details": {
+      "description": "Classic pearls strung on a delicate chain create a timeless necklace that exudes sophistication and grace. Perfect for adding a touch of elegance to any outfit, it's a versatile piece for day or night.",
+      "advantages": [
+        "Pearls offer a timeless and sophisticated look.",
+        "Versatile design pairs well with both formal and casual attire.",
+        "Available in various pearl sizes and lengths to suit your preference."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/C70GRjw/10.png",
@@ -273,7 +348,14 @@
       }
     ],
     "id": 11,
-    "sold": 259
+    "details": {
+      "description": "Delicate chains adorned with shimmering pendants create a playful and eye-catching look in these earrings. Perfect for adding a touch of movement and personality, they're a great everyday accessory.",
+      "advantages": [
+        "Silver offers a cool and contemporary aesthetic.",
+        "Lightweight and comfortable for all-day wear.",
+        "Available in various pendant styles to suit your taste."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/Q6G0zw8/12.png",
@@ -295,7 +377,14 @@
       }
     ],
     "id": 12,
-    "sold": 373
+    "details": {
+      "description": "A single, brilliant diamond takes center stage in this solitaire ring. The epitome of timeless elegance, it's a symbol of love and commitment that never goes out of style.",
+      "advantages": [
+        "Single diamond symbolizes enduring love and commitment.",
+        "Classic design transcends trends and remains forever stylish.",
+        "Makes a perfect engagement ring or special occasion gift."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/ftRVGpj/13.png",
@@ -317,7 +406,14 @@
       }
     ],
     "id": 13,
-    "sold": 46
+    "details": {
+      "description": "A cascade of sparkling stones forms a dazzling star in this pendant, symbolizing hope, guidance, and achievement. It's a statement piece that adds instant glamour to any outfit.",
+      "advantages": [
+        "Luxurious design exudes confidence and individuality.",
+        "Multi-stone construction creates a dynamic play of light and color.",
+        "Available in various stone options and sizes to suit your style."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/QCpJshN/jewelry-scale1.png",
@@ -339,7 +435,14 @@
       }
     ],
     "id": 14,
-    "sold": 382
+    "details": {
+      "description": "Iridescent mother-of-pearl charms dangle from a delicate chain, creating a unique and eye-catching bracelet. Perfect for adding a touch of organic beauty and personal style, it's a conversation starter on any wrist.",
+      "advantages": [
+        "Mother-of-pearl offers a unique and shimmering appearance.",
+        "Interchangeable charms allow for customization and storytelling.",
+        "Lightweight and comfortable for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/MSTBbYw/15.png",
@@ -361,7 +464,14 @@
       }
     ],
     "id": 15,
-    "sold": 136
+    "details": {
+      "description": "A single, dazzling diamond takes center stage on a delicate chain in this timeless necklace. Minimalist in design, it exudes an aura of understated elegance and sophistication. Perfect for everyday wear or special occasions.",
+      "advantages": [
+        "Single diamond showcases undeniable brilliance and fire.",
+        "Classic solitaire design transcends trends and always remains stylish.",
+        "Versatile piece easily layers with other necklaces or worn alone."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/2nhLSXN/17.png",
@@ -383,7 +493,14 @@
       }
     ],
     "id": 16,
-    "sold": 494
+    "details": {
+      "description": "A vibrant sapphire gem suspended from a delicate chain creates a captivating pendant. The deep blue of the sapphire symbolizes wisdom, loyalty, and serenity. A beautiful statement piece for adding a touch of color and elegance to any outfit.",
+      "advantages": [
+        "Dazzling sapphire captivates the eye with its vibrant hue.",
+        "Elegant drop design adds movement and sophistication.",
+        "Available in various sapphire sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/WcY0R1k/19.png",
@@ -406,7 +523,14 @@
       }
     ],
     "id": 17,
-    "sold": 383
+    "details": {
+      "description": "Sparkling rhodolite garnets dangle from delicate hooks in these earrings. The unique pink-purple hue of these gems adds a touch of individuality and romance. Perfect for everyday wear or a special occasion.",
+      "advantages": [
+        "Rhodolite garnets offer a unique and eye-catching color.",
+        "Versatile design complements both casual and formal attire.",
+        "Lightweight and comfortable for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/ftqh4MG/amethyst-refinement-main1-768x768.png",
@@ -428,7 +552,14 @@
       }
     ],
     "id": 18,
-    "sold": 396
+    "details": {
+      "description": "A simple, polished gold band forms this timeless ring. The epitome of understated elegance, it's a symbol of commitment and enduring love. Perfect for everyday wear or as a wedding band.",
+      "advantages": [
+        "Classic gold band never goes out of style.",
+        "Simple design complements any style and personality.",
+        "Available in various gold tones to suit your preference."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/Z2bTH98/bracelets-category.png",
@@ -450,7 +581,14 @@
       }
     ],
     "id": 19,
-    "sold": 131
+    "details": {
+      "description": "A sparkling diamond surrounded by a ring of smaller diamonds creates a dazzling halo effect in this exquisite engagement ring. It symbolizes eternal love and commitment, making it a perfect choice for a special proposal.",
+      "advantages": [
+        "Halo design enhances the central diamond's brilliance.",
+        "Classic symbol of love and commitment.",
+        "Available in various diamond sizes and settings to personalize your choice."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/mtWmDRS/crystal-elegance-main1-1-650x650.png",
@@ -472,7 +610,14 @@
       }
     ],
     "id": 20,
-    "sold": 478
+    "details": {
+      "description": "The word love delicately inscribed in flowing script on a rose gold pendant creates a romantic and meaningful statement piece. Perfect for expressing your affection for yourself or someone special.",
+      "advantages": [
+        "Unique inscription speaks volumes without words.",
+        "Warm rose gold adds a touch of femininity and elegance.",
+        "Perfect gift for a loved one or a reminder for yourself."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/cYF0XtW/crystal-harmony-main1-768x768.png",
@@ -494,7 +639,14 @@
       }
     ],
     "id": 21,
-    "sold": 92
+    "details": {
+      "description": "A radiant emerald gemstone takes center stage on a delicate chain in this necklace. The vibrant green of the emerald symbolizes growth, prosperity, and new beginnings. A stunning statement piece for adding a touch of color and luxury to any outfit.",
+      "advantages": [
+        "Dazzling emerald captures the eye with its vibrant green hue.",
+        "Elegant design exudes sophistication and luxury.",
+        "Available in various emerald sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/F8zGH9m/diamond-shine-main1-768x768.png",
@@ -516,14 +668,20 @@
       }
     ],
     "id": 22,
-    "sold": 427
+    "details": {
+      "description": "Two sparkling diamonds stud delicate posts in these classic earrings. The timeless design never goes out of style, making them a perfect everyday accessory or a versatile addition to a formal ensemble.",
+      "advantages": [
+        "Diamonds offer unmatched brilliance and sparkle.",
+        "Classic stud design complements any style and occasion.",
+        "Comfortable and secure for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/sJ8gx1X/earrings-category.png",
     "name": "Standing Silver Rings Set",
     "category": "Rings",
     "price": 599.99,
-    "featured": true,
     "review": [
       {
         "reviewerName": "Chloe Turner",
@@ -539,7 +697,14 @@
       }
     ],
     "id": 23,
-    "sold": 127
+    "details": {
+      "description": "A trio of stacked silver rings creates a modern and edgy look. Each ring features a unique design, from geometric textures to delicate engravings. Perfect for layering or wearing individually, this set adds a touch of personality to any outfit.",
+      "advantages": [
+        "Stacked design adds a trendy and contemporary feel.",
+        "Versatile pieces can be worn together or separately.",
+        "Lightweight and comfortable for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/t8QLfBL/eternal-love-main1-768x768.png",
@@ -561,7 +726,14 @@
       }
     ],
     "id": 24,
-    "sold": 329
+    "details": {
+      "description": "A sparkling diamond surrounded by a ring of smaller diamonds creates a dazzling halo effect in this exquisite engagement ring. It symbolizes eternal love and commitment, making it a perfect choice for a special proposal.",
+      "advantages": [
+        "Halo design enhances the central diamond's brilliance.",
+        "Classic symbol of love and commitment.",
+        "Available in various diamond sizes and settings to personalize your choice."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/t2Mp4zn/Frame-1000001387-1-scaled-1.png",
@@ -583,7 +755,14 @@
       }
     ],
     "id": 25,
-    "sold": 10
+    "details": {
+      "description": "The word love delicately inscribed in flowing script on a rose gold pendant creates a romantic and meaningful statement piece. Perfect for expressing your affection for yourself or someone special.",
+      "advantages": [
+        "Unique inscription speaks volumes without words.",
+        "Warm rose gold adds a touch of femininity and elegance.",
+        "Perfect gift for a loved one or a reminder for yourself."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/db0nYZN/golden-curls1-450x450.png",
@@ -605,7 +784,14 @@
       }
     ],
     "id": 26,
-    "sold": 498
+    "details": {
+      "description": "Dazzling sapphires dangle from delicate chains in these earrings, creating a dreamy and ethereal look. The vibrant blue of the sapphires symbolizes wisdom, truth, and royalty. Perfect for adding a touch of color and magic to any outfit.",
+      "advantages": [
+        "Sparkling sapphires capture the eye with their mesmerizing hue.",
+        "Delicate design adds a touch of femininity and grace.",
+        "Available in various sapphire sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/VWG8gK3/goldplated-crystal-flower-leverback1-650x650.png",
@@ -627,7 +813,14 @@
       }
     ],
     "id": 27,
-    "sold": 168
+    "details": {
+      "description": "A close-fitting band of sparkling diamonds set in intricate vintage patterns creates a statement piece that exudes timeless elegance. This choker is sure to turn heads and make a lasting impression.",
+      "advantages": [
+        "Vintage design adds a touch of history and sophistication.",
+        "Sparkling diamonds offer unmatched brilliance and fire.",
+        "Available in various diamond sizes and settings to personalize your style."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/vBwycNd/h1-baner-1-480x327.png",
@@ -649,7 +842,14 @@
       }
     ],
     "id": 28,
-    "sold": 223
+    "details": {
+      "description": "A delicate chain adorned with a simple pendant creates a timeless and elegant necklace. This versatile piece can be dressed up or down, making it perfect for any occasion.",
+      "advantages": [
+        "Classic design never goes out of style.",
+        "Versatile piece complements any outfit and style.",
+        "Lightweight and comfortable for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/yQRk0BG/h1-baner-2-480x326.png",
@@ -671,7 +871,14 @@
       }
     ],
     "id": 29,
-    "sold": 400
+    "details": {
+      "description": "Geometric patterns and sparkling diamonds come together in this Art Deco-inspired bracelet. The bold design makes a statement while remaining timeless and sophisticated. Perfect for adding a touch of vintage glamour to any outfit.",
+      "advantages": [
+        "Unique Art Deco design stands out from the crowd.",
+        "Sparkling diamonds add a touch of luxury and elegance.",
+        "Available in various diamond sizes and settings to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/pfgLggv/h1-cat-product-image-2-400x487.png",
@@ -693,7 +900,14 @@
       }
     ],
     "id": 30,
-    "sold": 18
+    "details": {
+      "description": "A cascade of sparkling diamonds tumbles down a delicate chain, creating a mesmerizing waterfall effect. This statement piece is sure to turn heads and make a lasting impression.",
+      "advantages": [
+        "Unique waterfall design creates a dynamic and eye-catching look.",
+        "Sparkling diamonds offer unmatched brilliance and fire.",
+        "Available in various diamond sizes and settings to personalize your style."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/crJKMSP/h1-shop-list-img-2-768x792.png",
@@ -715,7 +929,14 @@
       }
     ],
     "id": 31,
-    "sold": 402
+    "details": {
+      "description": "A sleek and modern design graces this gold-plated ring. The polished finish adds a touch of sophistication, while the simple lines make it a versatile piece for everyday wear.",
+      "advantages": [
+        "Modern design complements contemporary styles.",
+        "Gold plating offers a touch of luxury at an affordable price.",
+        "Comfortable and versatile for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/tLGbWZc/h1-shop-list-img-3-768x792.png",
@@ -737,7 +958,14 @@
       }
     ],
     "id": 32,
-    "sold": 452
+    "details": {
+      "description": "A rectangular emerald-cut diamond takes center stage in this elegant ring. The classic silhouette exudes timeless sophistication, making it a perfect choice for any occasion.",
+      "advantages": [
+        "Emerald cut diamond offers a unique and sophisticated look.",
+        "Classic design never goes out of style.",
+        "Available in various diamond sizes and settings to personalize your choice."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/Lr4f6PS/h1-shop-list-img-5-768x790.png",
@@ -759,7 +987,14 @@
       }
     ],
     "id": 33,
-    "sold": 131
+    "details": {
+      "description": "A string of vibrant sapphires adorns a delicate chain in this necklace. The rich blue hue of the sapphires symbolizes wisdom, loyalty, and trust. This versatile piece can be dressed up or down, making it perfect for any occasion.",
+      "advantages": [
+        "Dazzling sapphires capture the eye with their captivating color.",
+        "Classic design remains stylish and timeless.",
+        "Available in various sapphire sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/xF9rDN8/h1-slider-list-i-5-768x744.png",
@@ -781,7 +1016,14 @@
       }
     ],
     "id": 34,
-    "sold": 33
+    "details": {
+      "description": "Sparkling diamonds cascade down delicate chains in these earrings, creating a dazzling and glamorous look. Perfect for adding a touch of luxury and movement to any outfit.",
+      "advantages": [
+        "Unique cascade design offers a dynamic and eye-catching effect.",
+        "Sparkling diamonds provide unmatched brilliance and fire.",
+        "Available in various diamond sizes and settings to personalize your choice."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/K7G5TQ0/h3-shop-list-new4-291x300.png",
@@ -803,7 +1045,14 @@
       }
     ],
     "id": 35,
-    "sold": 105
+    "details": {
+      "description": "A close-fitting band adorned with delicate diamond flowers creates a unique and romantic choker. This statement piece is sure to turn heads and make a lasting impression.",
+      "advantages": [
+        "Floral design adds a touch of femininity and sweetness.",
+        "Sparkling diamonds offer a touch of luxury and elegance.",
+        "Available in various diamond sizes and settings to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/M14jFJ3/h3-shop-list-new4-768x792.png",
@@ -825,7 +1074,14 @@
       }
     ],
     "id": 36,
-    "sold": 283
+    "details": {
+      "description": "A delicate rose gold chain intertwines in an infinity symbol, adorned with sparkling accents. This bracelet symbolizes everlasting love and connection, making it a perfect gift for someone special or a sentimental piece for yourself.",
+      "advantages": [
+        "Infinity symbol represents eternal love and commitment.",
+        "Warm rose gold adds a touch of femininity and grace.",
+        "Lightweight and comfortable for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/zF21f2t/instagram-gallery-img-2-768x804.png",
@@ -847,7 +1103,14 @@
       }
     ],
     "id": 37,
-    "sold": 113
+    "details": {
+      "description": "A radiant burst of sparkling diamonds forms a dazzling star in this pendant. The star symbolizes hope, guidance, and achievement. This statement piece adds instant glamour to any outfit.",
+      "advantages": [
+        "Starburst design offers a radiant and eye-catching look.",
+        "Sparkling diamonds provide unmatched brilliance and fire.",
+        "Available in various diamond sizes and settings to personalize your style."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/B6Vz5X3/instagram-gallery-img-3-768x806.png",
@@ -869,7 +1132,14 @@
       }
     ],
     "id": 38,
-    "sold": 351
+    "details": {
+      "description": "A sparkling diamond surrounded by a ring of smaller diamonds creates a dazzling halo effect in this exquisite engagement ring. It symbolizes eternal love and commitment, making it a perfect choice for a special proposal.",
+      "advantages": [
+        "Halo design enhances the central diamond's brilliance.",
+        "Classic symbol of love and commitment.",
+        "Available in various diamond sizes and settings to personalize your choice."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/87LJLP7/instagram-gallery-img-4-768x804.png",
@@ -891,7 +1161,14 @@
       }
     ],
     "id": 39,
-    "sold": 359
+    "details": {
+      "description": "Two single, sparkling diamonds stud delicate posts in these classic earrings. The timeless design never goes out of style, making them a perfect everyday accessory or a versatile addition to a formal ensemble.",
+      "advantages": [
+        "Diamonds offer unmatched brilliance and sparkle.",
+        "Classic stud design complements any style and occasion.",
+        "Comfortable and secure for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/TYgR1NS/instagram-gallery-img-6-768x804.png",
@@ -913,7 +1190,14 @@
       }
     ],
     "id": 40,
-    "sold": 410
+    "details": {
+      "description": "Sparkling diamonds set in intricate patterns reminiscent of a bygone era make this ring a timeless treasure. The vintage design exudes a touch of history and sophistication, perfect for adding a touch of elegance to any outfit.",
+      "advantages": [
+        "Authentic vintage details offer a unique and captivating look.",
+        "Sparkling diamonds provide timeless brilliance and fire.",
+        "Available in various diamond sizes and cuts to personalize your style."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/ftRVGpj/13.png",
@@ -935,7 +1219,14 @@
       }
     ],
     "id": 41,
-    "sold": 277
+    "details": {
+      "description": "A mesmerizing flow of sparkling diamonds cascades down a delicate chain in this necklace. The dynamic play of light and movement creates a statement piece that's sure to turn heads. Perfect for adding a touch of luxury and sparkle to any occasion.",
+      "advantages": [
+        "Unique cascading design offers a dynamic and eye-catching effect.",
+        "Sparkling diamonds provide captivating brilliance and fire.",
+        "Available in various diamond sizes and settings to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/QCpJshN/jewelry-scale1.png",
@@ -951,14 +1242,20 @@
       }
     ],
     "id": 42,
-    "sold": 379
+    "details": {
+      "description": "Dazzling sapphires of rich blue hues adorn a delicate chain in this bracelet. The classic design exudes timeless elegance and sophistication, making it a versatile piece for any occasion. The sapphires symbolize wisdom, loyalty, and trust, adding a touch of meaning to your style.",
+      "advantages": [
+        "Vivid sapphires capture the eye with their captivating color.",
+        "Classic design remains stylish and timeless.",
+        "Available in various sapphire sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/MSTBbYw/15.png",
     "name": "Ruby Halo Pendant",
     "category": "Pendants",
     "price": 1499.99,
-    "featured": true,
     "review": [
       {
         "reviewerName": "Logan Carter",
@@ -974,7 +1271,14 @@
       }
     ],
     "id": 43,
-    "sold": 290
+    "details": {
+      "description": "A fiery ruby gemstone takes center stage surrounded by a ring of sparkling diamonds in this pendant. The vibrant red of the ruby symbolizes passion, love, and energy, making it a statement piece for bold personalities. The halo of diamonds enhances the ruby's brilliance and adds a touch of luxury.",
+      "advantages": [
+        "Dazzling ruby captures the eye with its passionate hue.",
+        "Halo design enhances the ruby's brilliance and fire.",
+        "Available in various ruby sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/gM8KGmf/luxurious-star-main1-768x768.png",
@@ -998,7 +1302,14 @@
       }
     ],
     "id": 44,
-    "sold": 140
+    "details": {
+      "description": "Delicate diamond-studded crosses dangle from elegant hooks in these earrings. The classic symbol of faith and hope combines with the timeless sparkle of diamonds, creating a versatile and meaningful piece. Perfect for everyday wear or special occasions.",
+      "advantages": [
+        "Diamonds offer unmatched brilliance and sparkle.",
+        "Classic cross symbol adds a touch of faith and hope.",
+        "Lightweight and comfortable for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/qBfhBkc/mother-of-pearl-chara-main1-650x650.png",
@@ -1014,7 +1325,14 @@
       }
     ],
     "id": 45,
-    "sold": 216
+    "details": {
+      "description": "A captivating amethyst gemstone takes center stage in this elegant ring. The rich purple hue of the amethyst symbolizes wisdom, royalty, and spirituality. The classic design with clean lines enhances the beauty of the stone, making it a perfect piece for sophisticated style.",
+      "advantages": [
+        "Dazzling amethyst captures the eye with its mesmerizing purple hue.",
+        "Classic design exudes sophistication and elegance.",
+        "Available in various amethyst sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/hLR7SH5/necklaces-category-1.png",
@@ -1030,7 +1348,14 @@
       }
     ],
     "id": 46,
-    "sold": 145
+    "details": {
+      "description": "Playful charms dangling from a delicate gold chain create a unique and personalized bracelet. Choose from a variety of charms to tell your story or express your style. The gold adds a touch of luxury and makes this bracelet a versatile piece for any occasion.",
+      "advantages": [
+        "Interchangeable charms allow for customization and storytelling.",
+        "Warm gold adds a touch of luxury and elegance.",
+        "Lightweight and comfortable for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/PrvvjBc/pendants-category.png",
@@ -1052,7 +1377,14 @@
       }
     ],
     "id": 47,
-    "sold": 402
+    "details": {
+      "description": "Shimmering crystals strung on a delicate chain create a timeless necklace that exudes understated elegance. The crystals offer an alternative to diamonds with their unique light play and come in a variety of colors to suit your mood and style. Perfect for adding a touch of magic to any Shimmering crystals strung on a delicate chain create a timeless necklace that exudes understated elegance. The crystals offer an alternative to diamonds with their unique light play and come in a variety of colors to suit your mood and style. Perfect for adding a touch of magic to any outfit. Whether you prefer the sparkle of clear crystals or the vibrant hues of colored ones, this necklace is sure to add a touch of personality and grace.",
+      "advantages": [
+        "Crystal alternatives offer unique light play and color options.",
+        "Timeless design complements any style and occasion.",
+        "Available in various crystal colors and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/8P7sx2v/rhodolite-garnet-and-diamond-earrings1-768x768.png",
@@ -1074,7 +1406,14 @@
       }
     ],
     "id": 48,
-    "sold": 72
+    "details": {
+      "description": "A single, dazzling crystal takes center stage in this minimalist ring. The clean lines and delicate setting allow the crystal's natural beauty to shine, creating a harmonious balance. Perfect for everyday wear or a touch of subtle sparkle on special occasions.",
+      "advantages": [
+        "Single crystal emphasizes natural beauty and light play.",
+        "Minimalist design complements any style and occasion.",
+        "Available in various crystal colors and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/FncDLvt/rings-standing.png",
@@ -1096,7 +1435,14 @@
       }
     ],
     "id": 49,
-    "sold": 385
+    "details": {
+      "description": "Tiny, sparkling diamonds stud delicate posts in these classic earrings. The timeless design never goes out of style, making them a perfect everyday accessory or a versatile addition to a formal ensemble. The subtle sparkle adds a touch of elegance without being overpowering.",
+      "advantages": [
+        "Diamonds offer a hint of sparkle for everyday wear.",
+        "Classic stud design complements any style and occasion.",
+        "Lightweight and comfortable for all-day wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/jz9BnMc/slider-list-img-new-2.png",
@@ -1112,7 +1458,14 @@
       }
     ],
     "id": 50,
-    "sold": 244
+    "details": {
+      "description": "Dazzling sapphires in elegant teardrop shapes dangle from delicate chains in these earrings. The vibrant blue of the sapphires symbolizes wisdom, loyalty, and trust, adding a touch of meaning to your style. The classic drop design exudes timeless elegance and makes these earrings perfect for any occasion.",
+      "advantages": [
+        "Dazzling sapphires capture the eye with their captivating color.",
+        "Classic drop design remains stylish and timeless.",
+        "Available in various sapphire sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/sKd58y3/slider-list-img-new-5.png",
@@ -1128,7 +1481,14 @@
       }
     ],
     "id": 51,
-    "sold": 300
+    "details": {
+      "description": "A single, dazzling diamond sparkles at the center of two intertwined bands in this ring. The symbol of infinity encircles the diamond, representing everlasting love and commitment. This classic design with a modern twist makes it a perfect choice for an engagement ring or a symbol of enduring love.",
+      "advantages": [
+        "Unique infinity design symbolizes everlasting love and commitment.",
+        "Sparkling diamond offers unmatched brilliance and fire.",
+        "Available in various diamond sizes and settings to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/VYYGhsm/slider-list-img-new-6.png",
@@ -1150,7 +1510,14 @@
       }
     ],
     "id": 52,
-    "sold": 206
+    "details": {
+      "description": "A delicate gold frame surrounds a space for a cherished photo or memento in this pendant. Personalize it with a picture of a loved one, a special place, or anything that holds meaning to you. The gold frame adds a touch of elegance and makes this pendant a unique and sentimental piece.",
+      "advantages": [
+        "Personalizable with photos or mementos for a unique touch.",
+        "Warm gold adds a touch of luxury and elegance.",
+        "Classic design can be dressed up or down for any occasion."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/fqmX79r/slider-list-img-new-7.png",
@@ -1166,7 +1533,14 @@
       }
     ],
     "id": 53,
-    "sold": 102
+    "details": {
+      "description": "Delicate gold chains intertwine in swirling curls in this necklace. The intricate design exudes a touch of movement and femininity, making it a statement piece for any outfit. The warm gold adds a touch of luxury and elegance.",
+      "advantages": [
+        "Unique interlaced design offers a dynamic and eye-catching look.",
+        "Warm gold adds a touch of luxury and elegance.",
+        "Versatile piece complements various styles and occasions."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/Qbm7wb0/slider-list-img-new-9.png",
@@ -1188,7 +1562,14 @@
       }
     ],
     "id": 54,
-    "sold": 97
+    "details": {
+      "description": "Sparkling crystal flowers bloom from delicate gold-plated leverback earrings. The floral design adds a touch of femininity and sweetness, while the crystals provide a touch of sparkle. The leverback closure ensures a secure and comfortable fit.",
+      "advantages": [
+        "Unique crystal flower design adds a touch of femininity and sweetness.",
+        "Gold plating offers a touch of luxury at an affordable price.",
+        "Leverback closure provides a secure and comfortable fit."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/ZVPFxZ8/slider-list-img-new-9-300x291.png",
@@ -1210,7 +1591,14 @@
       }
     ],
     "id": 55,
-    "sold": 474
+    "details": {
+      "description": "A row of sparkling diamonds surrounds a larger central diamond in this bracelet. The halo design enhances the brilliance and fire of the center diamond, creating a statement piece that's sure to turn heads. Perfect for adding a touch of luxury and sparkle to any occasion.",
+      "advantages": [
+        "Halo design enhances the central diamond's brilliance and fire.",
+        "Classic design remains stylish and timeless.",
+        "Available in various diamond sizes and settings to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/V98fL7d/slider-list-img-new-10.png",
@@ -1232,7 +1620,14 @@
       }
     ],
     "id": 56,
-    "sold": 365
+    "details": {
+      "description": "A single, delicate charm dangles from a fine gold chain in this pendant. Choose from a variety of charms to personalize your look and tell your story. The gold adds a touch of elegance and makes this pendant a versatile piece for any occasion.",
+      "advantages": [
+        "Interchangeable charms allow for customization and storytelling.",
+        "Warm gold adds a touch of luxury and elegance.",
+        "Lightweight and comfortable for everyday wear."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/t2Mp4zn/Frame-1000001387-1-scaled-1.png",
@@ -1248,7 +1643,14 @@
       }
     ],
     "id": 57,
-    "sold": 78
+    "details": {
+      "description": "A string of sparkling diamonds gracefully adorns the neck in this timeless necklace. It's a symbol of everlasting elegance and sophistication, perfect for special occasions.",
+      "advantages": [
+        "Genuine diamonds offer unmatched brilliance and fire.",
+        "Classic design complements any neckline and style.",
+        "Makes a memorable gift for a loved one."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/QY8k0zc/Sparkling-Waterfall1-768x768.png",
@@ -1264,7 +1666,14 @@
       }
     ],
     "id": 58,
-    "sold": 34
+    "details": {
+      "description": "Dazzling sapphires in elegant teardrop shapes dangle from delicate chains in these earrings. The vibrant blue of the sapphires symbolizes wisdom, loyalty, and trust, adding a touch of meaning to your style. The classic drop design exudes timeless elegance and makes these earrings perfect for any occasion.",
+      "advantages": [
+        "Dazzling sapphires capture the eye with their captivating color.",
+        "Classic drop design remains stylish and timeless.",
+        "Available in various sapphire sizes and cuts to personalize your look."
+      ]
+    }
   },
   {
     "img": "https://i.ibb.co/Lr4f6PS/h1-shop-list-img-5-768x790.png",
@@ -1286,6 +1695,13 @@
       }
     ],
     "id": 59,
-    "sold": 394
+    "details": {
+      "description": "A single, dazzling crystal takes center stage in this minimalist ring. The clean lines and delicate setting allow the crystal's natural beauty to shine, creating a touch of understated elegance. Perfect for everyday wear or a touch of subtle sparkle on special occasions.",
+      "advantages": [
+        "Single crystal emphasizes natural beauty and light play.",
+        "Minimalist design complements any style and occasion.",
+        "Available in various crystal colors and cuts to personalize your look."
+      ]
+    }
   }
 ]

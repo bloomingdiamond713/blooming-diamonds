@@ -19,12 +19,15 @@ const Reviews = () => {
 
   // react slick slider settings
   const settings = {
+    infinite: true,
     dots: true,
     dotsClass: "slick-dots reviews-slick-dots",
-    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
   };
 
   const sliderRef = useRef(null);

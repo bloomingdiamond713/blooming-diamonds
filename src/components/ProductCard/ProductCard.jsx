@@ -4,9 +4,11 @@ import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegHeart, FaRegEye } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ cardData, flashSale }) => {
   const {
+    id,
     name,
     img,
     category,
@@ -67,10 +69,13 @@ const ProductCard = ({ cardData, flashSale }) => {
           </div>
         </div>
 
-        <div className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg">
+        <Link
+          to={`/products/${id}`}
+          className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg"
+        >
           <FaShoppingCart />
           <p className="text-sm">Add to Cart</p>
-        </div>
+        </Link>
       </div>
       <div>
         <h3 className="text-lg font-bold text-[#3b3b3b] mt-4">{name}</h3>
