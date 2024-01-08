@@ -2,24 +2,47 @@ import React, { useState } from "react";
 import "./Login.css";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import {
-  FaFacebookF,
-  FaGoogle,
-  FaRegEye,
-  FaRegEyeSlash,
-} from "react-icons/fa6";
+import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import useAuthContext from "../../hooks/useAuthContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const { signIn, signInGoogle } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   // react hook form settings
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
+
+  // form submit
   const onSubmit = (data) => {
-    console.log(data);
+    setLoginLoading(true);
+    const { email, password } = data;
+
+    signIn(email, password)
+      .then((res) => {
+        console.log(res.user);
+        toast.success(`Authenticated as ${res.user?.email}`);
+        reset(); // reset the form
+        setLoginLoading(false);
+      })
+      .catch((error) => setLoginError(error?.code));
+  };
+
+  // sign in with google
+  const handleGoogleSignIn = () => {
+    signInGoogle()
+      .then((res) => {
+        console.log(res.user);
+        toast.success(`Authenticated as ${res.user?.email}`);
+      })
+      .catch((error) => setLoginError(error?.code));
   };
 
   return (
@@ -33,6 +56,29 @@ const Login = () => {
       >
         Login
       </h1>
+
+      {/* error notification */}
+      {loginError && (
+        <div
+          role="alert"
+          className="alert alert-error mb-8 rounded-lg text-white "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>Error: {loginError.replace("auth/", "")}</span>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <div className="w-full auth-input-con">
@@ -78,8 +124,13 @@ const Login = () => {
           <button
             type="submit"
             className="uppercase text-sm text-white bg-black px-8 py-3 hover:rounded-xl transition-all duration-300"
+            disabled={loginLoading}
           >
-            Log In
+            {loginLoading ? (
+              <span className="loading loading-spinner loading-md"></span>
+            ) : (
+              "Log In"
+            )}
           </button>
           <p>
             Don&apos;t have an account?{" "}
@@ -96,11 +147,11 @@ const Login = () => {
       </div>
 
       <div className="flex items-center gap-6 mt-5">
-        <div className="text-lg text-[var(--pink-gold)] bg-black p-4 rounded-full cursor-pointer hover:text-black hover:bg-[--pink-gold] transition-all duration-300">
+        <div
+          className="text-lg text-[var(--pink-gold)] bg-black p-4 rounded-full cursor-pointer hover:text-black hover:bg-[--pink-gold] transition-all duration-300"
+          onClick={handleGoogleSignIn}
+        >
           <FaGoogle />
-        </div>
-        <div className="text-lg text-[var(--pink-gold)] bg-black p-4 rounded-full cursor-pointer hover:text-black hover:bg-[--pink-gold] transition-all duration-300">
-          <FaFacebookF />
         </div>
       </div>
     </div>

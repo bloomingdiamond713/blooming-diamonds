@@ -1,18 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "../Login/Login.css";
 import { useForm } from "react-hook-form";
-import {
-  FaFacebookF,
-  FaGoogle,
-  FaRegEye,
-  FaRegEyeSlash,
-} from "react-icons/fa6";
+import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { IoCloudUploadOutline, IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
+import toast from "react-hot-toast";
 
 const Register = () => {
-  const { signUp, updateUserProfile } = useAuthContext();
+  const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [fileDragged, setFileDragged] = useState(false);
@@ -66,6 +62,7 @@ const Register = () => {
 
   const onSubmit = (data) => {
     setRegisterLoading(true);
+    setRegisterError(false);
 
     const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_IMGHOSTINGKEY
@@ -91,15 +88,28 @@ const Register = () => {
                 updateUserProfile(data.name, data.profilePic)
                   .then(() => {
                     console.log(res.user);
+                    toast.success(`Authenticated as ${res.user?.email}`);
                     reset(); // reset the form
                     setProfilePicFile(null); // reset profile pic state
+                    setRegisterLoading(false);
                   })
-                  .catch((error) => setRegisterError(error));
+                  .catch((error) => setRegisterError(error?.code));
               }
             })
-            .catch((error) => setRegisterError(error));
+            .catch((error) => setRegisterError(error?.code));
         }
       });
+  };
+
+  // google sign in
+  const handleGoogleSignIn = () => {
+    setRegisterError(false);
+    signInGoogle()
+      .then((res) => {
+        console.log(res.user);
+        toast.success(`Authenticated as ${res?.user?.email}`);
+      })
+      .catch((error) => setRegisterError(error?.code));
   };
 
   return (
@@ -113,6 +123,29 @@ const Register = () => {
       >
         Register
       </h1>
+
+      {/* error notification */}
+      {registerError && (
+        <div
+          role="alert"
+          className="alert alert-error mb-8 rounded-lg text-white "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>Error: {registerError.replace("auth/", "")}</span>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="loginRegisterForm">
         <div className="w-full auth-input-con">
@@ -252,7 +285,7 @@ const Register = () => {
 
           {!profilePicFile ? (
             <button
-              className={`border-2 border-dashed h-[170px] w-[50%] flex justify-center items-center ${
+              className={`border border-gray-400 border-dashed h-[170px] w-[50%] flex justify-center items-center ${
                 fileDragged ? "shadow-xl" : ""
               }`}
               onDrop={handleFileDrop}
@@ -292,8 +325,13 @@ const Register = () => {
           <button
             type="submit"
             className="uppercase text-sm text-white bg-black px-8 py-3 hover:rounded-xl transition-all duration-300"
+            disabled={registerLoading}
           >
-            Sign Up
+            {registerLoading ? (
+              <span className="loading loading-spinner loading-md"></span>
+            ) : (
+              "Sign Up"
+            )}
           </button>
           <p>
             Already have an account?{" "}
@@ -310,11 +348,11 @@ const Register = () => {
       </div>
 
       <div className="flex items-center gap-6 mt-5">
-        <div className="text-lg text-[var(--pink-gold)] bg-black p-4 rounded-full cursor-pointer hover:text-black hover:bg-[--pink-gold] transition-all duration-300">
+        <div
+          className="text-lg text-[var(--pink-gold)] bg-black p-4 rounded-full cursor-pointer hover:text-black hover:bg-[--pink-gold] transition-all duration-300"
+          onClick={handleGoogleSignIn}
+        >
           <FaGoogle />
-        </div>
-        <div className="text-lg text-[var(--pink-gold)] bg-black p-4 rounded-full cursor-pointer hover:text-black hover:bg-[--pink-gold] transition-all duration-300">
-          <FaFacebookF />
         </div>
       </div>
     </div>
