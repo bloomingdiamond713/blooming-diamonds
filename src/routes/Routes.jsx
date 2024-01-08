@@ -5,7 +5,9 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
-import DynamicProduct from "../pages/DynamicProduct/DynamicProduct";
+import ProductPageLayout from "../layouts/ProductPageLayout";
+import ProductDescription from "../pages/DynamicProduct/ProductDescription/ProductDescription";
+import ProductReviews from "../pages/DynamicProduct/ProductReviews/ProductReviews";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +29,17 @@ const router = createBrowserRouter([
       },
       {
         path: "products/:id",
-        element: <DynamicProduct />,
+        element: <ProductPageLayout />,
+        children: [
+          {
+            path: "description",
+            element: <ProductDescription />,
+          },
+          {
+            path: "reviews",
+            element: <ProductReviews />,
+          },
+        ],
       },
     ],
   },

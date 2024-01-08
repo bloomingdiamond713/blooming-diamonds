@@ -61,24 +61,31 @@ const ProductCard = ({ cardData, flashSale }) => {
             <FaRegHeart className="text-xl text-gray-600" />
           </div>
 
-          <div
+          <Link
+            to={{
+              pathname: `/products/${id}/description`,
+            }}
             className="eye-icon-con tooltip tooltip-left block"
             data-tip="View Details"
+            state={{ from: "/" }}
           >
             <FaRegEye className="text-xl text-gray-600" />
-          </div>
+          </Link>
         </div>
 
-        <Link
-          to={`/products/${id}`}
-          className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg"
-        >
+        <Link className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg">
           <FaShoppingCart />
           <p className="text-sm">Add to Cart</p>
         </Link>
       </div>
       <div>
-        <h3 className="text-lg font-bold text-[#3b3b3b] mt-4">{name}</h3>
+        <Link
+          to={`/products/${id}/description`}
+          className="text-lg font-bold text-[#3b3b3b] mt-4"
+          state={{ from: "/" }}
+        >
+          {name}
+        </Link>
         <p className="text-gray-600 mt-1 mb-3">{category}</p>
         <div className="flex items-baseline justify-start gap-3">
           <h4 className="text-lg font-bold mb-2">${price}</h4>
