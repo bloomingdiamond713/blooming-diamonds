@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
 import useDynamicRating from "../../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
-import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa";
+import { FaRegThumbsUp } from "react-icons/fa";
 
 const ProductReviews = () => {
   const { id } = useParams();
@@ -23,16 +23,17 @@ const ProductReviews = () => {
   // show reviews conditionally
   const handleShowReviews = () => {
     setShowAllReviews(!showAllReviews);
-
+  };
+  useEffect(() => {
     if (!showAllReviews) {
       setReviewsLength(1);
     } else {
       setReviewsLength(dynamicProduct?.review?.length);
     }
-  };
+  }, [showAllReviews, dynamicProduct?.review?.length]);
 
   return (
-    <div className="my-7 px-3" id="productReviews">
+    <div className="mt-7 mb-32 px-3" id="productReviews">
       <div className="border-2 rounded-xl border-[var(--pink-gold)] flex flex-col items-center p-8 w-[40%] space-y-5 mx-auto">
         <h1 className="text-6xl font-extrabold text-black">{averageRating}</h1>
         <StarRatings
@@ -103,7 +104,7 @@ const ProductReviews = () => {
               dynamicProduct?.review?.length === 1 && "hidden"
             }`}
           >
-            {showAllReviews ? "View All Reviews" : "Show Less"}
+            {showAllReviews ? "Show Less" : "View All Reviews"}
           </button>
         </div>
       )}

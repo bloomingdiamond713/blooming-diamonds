@@ -14,7 +14,7 @@ const ProductDescription = () => {
   }, [products, id]);
 
   return (
-    <div className="my-7 px-3 flex justify-between items-start gap-20">
+    <div className="mt-7 mb-32 px-3 flex justify-between items-start gap-20">
       <div className="w-[57%]">
         <h4
           className="text-2xl font-bold mb-4"
