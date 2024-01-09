@@ -16,7 +16,7 @@ const FeaturedCard = ({ product }) => {
         <h5 className="hover:text-[var(--pink-gold)] transition-all duration-200 ease-out">
           {name}
         </h5>
-        <div>
+        <div className="flex items-center gap-4">
           <h5 className="text-slate-600">${price}</h5>
           {discountPrice && (
             <h6 className="line-through text-gray-300">{discountPrice}</h6>

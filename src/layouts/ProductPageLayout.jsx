@@ -2,6 +2,7 @@ import React from "react";
 import ProductPageNavigation from "../pages/DynamicProduct/ProductPageNavigation/ProductPageNavigation";
 import { Outlet } from "react-router-dom";
 import DynamicProduct from "../pages/DynamicProduct/DynamicProduct";
+import RelatedDynamicProducts from "../pages/RelatedDynamicProducts/RelatedDynamicProducts";
 
 const ProductPageLayout = () => {
   return (
@@ -9,6 +10,7 @@ const ProductPageLayout = () => {
       <DynamicProduct />
       <ProductPageNavigation />
       <Outlet />
+      <RelatedDynamicProducts />
     </div>
   );
 };

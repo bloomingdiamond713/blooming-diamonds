@@ -6,13 +6,15 @@ const ProductDescription = () => {
   const { id } = useParams();
   const [products] = useProducts();
   const [dynamicProduct, setDynamicProduct] = useState(null);
+
+  // todo: load data from database
   useEffect(() => {
-    const filter = products?.find((item) => item.id == id);
+    const filter = products?.find((item) => item.id == id); // find product by id
     setDynamicProduct(filter);
   }, [products, id]);
 
   return (
-    <div className="my-7 px-3 flex justify-between items-start gap-5">
+    <div className="my-7 px-3 flex justify-between items-start gap-20">
       <div className="w-[57%]">
         <h4
           className="text-2xl font-bold mb-4"
@@ -46,19 +48,19 @@ const ProductDescription = () => {
           SHIPPING
         </h4>
 
-        <p className="text-lg text-gray-600">
+        <p className="text-gray-600">
           We offer Free Standard Shipping for all orders over $75 to the 50
           states and the District of Columbia. The minimum order value must be
           $75 before taxes, shipping and handling. Shipping fees are
           non-refundable.
         </p>
 
-        <p className="my-5 text-lg  text-gray-600">
+        <p className="my-5 text-gray-600">
           Please allow up to 2 business days (excluding weekends, holidays, and
           sale days) to process your order.
         </p>
 
-        <p className="text-lg text-gray-600">
+        <p className="text-gray-600">
           Processing Time + Shipping Time = Delivery Time
         </p>
       </div>

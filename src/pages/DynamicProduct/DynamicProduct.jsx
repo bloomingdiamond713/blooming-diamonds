@@ -8,9 +8,9 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { FaCartShopping, FaMagnifyingGlass, FaRegHeart } from "react-icons/fa6";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { RiRefund2Line } from "react-icons/ri";
-import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import Magnifier from "react-magnifier";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
+import { HashLink } from "react-router-hash-link";
 
 const DynamicProduct = () => {
   const { id } = useParams();
@@ -43,14 +43,17 @@ const DynamicProduct = () => {
         style={{ fontFamily: "var(--poppins)" }}
       >
         {/* left side div */}
-        <div className="w-[40%] relative product-img-con border rounded-xl">
-          <Magnifier
-            src={dynamicProduct?.img}
-            mgShape="circle"
-            mgShowOverflow={false}
-            mgBorderWidth={1}
-            zoomFactor={1.2}
-          />
+        <div className="w-[40%] relative product-img-con border rounded-xl h-[500px]">
+          <div className="h-[100%] flex justify-center items-center">
+            {/* product image magnifier */}
+            <Magnifier
+              src={dynamicProduct?.img}
+              mgShape="circle"
+              mgShowOverflow={false}
+              mgBorderWidth={1}
+              zoomFactor={1.2}
+            />
+          </div>
           <div className="img-zoom-hint opacity-100 visible flex items-center gap-2 bg-gray-50 w-fit px-4 py-3 rounded-full shadow absolute bottom-5 right-5 text-gray-500">
             <FaMagnifyingGlass />
             <p>Zoom On Hover</p>
@@ -72,9 +75,13 @@ const DynamicProduct = () => {
               svgIconPath="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1"
               svgIconViewBox="0 0 24 24"
             />
-            <p className="text-gray-400 pt-1">
-              ({dynamicProduct?.review?.length} reviews)
-            </p>
+            <HashLink
+              to={`/products/${id}/reviews/#productReviews`}
+              smooth
+              className="text-gray-400 pt-1 underline"
+            >
+              See All Reviews ({dynamicProduct?.review?.length})
+            </HashLink>
           </div>
           {/* ---------------------- */}
           {/* middle part*/}

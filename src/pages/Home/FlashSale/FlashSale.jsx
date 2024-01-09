@@ -6,13 +6,16 @@ import ProductCard from "../../../components/ProductCard/ProductCard";
 import CountDownTimer from "../../../components/CountDownTimer/CountDownTimer";
 import Slider from "react-slick";
 import { FaArrowRight } from "react-icons/fa6";
+import useProducts from "../../../hooks/useProducts";
 
 const FlashSale = () => {
   // TODO: LOAD DATA FROM DATABASE
+  const [products] = useProducts();
   const [flashSaleData, setFlashSaleData] = useState([]);
   useEffect(() => {
-    axios.get("/flashSale.json").then((res) => setFlashSaleData(res?.data));
-  }, []);
+    const filterFlashProducts = products?.filter((p) => p.flashSale === true);
+    setFlashSaleData(filterFlashProducts);
+  }, [products]);
 
   // countdown timer values
   const targetDate = new Date(2024, 0, 10, 12, 0, 0, 0);
