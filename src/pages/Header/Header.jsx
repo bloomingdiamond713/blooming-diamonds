@@ -13,10 +13,12 @@ import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
 import { HashLink } from "react-router-hash-link";
 import { Link } from "react-router-dom";
+import RightSideDrawer from "../../components/RightSideDrawer/RightSideDrawer";
 
 const Header = () => {
   const [stickyNav, setStickyNav] = useState("");
   const [navNotifications] = useState([
+    // todo: load data from database
     "Flash Sale Going On Till 5th January!",
     "Discount up to 35% for first purchase only this month.",
     "Free Shipping! First in Town.",
@@ -24,6 +26,7 @@ const Header = () => {
     "Black Friday Coming. Hurry Up!",
     "Best offers every week! 40% Off!",
   ]);
+  const [showRightDrawer, setShowRightDrawer] = useState(false);
 
   // to close drawer(on mobile devices) upon link click
   const handleLinkClicked = () => {
@@ -53,6 +56,8 @@ const Header = () => {
       top: el.getBoundingClientRect().top + window.pageYOffset - 85,
       behavior: "smooth",
     });
+
+  console.log(showRightDrawer);
   return (
     <div className="relative">
       {/* upper navbar */}
@@ -250,7 +255,7 @@ const Header = () => {
                   </ul>
                 </div>
 
-                <div className="w-[25%] hidden lg:flex justify-end items-center space-x-5 text-center">
+                <div className="w-[25%] flex justify-end items-center space-x-5 text-center">
                   <FiSearch
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
@@ -259,7 +264,10 @@ const Header = () => {
                     <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </Link>
 
-                  <div className="indicator">
+                  <div
+                    className="indicator"
+                    onClick={() => setShowRightDrawer(true)}
+                  >
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
                       0
                     </span>
@@ -338,7 +346,7 @@ const Header = () => {
                   </ul>
                 </div>
 
-                <div className="w-[20%] hidden lg:flex justify-end items-center space-x-5 text-center">
+                <div className="w-[20%] flex justify-end items-center space-x-5 text-center">
                   <FiSearch
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
@@ -346,7 +354,10 @@ const Header = () => {
                   <Link to="/login">
                     <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </Link>
-                  <div className="indicator">
+                  <div
+                    className="indicator"
+                    onClick={() => setShowRightDrawer(true)}
+                  >
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
                       0
                     </span>
@@ -374,6 +385,18 @@ const Header = () => {
         </div>
       </nav>
       {/* Navigation Bar End */}
+
+      {/* right side drawer */}
+      <div
+        className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-xl rounded-bl-xl ${
+          showRightDrawer ? "transform-x-0" : "translate-x-full"
+        } transition-all duration-300 ease-in-out`}
+      >
+        <button className="text-5xl" onClick={() => setShowRightDrawer(false)}>
+          x
+        </button>
+        <RightSideDrawer />
+      </div>
     </div>
   );
 };
