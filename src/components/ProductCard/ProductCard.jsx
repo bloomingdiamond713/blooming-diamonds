@@ -24,7 +24,7 @@ const ProductCard = ({ cardData, flashSale }) => {
   return (
     <div
       className={`${
-        flashSale ? "w-[270px]" : " w-[320px]"
+        flashSale ? "w-[270px]" : " w-[330px]"
       } product-card mx-auto`}
       style={{ fontFamily: "var(--poppins)" }}
     >

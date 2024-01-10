@@ -1,13 +1,29 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Shop.css";
 import { Link } from "react-router-dom";
 import useFilterProducts from "../../../hooks/useFilterProducts";
 import { FiSearch } from "react-icons/fi";
 import ProductCard from "../../../components/ProductCard/ProductCard";
+import { Pagination } from "react-pagination-bar";
 
 const Shop = () => {
+  // pagination settings
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageProductLimit = 9;
+
+  useEffect(() => {
+    document.documentElement.scrollTo({
+      top: 0,
+      left: 0,
+      right: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
+  // price range minimum price
   const [minPrice, setMinPrice] = useState(0);
-  // filter categories from products
+
+  // filter products
   const { getUniqueProducts, allProducts } = useFilterProducts();
   const filterCategories = getUniqueProducts("category");
   const filterSizes = getUniqueProducts("size");
@@ -32,7 +48,7 @@ const Shop = () => {
 
       <div className="shop-container mt-7">
         {/* left side - filters */}
-        <div className="border space-y-8 pb-10">
+        <div className="space-y-8 pb-10">
           <div>
             <h3>Category</h3>
             <div className="space-y-2 mt-5">
@@ -101,8 +117,8 @@ const Shop = () => {
           </div>
         </div>
         {/* right side - products */}
-        <div className="border">
-          <div className="flex justify-between items-center">
+        <div className="space-y-8">
+          <div className="flex justify-between items-center px-4">
             <div className="relative w-[30%] border">
               <FiSearch className="absolute top-4 left-2 text-xl" />
               <input
@@ -124,10 +140,25 @@ const Shop = () => {
           </div>
 
           {/* products */}
-          <div className="grid grid-cols-3 gap-x-5 gap-y-20">
-            {allProducts?.map((product) => (
-              <ProductCard key={product.id} cardData={product} />
-            ))}
+          <div className="grid grid-cols-3 gap-y-20">
+            {allProducts
+              ?.slice(
+                (currentPage - 1) * pageProductLimit,
+                currentPage * pageProductLimit
+              )
+              .map((product) => (
+                <ProductCard key={product.id} cardData={product} />
+              ))}
+          </div>
+          <div className="mx-auto">
+            <Pagination
+              currentPage={currentPage}
+              itemsPerPage={pageProductLimit}
+              onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+              totalItems={allProducts?.length}
+              pageNeighbours={2}
+              withProgressBar={true}
+            />
           </div>
         </div>
       </div>
