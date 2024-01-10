@@ -4,13 +4,13 @@ import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegHeart, FaRegEye } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const ProductCard = ({ cardData, flashSale }) => {
-  const { user, isAuthLoading } = useAuthContext();
+  const { user } = useAuthContext();
   const {
     id,
     name,
@@ -28,7 +28,7 @@ const ProductCard = ({ cardData, flashSale }) => {
   // add to cart function
   const navigate = useNavigate();
   const location = useLocation();
-  const handleAddToCart = (place) => {
+  const handleAddToCart = () => {
     if (user) {
       // todo: post the data to database
       alert("added to cart");
@@ -112,7 +112,7 @@ const ProductCard = ({ cardData, flashSale }) => {
 
         <button
           className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg"
-          onClick={() => handleAddToCart("cart")}
+          onClick={handleAddToCart}
         >
           <FaShoppingCart />
           <p className="text-sm">Add to Cart</p>
