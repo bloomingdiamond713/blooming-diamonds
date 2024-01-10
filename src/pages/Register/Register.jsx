@@ -3,15 +3,20 @@ import "../Login/Login.css";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { IoCloudUploadOutline, IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [fileDragged, setFileDragged] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
 
   // react hook form settings
   const {
@@ -92,6 +97,7 @@ const Register = () => {
                     reset(); // reset the form
                     setProfilePicFile(null); // reset profile pic state
                     setRegisterLoading(false);
+                    navigate(from, { replace: true });
                   })
                   .catch((error) => setRegisterError(error?.code));
               }
@@ -108,6 +114,7 @@ const Register = () => {
       .then((res) => {
         console.log(res.user);
         toast.success(`Authenticated as ${res?.user?.email}`);
+        navigate(from, { replace: true });
       })
       .catch((error) => setRegisterError(error?.code));
   };

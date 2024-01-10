@@ -8,6 +8,7 @@ import Register from "../pages/Register/Register";
 import ProductPageLayout from "../layouts/ProductPageLayout";
 import ProductDescription from "../pages/DynamicProduct/ProductDescription/ProductDescription";
 import ProductReviews from "../pages/DynamicProduct/ProductReviews/ProductReviews";
+import Shop from "../pages/Shop/Shop/Shop";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "shop",
+        element: <Shop />,
       },
       {
         path: "login",

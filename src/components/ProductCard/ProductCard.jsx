@@ -24,7 +24,7 @@ const ProductCard = ({ cardData, flashSale }) => {
   return (
     <div
       className={`${
-        flashSale ? "w-[270px]" : " w-[350px]"
+        flashSale ? "w-[270px]" : " w-[320px]"
       } product-card mx-auto`}
       style={{ fontFamily: "var(--poppins)" }}
     >
@@ -80,10 +80,10 @@ const ProductCard = ({ cardData, flashSale }) => {
           <p className="text-sm">Add to Cart</p>
         </Link>
       </div>
-      <div>
+      <div className="mt-2">
         <Link
           to={`/products/${id}/description`}
-          className="text-lg font-bold text-[#3b3b3b] mt-4"
+          className="text-lg font-bold text-[#3b3b3b]"
           state={{ from: "/" }}
         >
           {name}

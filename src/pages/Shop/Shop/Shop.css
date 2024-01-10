@@ -1,0 +1,19 @@
+.shop-container h3 {
+  font-family: var(--italiana);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.shop-container {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 10px;
+}
+
+.shop-container > div:first-child {
+  width: 20%;
+}
+.shop-container > div:last-child {
+  width: 80%;
+}

@@ -16,9 +16,10 @@ import { Link } from "react-router-dom";
 import RightSideDrawer from "../../components/RightSideDrawer/RightSideDrawer";
 import useAuthContext from "../../hooks/useAuthContext";
 import placeholderUserImg from "../../assets/placeholder-user.png";
+import toast from "react-hot-toast";
 
 const Header = () => {
-  const { user, isAuthLoading } = useAuthContext();
+  const { user, isAuthLoading, logOut } = useAuthContext();
   const [stickyNav, setStickyNav] = useState("");
   const [navNotifications] = useState([
     // todo: load data from database
@@ -38,22 +39,21 @@ const Header = () => {
 
   // change nav-style on scroll
   const changeNavStyle = () => {
-    console.log(window.scrollY);
     if (window.scrollY > 70) {
       setStickyNav("sticky-nav");
 
       if (
-        document.getElementById("not-sticky-nav").getAttribute("open") === ""
+        document.getElementById("not-sticky-nav")?.getAttribute("open") === ""
       ) {
-        document.getElementById("not-sticky-nav").removeAttribute("open");
-        document.getElementById("sticky-nav").setAttribute("open", "");
+        document.getElementById("not-sticky-nav")?.removeAttribute("open");
+        document.getElementById("sticky-nav")?.setAttribute("open", "");
       }
     } else {
       setStickyNav("");
 
-      if (document.getElementById("sticky-nav").getAttribute("open") === "") {
-        document.getElementById("sticky-nav").removeAttribute("open");
-        document.getElementById("not-sticky-nav").setAttribute("open", "");
+      if (document.getElementById("sticky-nav")?.getAttribute("open") === "") {
+        document.getElementById("sticky-nav")?.removeAttribute("open");
+        document.getElementById("not-sticky-nav")?.setAttribute("open", "");
       }
     }
   };
@@ -71,13 +71,21 @@ const Header = () => {
     setSearchBar("open");
   };
 
+  // react hashlink router scroll with offest
   const scrollWithOffset = (el) =>
     window.scrollTo({
       top: el.getBoundingClientRect().top + window.pageYOffset - 85,
       behavior: "smooth",
     });
 
-  console.log(showRightDrawer);
+  // sign out method
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        toast.success("Logout Successful");
+      })
+      .catch((error) => toast.error(error?.code));
+  };
   return (
     <div className="relative">
       {/* upper navbar */}
@@ -225,7 +233,6 @@ const Header = () => {
                     >
                       Home
                     </HashLink>
-                    <Link to="/Shop">Shop</Link>
                     <HashLink
                       to="/#categories"
                       smooth
@@ -258,6 +265,8 @@ const Header = () => {
                     >
                       Products
                     </HashLink>
+                    <Link to="/Shop">Shop</Link>
+
                     <HashLink
                       to="/#reviews"
                       smooth
@@ -342,7 +351,7 @@ const Header = () => {
                             </div>
 
                             <li>
-                              <button>Sign Out</button>
+                              <button onClick={handleSignOut}>Sign Out</button>
                             </li>
                           </ul>
                         </details>
@@ -392,7 +401,6 @@ const Header = () => {
                     <HashLink to="/#hero" smooth>
                       Home
                     </HashLink>
-                    <Link to="/Shop">Shop</Link>
                     <HashLink to="/#categories" smooth>
                       Categories
                     </HashLink>
@@ -413,6 +421,8 @@ const Header = () => {
                     <HashLink to="/#products" smooth>
                       Products
                     </HashLink>
+                    <Link to="/Shop">Shop</Link>
+
                     <HashLink to="/#reviews" smooth>
                       Reviews
                     </HashLink>
@@ -488,7 +498,7 @@ const Header = () => {
                             </div>
 
                             <li>
-                              <button>Sign Out</button>
+                              <button onClick={handleSignOut}>Sign Out</button>
                             </li>
                           </ul>
                         </details>
@@ -520,15 +530,25 @@ const Header = () => {
 
       {/* right side drawer */}
       <div
-        className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-xl rounded-bl-xl ${
+        className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-2xl rounded-bl-2xl ${
           showRightDrawer ? "transform-x-0" : "translate-x-full"
-        } transition-all duration-300 ease-in-out`}
+        } transition-all duration-300 ease-in-out  z-[9999]`}
       >
-        <button className="text-5xl" onClick={() => setShowRightDrawer(false)}>
-          x
-        </button>
+        <div className="relative ">
+          <button
+            className="text-2xl absolute top-6 right-5"
+            onClick={() => setShowRightDrawer(false)}
+          >
+            <TfiClose />
+          </button>
+        </div>
         <RightSideDrawer />
       </div>
+      <div
+        className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
+          showRightDrawer ? "opacity-1 visible" : "opacity-0 invisible"
+        } transition-all duration-200 ease-in-out`}
+      ></div>
     </div>
   );
 };

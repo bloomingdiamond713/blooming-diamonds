@@ -32,7 +32,6 @@ const MainLayout = () => {
       <Toaster
         position="top-center"
         toastOptions={{
-          duration: "1000",
           className: "font-bold py-8",
           style: {
             fontFamily: "var(--poppins)",

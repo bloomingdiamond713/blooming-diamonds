@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import useAuthContext from "../../hooks/useAuthContext";
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
   const { signIn, signInGoogle } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [loginLoading, setLoginLoading] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  let from = location.state?.from?.pathname || "/";
 
   // react hook form settings
   const {
@@ -31,6 +36,7 @@ const Login = () => {
         toast.success(`Authenticated as ${res.user?.email}`);
         reset(); // reset the form
         setLoginLoading(false);
+        navigate(from, { replace: true });
       })
       .catch((error) => setLoginError(error?.code));
   };
@@ -41,6 +47,7 @@ const Login = () => {
       .then((res) => {
         console.log(res.user);
         toast.success(`Authenticated as ${res.user?.email}`);
+        navigate(from, { replace: true });
       })
       .catch((error) => setLoginError(error?.code));
   };

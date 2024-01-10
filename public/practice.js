@@ -32,6 +32,8 @@ const oldArr = [
         "Comfortable and secure for all-day wear.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/pP0fHr6/2.png",
@@ -67,6 +69,8 @@ const oldArr = [
         "Available in various stone options to suit your personal style.",
       ],
     },
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/sj8z8y6/3.png",
@@ -99,6 +103,7 @@ const oldArr = [
         "Pairs effortlessly with layered necklaces or worn alone.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/TYgR1NS/instagram-gallery-img-6-768x804.png",
@@ -131,6 +136,8 @@ const oldArr = [
         "Lightweight and comfortable for everyday wear.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/8PnS3XT/5.png",
@@ -163,6 +170,7 @@ const oldArr = [
         "Makes a memorable gift for a loved one.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/WtN1XNb/6.png",
@@ -197,6 +205,7 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/5hFXLw5/7.png",
@@ -229,6 +238,8 @@ const oldArr = [
         "Pairs effortlessly with layered necklaces or worn alone.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/sJ8gx1X/earrings-category.png",
@@ -261,6 +272,8 @@ const oldArr = [
         "Available in various crystal colors to match your mood.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/mHKyM04/8.png",
@@ -296,6 +309,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your look.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/sKd58y3/slider-list-img-new-5.png",
@@ -328,6 +343,8 @@ const oldArr = [
         "Comfortable and versatile for everyday wear.",
       ],
     },
+    size: "Extra Large",
+    carate: 8,
   },
   {
     img: "https://i.ibb.co/VYZgVn1/9.png",
@@ -361,6 +378,8 @@ const oldArr = [
         "Available in various pearl sizes and lengths to suit your preference.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/C70GRjw/10.png",
@@ -393,6 +412,8 @@ const oldArr = [
         "Available in various pendant styles to suit your taste.",
       ],
     },
+    size: "Extra Large",
+    carate: 8,
   },
   {
     img: "https://i.ibb.co/Q6G0zw8/12.png",
@@ -425,6 +446,8 @@ const oldArr = [
         "Makes a perfect engagement ring or special occasion gift.",
       ],
     },
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/ftRVGpj/13.png",
@@ -458,6 +481,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/QCpJshN/jewelry-scale1.png",
@@ -490,6 +515,7 @@ const oldArr = [
         "Lightweight and comfortable for everyday wear.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/MSTBbYw/15.png",
@@ -522,6 +548,8 @@ const oldArr = [
         "Versatile piece easily layers with other necklaces or worn alone.",
       ],
     },
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/2nhLSXN/17.png",
@@ -554,6 +582,8 @@ const oldArr = [
         "Available in various sapphire sizes and cuts to personalize your look.",
       ],
     },
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/WcY0R1k/19.png",
@@ -588,6 +618,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/ftqh4MG/amethyst-refinement-main1-768x768.png",
@@ -620,6 +652,7 @@ const oldArr = [
         "Available in various gold tones to suit your preference.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/Z2bTH98/bracelets-category.png",
@@ -652,6 +685,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your choice.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/mtWmDRS/crystal-elegance-main1-1-650x650.png",
@@ -684,6 +719,7 @@ const oldArr = [
         "Perfect gift for a loved one or a reminder for yourself.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/cYF0XtW/crystal-harmony-main1-768x768.png",
@@ -716,6 +752,8 @@ const oldArr = [
         "Available in various emerald sizes and cuts to personalize your look.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/F8zGH9m/diamond-shine-main1-768x768.png",
@@ -748,6 +786,8 @@ const oldArr = [
         "Comfortable and secure for all-day wear.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/sJ8gx1X/earrings-category.png",
@@ -781,6 +821,8 @@ const oldArr = [
         "Lightweight and comfortable for everyday wear.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/t8QLfBL/eternal-love-main1-768x768.png",
@@ -813,6 +855,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your choice.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/t2Mp4zn/Frame-1000001387-1-scaled-1.png",
@@ -845,6 +889,8 @@ const oldArr = [
         "Perfect gift for a loved one or a reminder for yourself.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/db0nYZN/golden-curls1-450x450.png",
@@ -878,6 +924,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/VWG8gK3/goldplated-crystal-flower-leverback1-650x650.png",
@@ -910,6 +958,7 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your style.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/vBwycNd/h1-baner-1-480x327.png",
@@ -943,6 +992,8 @@ const oldArr = [
         "Lightweight and comfortable for all-day wear.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/yQRk0BG/h1-baner-2-480x326.png",
@@ -976,6 +1027,7 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/pfgLggv/h1-cat-product-image-2-400x487.png",
@@ -1008,6 +1060,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your style.",
       ],
     },
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/crJKMSP/h1-shop-list-img-2-768x792.png",
@@ -1040,6 +1094,8 @@ const oldArr = [
         "Comfortable and versatile for everyday wear.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/tLGbWZc/h1-shop-list-img-3-768x792.png",
@@ -1072,6 +1128,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your choice.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/Lr4f6PS/h1-shop-list-img-5-768x790.png",
@@ -1104,6 +1162,8 @@ const oldArr = [
         "Available in various sapphire sizes and cuts to personalize your look.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/xF9rDN8/h1-slider-list-i-5-768x744.png",
@@ -1137,6 +1197,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your choice.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/K7G5TQ0/h3-shop-list-new4-291x300.png",
@@ -1169,6 +1231,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your look.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/M14jFJ3/h3-shop-list-new4-768x792.png",
@@ -1201,6 +1265,8 @@ const oldArr = [
         "Lightweight and comfortable for everyday wear.",
       ],
     },
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/zF21f2t/instagram-gallery-img-2-768x804.png",
@@ -1234,6 +1300,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/B6Vz5X3/instagram-gallery-img-3-768x806.png",
@@ -1267,6 +1335,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your choice.",
       ],
     },
+    size: "Extra Large",
+    carate: 8,
   },
   {
     img: "https://i.ibb.co/87LJLP7/instagram-gallery-img-4-768x804.png",
@@ -1299,6 +1369,7 @@ const oldArr = [
         "Comfortable and secure for all-day wear.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/TYgR1NS/instagram-gallery-img-6-768x804.png",
@@ -1331,6 +1402,7 @@ const oldArr = [
         "Available in various diamond sizes and cuts to personalize your style.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/ftRVGpj/13.png",
@@ -1363,6 +1435,7 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your look.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/QCpJshN/jewelry-scale1.png",
@@ -1389,6 +1462,7 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/MSTBbYw/15.png",
@@ -1421,6 +1495,8 @@ const oldArr = [
         "Available in various ruby sizes and cuts to personalize your look.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/gM8KGmf/luxurious-star-main1-768x768.png",
@@ -1455,6 +1531,8 @@ const oldArr = [
         "Lightweight and comfortable for all-day wear.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/qBfhBkc/mother-of-pearl-chara-main1-650x650.png",
@@ -1480,6 +1558,8 @@ const oldArr = [
         "Available in various amethyst sizes and cuts to personalize your look.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/hLR7SH5/necklaces-category-1.png",
@@ -1506,6 +1586,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/PrvvjBc/pendants-category.png",
@@ -1538,6 +1620,7 @@ const oldArr = [
         "Available in various crystal colors and cuts to personalize your look.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/8P7sx2v/rhodolite-garnet-and-diamond-earrings1-768x768.png",
@@ -1570,6 +1653,7 @@ const oldArr = [
         "Available in various crystal colors and cuts to personalize your look.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/FncDLvt/rings-standing.png",
@@ -1602,6 +1686,8 @@ const oldArr = [
         "Lightweight and comfortable for all-day wear.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/jz9BnMc/slider-list-img-new-2.png",
@@ -1627,6 +1713,7 @@ const oldArr = [
         "Available in various sapphire sizes and cuts to personalize your look.",
       ],
     },
+    carate: 24,
   },
   {
     img: "https://i.ibb.co/sKd58y3/slider-list-img-new-5.png",
@@ -1652,6 +1739,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your look.",
       ],
     },
+    size: "Medium",
+    carate: 14,
   },
   {
     img: "https://i.ibb.co/VYYGhsm/slider-list-img-new-6.png",
@@ -1684,6 +1773,8 @@ const oldArr = [
         "Classic design can be dressed up or down for any occasion.",
       ],
     },
+    size: "Small",
+    carate: 18,
   },
   {
     img: "https://i.ibb.co/fqmX79r/slider-list-img-new-7.png",
@@ -1709,6 +1800,8 @@ const oldArr = [
         "Versatile piece complements various styles and occasions.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/Qbm7wb0/slider-list-img-new-9.png",
@@ -1742,6 +1835,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/ZVPFxZ8/slider-list-img-new-9-300x291.png",
@@ -1774,6 +1869,8 @@ const oldArr = [
         "Available in various diamond sizes and settings to personalize your look.",
       ],
     },
+    size: "Extra Large",
+    carate: 8,
   },
   {
     img: "https://i.ibb.co/V98fL7d/slider-list-img-new-10.png",
@@ -1806,6 +1903,8 @@ const oldArr = [
         "Lightweight and comfortable for everyday wear.",
       ],
     },
+    size: "Extra Large",
+    carate: 8,
   },
   {
     img: "https://i.ibb.co/t2Mp4zn/Frame-1000001387-1-scaled-1.png",
@@ -1832,6 +1931,8 @@ const oldArr = [
       ],
     },
     flashSale: true,
+    size: "Extra Small",
+    carate: 22,
   },
   {
     img: "https://i.ibb.co/QY8k0zc/Sparkling-Waterfall1-768x768.png",
@@ -1857,6 +1958,8 @@ const oldArr = [
         "Available in various sapphire sizes and cuts to personalize your look.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
   {
     img: "https://i.ibb.co/Lr4f6PS/h1-shop-list-img-5-768x790.png",
@@ -1889,593 +1992,18 @@ const oldArr = [
         "Available in various crystal colors and cuts to personalize your look.",
       ],
     },
+    size: "Large",
+    carate: 10,
   },
 ];
 
-const reviews = [
-  {
-    id: 0,
-    title: "Absolutely Stunning!",
-    desc: "I recently purchased this beautiful necklace, and it exceeded my expectations. The craftsmanship and attention to detail are impeccable. I've received numerous compliments, and I couldn't be happier with my purchase.",
-  },
-  {
-    id: 1,
-    title: "Impressive Craftsmanship",
-    desc: "The earrings I bought are a true work of art. The gold-plated crystal flowers add a touch of elegance, and the attention to detail is commendable. I highly recommend these to anyone looking for a unique and stylish accessory.",
-  },
-  {
-    id: 2,
-    title: "Exquisite Beauty",
-    desc: "I bought a ring from this collection, and it's an absolute showstopper. The design is unique, and the quality is exceptional. I'm delighted with my purchase!",
-  },
-  {
-    id: 3,
-    title: "Simple Elegance",
-    desc: "The necklace I received is simple yet elegant. It goes well with both casual and formal outfits. The packaging was impressive, and the delivery was prompt. Highly recommended!",
-  },
-  {
-    id: 4,
-    title: "Dazzling Diamonds",
-    desc: "These earrings are a must-have for any jewelry lover. The diamonds sparkle beautifully, and the setting is perfect. I couldn't be happier with my choice.",
-  },
-  {
-    id: 5,
-    title: "Chic and Trendy",
-    desc: "I purchased a bracelet, and it's the perfect accessory for any occasion. The design is chic and trendy, and the clasp is secure. I've already received many compliments.",
-  },
-  {
-    id: 6,
-    title: "Unique Design",
-    desc: "The pendant I bought has a unique and eye-catching design. The quality is outstanding, and the chain is sturdy. I'm thrilled with my new piece of jewelry.",
-  },
-  {
-    id: 7,
-    title: "High-Quality Materials",
-    desc: "The materials used in the making of these earrings are of the highest quality. They are comfortable to wear and have a timeless appeal. A great addition to my jewelry collection.",
-  },
-  {
-    id: 8,
-    title: "Gorgeous Craftsmanship",
-    desc: "I can't get over the gorgeous craftsmanship of the ring I purchased. The intricate details are breathtaking, and the overall design is simply stunning. A true work of art.",
-  },
-  {
-    id: 9,
-    title: "Perfect Gift",
-    desc: "I bought a necklace as a gift, and it was a hit! The recipient was thrilled with the design, and the packaging added a touch of luxury. I'll definitely be shopping here again.",
-  },
-  {
-    id: 10,
-    title: "Classic Elegance",
-    desc: "The bracelet I ordered exudes classic elegance. It's well-made, comfortable to wear, and goes well with both casual and formal attire. I'm extremely pleased with my purchase.",
-  },
-  {
-    id: 11,
-    title: "Timeless Beauty",
-    desc: "The necklace I received is a timeless piece of beauty. The design is classic, and the quality is exceptional. I feel like I made an investment in a piece that will be treasured for years to come.",
-  },
-  {
-    id: 12,
-    title: "Modern Elegance",
-    desc: "The earrings I purchased are a perfect blend of modern design and classic elegance. The silver detailing is exquisite, and they add a touch of sophistication to any outfit.",
-  },
-  {
-    id: 13,
-    title: "Delicate Beauty",
-    desc: "The delicate design of the pendant I bought caught my eye, and I'm delighted with my choice. It's a versatile piece that can be worn daily or for special occasions.",
-  },
-  {
-    id: 14,
-    title: "Luxurious Feel",
-    desc: "I treated myself to a luxurious bracelet, and the feel of it on my wrist is amazing. The attention to detail and craftsmanship are evident. It's become my go-to accessory.",
-  },
-  {
-    id: 15,
-    title: "Radiant Glow",
-    desc: "The necklace I received has a radiant glow that enhances my overall look. The gemstones are of high quality, and the design is simply breathtaking. A definite must-have!",
-  },
-  {
-    id: 16,
-    title: "Versatile Charm",
-    desc: "I love the versatility of the ring I purchased. It can be worn casually or paired with formal attire. The design is charming, and I've received many compliments on its unique style.",
-  },
-  {
-    id: 17,
-    title: "Effortless Elegance",
-    desc: "The earrings exude effortless elegance. They are lightweight, comfortable, and the detailing is superb. I wear them with confidence, knowing they elevate my entire look.",
-  },
-  {
-    id: 18,
-    title: "Unique Statement Piece",
-    desc: "The bracelet I bought is a unique statement piece. The combination of materials and design sets it apart. It's become a conversation starter, and I'm thrilled with my purchase.",
-  },
-  {
-    id: 19,
-    title: "Perfect Fit",
-    desc: "I was hesitant about buying a ring online, but the sizing was perfect, and the fit is comfortable. The quality is top-notch, and I couldn't be happier with the overall experience.",
-  },
-  {
-    id: 20,
-    title: "Artistic Appeal",
-    desc: "The pendant I received has an artistic appeal that resonates with my taste. The attention to detail is commendable, and it's become a cherished part of my jewelry collection.",
-  },
-  {
-    id: 21,
-    title: "Elegant Simplicity",
-    desc: "I appreciate the elegant simplicity of the necklace I purchased. It's a versatile piece that can be dressed up or down. The quality is evident, and I've received many compliments.",
-  },
-  {
-    id: 22,
-    title: "Timeless Treasure",
-    desc: "The bracelet I bought is a timeless treasure. The design is classic, and the quality is exceptional. It's become a staple in my jewelry collection, and I couldn't be happier.",
-  },
-  {
-    id: 23,
-    title: "Sparkling Splendor",
-    desc: "The earrings I received are a sparkling splendor. The diamonds catch the light beautifully, and they add a touch of glamour to any ensemble. Truly a dazzling purchase.",
-  },
-  {
-    id: 24,
-    title: "Chic and Trendsetting",
-    desc: "The ring I purchased is both chic and trendsetting. The unique design sets it apart, and I've received numerous compliments on its stylish appeal. Highly recommend for the fashion-forward!",
-  },
-  {
-    id: 25,
-    title: "Subtle Sophistication",
-    desc: "The necklace I received exudes subtle sophistication. It's a delicate piece that adds a touch of class to any outfit. The craftsmanship is remarkable, and I'm very pleased with my choice.",
-  },
-  {
-    id: 26,
-    title: "Regal Elegance",
-    desc: "The pendant I bought has a regal elegance that caught my eye instantly. The detailing is intricate, and the overall design is stunning. A perfect addition to my jewelry collection.",
-  },
-  {
-    id: 27,
-    title: "Incredible Craftsmanship",
-    desc: "The craftsmanship of the ring I purchased is incredible. The attention to detail is superb, and the gold detailing adds a touch of luxury. I'm extremely satisfied with my purchase.",
-  },
-  {
-    id: 28,
-    title: "Eternal Beauty",
-    desc: "The bracelet is an embodiment of eternal beauty. The design is timeless, and the quality is unmatched. I wear it with pride, knowing it's a piece that will never go out of style.",
-  },
-  {
-    id: 29,
-    title: "Charming Elegance",
-    desc: "The earrings I received exude charming elegance. The design is delicate yet eye-catching, and the quality is exceptional. They are now my go-to choice for special occasions.",
-  },
-  {
-    id: 30,
-    title: "Modern Glamour",
-    desc: "The pendant I purchased adds a touch of modern glamour to my collection. The design is chic, and the gemstones sparkle beautifully. I'm thrilled with the contemporary feel it brings.",
-  },
-  {
-    id: 31,
-    title: "Versatile Beauty",
-    desc: "The necklace I received is a versatile beauty. It can be worn casually or dressed up for formal events. The quality is outstanding, and I've received compliments on its timeless design.",
-  },
-  {
-    id: 32,
-    title: "Sophisticated Simplicity",
-    desc: "The earrings I purchased exhibit sophisticated simplicity. The design is minimalistic, yet the craftsmanship is outstanding. They are perfect for both everyday wear and special occasions.",
-  },
-  {
-    id: 33,
-    title: "Royal Radiance",
-    desc: "The ring I bought has a royal radiance that instantly drew me in. The gemstones are vibrant, and the gold setting enhances their beauty. It's a piece fit for royalty.",
-  },
-  {
-    id: 34,
-    title: "Glamorous Grace",
-    desc: "The bracelet exudes glamorous grace. The combination of materials and design creates a stunning piece that elevates any ensemble. It's a showstopper, and I'm thrilled with my purchase.",
-  },
-  {
-    id: 35,
-    title: "Dazzling Divinity",
-    desc: "The pendant I received is a dazzling divinity. The intricate details and sparkling gemstones give it a divine charm. It's become a favorite in my collection.",
-  },
-  {
-    id: 36,
-    title: "Effortless Glamour",
-    desc: "The necklace effortlessly brings glamour to any look. The design is timeless, and the quality is evident. I receive compliments every time I wear it, making it a worthwhile investment.",
-  },
-  {
-    id: 37,
-    title: "Chic Charm",
-    desc: "The earrings I purchased have a chic charm that complements various styles. They are lightweight, comfortable, and add a touch of sophistication. A must-have for any jewelry enthusiast.",
-  },
-  {
-    id: 38,
-    title: "Regal Resplendence",
-    desc: "The ring is a symbol of regal resplendence. The design is opulent, and the gemstones shine with brilliance. It's a statement piece that never fails to capture attention.",
-  },
-  {
-    id: 39,
-    title: "Elegance in Motion",
-    desc: "The bracelet combines elegance with motion seamlessly. The fluid design adds a dynamic element, and the craftsmanship is impeccable. It's a unique and stylish addition to my collection.",
-  },
-  {
-    id: 40,
-    title: "Radiant Allure",
-    desc: "The pendant I received has a radiant allure that captivates. The play of light on the gemstones is mesmerizing, and the overall design exudes sophistication. A splendid addition to my jewelry box.",
-  },
-  {
-    id: 41,
-    title: "Modern Opulence",
-    desc: "The necklace showcases modern opulence. The design is bold and contemporary, making it a standout piece in my collection. It effortlessly adds a touch of luxury to any outfit.",
-  },
-  {
-    id: 42,
-    title: "Sublime Craftsmanship",
-    desc: "The earrings exhibit sublime craftsmanship. The attention to detail and precision in design make them a true work of art. I appreciate the quality and finesse put into creating these earrings.",
-  },
-  {
-    id: 43,
-    title: "Intricate Elegance",
-    desc: "The ring I purchased boasts intricate elegance. The detailed patterns and delicate craftsmanship make it a piece I treasure. It's a timeless addition to my jewelry collection.",
-  },
-  {
-    id: 44,
-    title: "Charming Sophistication",
-    desc: "The bracelet exudes charming sophistication. The combination of gemstones and metals creates a harmonious blend, making it a versatile accessory. I receive compliments whenever I wear it.",
-  },
-  {
-    id: 45,
-    title: "Graceful Radiance",
-    desc: "The pendant has a graceful radiance that enhances my every look. The design is classic, and the gemstones are set with precision. It's a piece that radiates beauty and elegance.",
-  },
-  {
-    id: 46,
-    title: "Trendsetting Beauty",
-    desc: "The necklace is a trendsetting beauty. The contemporary design and choice of materials make it a fashionable statement piece. I love how it effortlessly elevates my style.",
-  },
-  {
-    id: 47,
-    title: "Eternal Sparkle",
-    desc: "The earrings possess an eternal sparkle that catches the eye. The arrangement of gemstones and the brilliance they exude make these earrings a timeless and dazzling accessory.",
-  },
-  {
-    id: 48,
-    title: "Modern Elegance",
-    desc: "The ring blends modern elegance with classic charm. The design is versatile, and the craftsmanship is top-notch. It's a ring that seamlessly transitions from day to night.",
-  },
-  {
-    id: 49,
-    title: "Timeless Appeal",
-    desc: "The bracelet has a timeless appeal that transcends trends. The design is enduring, and the quality is exceptional. It's a piece that I can see myself wearing for years to come.",
-  },
-  {
-    id: 50,
-    title: "Captivating Charm",
-    desc: "The pendant's captivating charm adds a touch of magic to my collection. The unique design and choice of gemstones make it a conversation starter. I'm delighted with this enchanting piece.",
-  },
-  {
-    id: 51,
-    title: "Subtle Glamour",
-    desc: "The earrings exude subtle glamour, perfect for elevating everyday looks. The design is sophisticated, and the quality is exceptional. They strike the ideal balance between simplicity and style.",
-  },
-  {
-    id: 52,
-    title: "Dazzling Delight",
-    desc: "The ring is a dazzling delight that brings joy with its sparkle. The gemstones are vibrant, and the craftsmanship is commendable. It's a piece that never fails to make a statement.",
-  },
-  {
-    id: 53,
-    title: "Classic Beauty",
-    desc: "The bracelet radiates classic beauty. Its timeless design and quality materials make it a versatile accessory. It's a staple in my collection, adding elegance to any ensemble.",
-  },
-  {
-    id: 54,
-    title: "Intriguing Allure",
-    desc: "The pendant has an intriguing allure that draws attention effortlessly. The combination of metals and gemstones creates a captivating piece. I'm enamored with its unique and artistic design.",
-  },
-  {
-    id: 55,
-    title: "Effortless Chic",
-    desc: "The necklace embodies effortless chic. Its modern design complements various styles, and the quality is outstanding. It's become my go-to accessory for achieving a polished and stylish look.",
-  },
-  {
-    id: 56,
-    title: "Timeless Radiance",
-    desc: "The earrings showcase timeless radiance. The arrangement of gemstones and the overall design exude a classic charm. They are the perfect blend of sophistication and beauty.",
-  },
-  {
-    id: 57,
-    title: "Dancing Fireflies Necklace",
-    desc: "Tiny cubic zirconia stones cascade like twinkling fireflies in the night, adding magic to any outfit.",
-  },
-  {
-    id: 58,
-    title: "Whispers of the Ocean Bracelet",
-    desc: "Woven leather bracelet with a turquoise seashell pendant evokes the tranquility of the ocean.",
-  },
-  {
-    id: 59,
-    title: "Eternal Promise Ring",
-    desc: "Classic solitaire ring featuring a sparkling diamond in a delicate platinum band, a timeless symbol of love.",
-  },
-  {
-    id: 60,
-    title: "Understated Elegance Anklet",
-    desc: "Delicate gold bead chain and dangling charm add a touch of understated elegance to your feet.",
-  },
-  {
-    id: 61,
-    title: "Geometric Flair Cufflinks",
-    desc: "Sleek and modern cufflinks with engraved geometric patterns, perfect for the well-dressed gentleman.",
-  },
-  {
-    id: 62,
-    title: "Vintage Blooms Brooch",
-    desc: "Intricately detailed brooch featuring a bouquet of colorful enameled flowers, adding vintage charm to any outfit.",
-  },
-  {
-    id: 63,
-    title: "Shimmering Pearl Hair Clip",
-    desc: "A single pearl nestled among shimmering crystals, adding a touch of sparkle to any hairstyle.",
-  },
-  {
-    id: 64,
-    title: "Queen of the Night Crown",
-    desc: "Dazzling crown adorned with sparkling stones, perfect for channeling your inner royalty.",
-  },
-  {
-    id: 65,
-    title: "Woodland Whisper Earrings",
-    desc: "Delicate leaves and twigs crafted from silver or gold evoke a sense of peace and tranquility.",
-  },
-  {
-    id: 66,
-    title: "Tribal Treasure Pendant",
-    desc: "Bold geometric shapes and vibrant colors create a fierce and fascinating statement piece.",
-  },
-  {
-    id: 67,
-    title: "Mystical Moonstone",
-    desc: "Ethereal pearlescent moonstone pendant on a delicate silver chain, capturing lunar glow and adding magic.",
-  },
-  {
-    id: 68,
-    title: "Bohemian Dream",
-    desc: "Vibrant mix of colorful beads and woven threads, adding a touch of free spirit to your outfit.",
-  },
-  {
-    id: 69,
-    title: "Entwined Elegance",
-    desc: "Two graceful intertwined bands of gold, symbolizing enduring love and connection, perfect for any occasion.",
-  },
-  {
-    id: 70,
-    title: "Seashell Serenade",
-    desc: "Delicate seashells adorn this charming anklet, whispering the ocean's melody with every step, perfect for summer.",
-  },
-  {
-    id: 71,
-    title: "Art Deco Decoy",
-    desc: "Geometric patterns and sleek black and silver lines in these Art Deco-inspired cufflinks, a statement piece for timeless elegance.",
-  },
-  {
-    id: 72,
-    title: "Enchanted Forest",
-    desc: "A whimsical miniature forest scene comes to life on this intricately detailed brooch, featuring tiny mushrooms, ferns, and delicate creatures.",
-  },
-  {
-    id: 73,
-    title: "Starry Night Sky",
-    desc: "A cluster of sparkling crystals arranged like constellations adorns this hair pin, adding celestial elegance and letting your inner star shine.",
-  },
-  {
-    id: 74,
-    title: "Winter Wonderland",
-    desc: "Delicate snowflakes and shimmering crystals dance on this enchanting winter wonderland tiara, perfect for any festive occasion.",
-  },
-  {
-    id: 75,
-    title: "Art Deco Drop",
-    desc: "Emerald-cut gemstones dangle from geometric shapes in these striking Art Deco earrings, making a bold statement and turning heads.",
-  },
-  {
-    id: 76,
-    title: "Mystic Amulet",
-    desc: "A carved stone imbued with ancient symbols hangs from a leather cord in this mystic amulet, adding a touch of bohemian mystery to your everyday look.",
-  },
-  {
-    id: 77,
-    title: "Sunrise Hues",
-    desc: "A gradient of vibrant warm colors adorns this sleek bangle, reminiscent of a breathtaking sunrise, injecting a touch of optimism into your day.",
-  },
-  {
-    id: 78,
-    title: "Whispering Leaves",
-    desc: "Delicate silver or gold leaves cascade down this necklace, evoking the gentle rustle of wind through a forest, adding a touch of nature's serenity.",
-  },
-  {
-    id: 79,
-    title: "Tribal Sun",
-    desc: "A bold geometric sun pendant adorned with vibrant stones hangs from a leather cord in this tribal-inspired necklace, radiating warmth and energy.",
-  },
-  {
-    id: 80,
-    title: "Vintage Cameo",
-    desc: "An intricately carved cameo set in an elegant frame graces this vintage-inspired brooch, adding a touch of timeless sophistication to your outfit.",
-  },
-  {
-    id: 81,
-    title: "Dragonfly Dance",
-    desc: "Delicate dragonfly wings shimmer with crystals on this whimsical pair of earrings, adding a touch of playful magic to your look.",
-  },
-  {
-    id: 82,
-    title: "Whispering Sands",
-    desc: "Delicate gold chains adorned with tiny sand dollar charms evoke the tranquility of the beach with every movement.",
-  },
-  {
-    id: 83,
-    title: "Celestial Harmony",
-    desc: "A crescent moon and star pendant crafted from shimmering opal dances on a delicate silver chain, capturing the celestial dance of night.",
-  },
-  {
-    id: 84,
-    title: "Gilded Ivy",
-    desc: "Intertwined gold leaves form a graceful bracelet, reminiscent of a vine climbing towards the sun, adding a touch of nature's elegance.",
-  },
-  {
-    id: 85,
-    title: "Ruby Radiance",
-    desc: "A fiery ruby nestled amidst a halo of sparkling diamonds creates a statement ring, radiating passion and elegance.",
-  },
-  {
-    id: 86,
-    title: "Hidden Treasures",
-    desc: "A locket pendant embellished with intricate carvings holds a secret message or tiny memento, adding a touch of personal history to any outfit.",
-  },
-  {
-    id: 87,
-    title: "Mystic Mandala",
-    desc: "A mesmerizing mandala pendant etched with intricate patterns in silver or gold hangs from a black leather cord, adding a touch of bohemian intrigue.",
-  },
-  {
-    id: 88,
-    title: "Butterfly Brilliance",
-    desc: "Delicate butterfly wings adorned with shimmering crystals flutter on this enchanting hair clip, adding a touch of whimsical beauty.",
-  },
-  {
-    id: 89,
-    title: "Queen of Hearts",
-    desc: "A crown adorned with ruby hearts and delicate gold chains exudes playful royalty, perfect for adding a touch of fairytale magic to any occasion.",
-  },
-  {
-    id: 90,
-    title: "Woodland Whisper Ring",
-    desc: "A dainty band set with a tiny moss agate stone whispers of the forest's secrets, adding a touch of nature's charm to any finger.",
-  },
-  {
-    id: 91,
-    title: "Tribal Dreamcatcher",
-    desc: "Feathers and vibrant beads woven into a dreamcatcher pendant hang from a leather cord, warding off negativity and inviting peaceful dreams.",
-  },
-  {
-    id: 92,
-    title: "Victorian Elegance",
-    desc: "An elaborately crafted brooch featuring a bouquet of enameled flowers and delicate pearls adds a touch of vintage grandeur to any coat or sweater.",
-  },
-  {
-    id: 93,
-    title: "Stardust Sparkle",
-    desc: "A cascade of tiny silver stars shimmers on this delicate necklace, capturing the celestial magic of a starry night.",
-  },
-  {
-    id: 94,
-    title: "Sunbeam Bracelet",
-    desc: "A woven leather bracelet adorned with a polished gold charm shaped like a sunbeam adds a touch of warmth and optimism to your wrists.",
-  },
-  {
-    id: 95,
-    title: "Whispers of the Sea Earrings",
-    desc: "Tiny seashells adorned with sparkling crystals dangle from these delicate earrings, whispering the ocean's melody with every movement.",
-  },
-  {
-    id: 96,
-    title: "Cosmic Compass Necklace",
-    desc: "A compass pendant set with a sparkling lapis lazuli stone guides the way through life's journeys, adding a touch of celestial inspiration.",
-  },
-  {
-    id: 97,
-    title: "Enchanted Forest Ring",
-    desc: "A tiny carved mushroom nestled amidst a ring of emerald leaves adds a touch of whimsical woodland charm to any finger.",
-  },
-  {
-    id: 98,
-    title: "Dancing Flames Bangle",
-    desc: "A sleek silver bangle twirls with delicate flames, capturing the hypnotic beauty of fire and adding a touch of dynamic elegance.",
-  },
-  {
-    id: 99,
-    title: "Celestial Owl Pendant",
-    desc: "A wise owl with sparkling moonstone eyes hangs from a black leather cord, offering guidance and wisdom, adding a touch of mystical intrigue.",
-  },
-  {
-    id: 100,
-    title: "Vintage Charm Bracelet",
-    desc: "A collection of mismatched vintage charms dangle from a delicate silver chain, telling stories of the past and adding a touch of sentimental charm.",
-  },
-  {
-    id: 101,
-    title: "Secret Garden Brooch",
-    desc: "A hidden compartment within a blooming flower brooch holds a precious secret, adding a touch of playful mystery to any outfit.",
-  },
-  {
-    id: 102,
-    title: "Starlight Chandelier Earrings",
-    desc: "Cascading crystals arranged like miniature chandeliers create a dazzling spectacle on these earrings, radiating celestial elegance.",
-  },
-  {
-    id: 103,
-    title: "Mermaid's Tears Anklet",
-    desc: "Delicate pearls and iridescent beads adorn this anklet, reminiscent of shimmering seashells and mermaid treasures, adding a touch of ocean magic.",
-  },
-  {
-    id: 104,
-    title: "Dreamcatcher Tiara",
-    desc: "Feathers, beads, and sparkling crystals woven into a delicate tiara capture the beauty of dreams and ward off negativity, adding a touch of ethereal magic.",
-  },
-  {
-    id: 105,
-    title: "Moonstone Mystery Ring",
-    desc: "A shimmering moonstone ring with swirling patterns evokes the mystique of the night sky, adding a touch of enigmatic beauty to any hand.",
-  },
-  {
-    id: 106,
-    title: "Viking Voyage Pendant",
-    desc: "A carved rune pendant hangs from a leather cord, whispering tales of ancient Norse sagas and adding a touch of rugged adventure.",
-  },
-  {
-    id: 107,
-    title: "Art Deco Fan Cufflinks",
-    desc: "Geometric patterns and sleek lines in black and silver define these Art Deco-inspired cufflinks, adding a touch of timeless sophistication to any formal attire.",
-  },
-  {
-    id: 108,
-    title: "Stardust Hair Pin",
-    desc: "A single teardrop-shaped amethyst shimmers like a captured star on this delicate hair pin, adding a touch of celestial elegance to any hairstyle.",
-  },
-  {
-    id: 109,
-    title: "Sunrise Necklace",
-    desc: "A gradient of warm orange and yellow stones arranged like a rising sun adorns this necklace, capturing the hopeful energy of a new day.",
-  },
-  {
-    id: 110,
-    title: "Whispering Willow Bangle",
-    desc: "Delicate silver leaves cascade down this bangle, reminiscent of a willow tree swaying in the breeze, adding a touch of nature's tranquility.",
-  },
-  {
-    id: 111,
-    title: "Tribal Feather Earrings",
-    desc: "Vibrant feathers adorned with beads dangle from these earrings, adding a touch of bold Boho spirit and capturing the rhythm of the wind.",
-  },
-  {
-    id: 112,
-    title: "Cosmic Cat Pendant",
-    desc: "A playful cat with sparkling starstone eyes hangs from a black leather cord, adding a touch of celestial mystery and feline charm.",
-  },
-];
+const sizes = ["Extra Large", "Large", "Medium", "Small", "Extra Small"];
+const carates = [8, 10, 14, 18, 22];
 
 for (let i = 0; i < oldArr.length; i++) {
-  if (oldArr[i].review.length) {
-    for (let j = 0; j < oldArr[i].review.length; j++) {
-      for (let k = 0; k < reviews.length; k++) {
-        if (reviews[k].title === "") {
-          continue;
-        }
-        oldArr[i].review[j].title = reviews[k].title;
-        oldArr[i].review[j].desc = reviews[k].desc;
-
-        reviews[k].title = "";
-        reviews[k].desc = "";
-        break;
-      }
-    }
-  }
+  const randomIdx = Math.floor(Math.random() * 5);
+  oldArr[i].size = sizes[randomIdx];
+  oldArr[i].carate = carates[randomIdx];
 }
-// console.log("reviews", reviews);
+
 console.log(JSON.stringify(oldArr));
