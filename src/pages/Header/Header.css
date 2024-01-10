@@ -30,8 +30,8 @@ svg {
   opacity: 1;
   visibility: visible;
   z-index: 1001;
-  animation: animate_sticky 0.6s ease;
-  height: 85px !important;
+  animation: animate_sticky 0.6s ease alternate;
+  height: 100px !important;
 }
 
 .navbar {
@@ -46,12 +46,12 @@ svg {
   cursor: pointer;
   border-bottom: 2px solid transparent;
 }
-.menu .active {
+.menu:not(.dropdown-content) .active {
   transition: all 0.3s ease-out;
   border-bottom: 2px solid var(--pink-gold);
 }
 
-.menu a::after {
+.menu:not(.dropdown-content) a::after {
   display: block;
   content: "";
   border-bottom: solid 2px var(--pink-gold);
@@ -59,8 +59,23 @@ svg {
   transition: transform 300ms ease-in-out;
 }
 
-.menu a:not(.active):hover::after {
+.menu:not(.dropdown-content) a:not(.active):hover::after {
   transform: scaleX(1);
+}
+
+/* dropdown menu styles */
+.dropdown-content li {
+  font-family: var(--montserrat);
+  font-weight: 700;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+}
+.dropdown-content > li:first-child {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 8px;
+}
+.dropdown-content > li:last-child {
+  padding-top: 8px;
 }
 
 /* header search bar styles */
@@ -90,6 +105,6 @@ svg {
     transform: translate3d(0, -100%, 0);
   }
   100% {
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 }

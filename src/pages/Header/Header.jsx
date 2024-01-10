@@ -14,8 +14,11 @@ import Textra from "react-textra";
 import { HashLink } from "react-router-hash-link";
 import { Link } from "react-router-dom";
 import RightSideDrawer from "../../components/RightSideDrawer/RightSideDrawer";
+import useAuthContext from "../../hooks/useAuthContext";
+import placeholderUserImg from "../../assets/placeholder-user.png";
 
 const Header = () => {
+  const { user, isAuthLoading } = useAuthContext();
   const [stickyNav, setStickyNav] = useState("");
   const [navNotifications] = useState([
     // todo: load data from database
@@ -35,7 +38,24 @@ const Header = () => {
 
   // change nav-style on scroll
   const changeNavStyle = () => {
-    window.scrollY > 2 ? setStickyNav("sticky-nav") : setStickyNav("");
+    console.log(window.scrollY);
+    if (window.scrollY > 70) {
+      setStickyNav("sticky-nav");
+
+      if (
+        document.getElementById("not-sticky-nav").getAttribute("open") === ""
+      ) {
+        document.getElementById("not-sticky-nav").removeAttribute("open");
+        document.getElementById("sticky-nav").setAttribute("open", "");
+      }
+    } else {
+      setStickyNav("");
+
+      if (document.getElementById("sticky-nav").getAttribute("open") === "") {
+        document.getElementById("sticky-nav").removeAttribute("open");
+        document.getElementById("not-sticky-nav").setAttribute("open", "");
+      }
+    }
   };
 
   useEffect(() => {
@@ -260,9 +280,11 @@ const Header = () => {
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
-                  <Link to="/login">
-                    <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                  </Link>
+                  {!user && (
+                    <Link to="/login">
+                      <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                    </Link>
+                  )}
 
                   <div
                     className="indicator"
@@ -273,6 +295,60 @@ const Header = () => {
                     </span>
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>
+
+                  {isAuthLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    <>
+                      {user && (
+                        <details
+                          className="dropdown dropdown-end"
+                          id="sticky-nav"
+                        >
+                          <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
+                            <div className="w-10 rounded-full">
+                              <img
+                                alt={user.displayName || user.email}
+                                src={
+                                  user.photoURL
+                                    ? user.photoURL
+                                    : placeholderUserImg
+                                }
+                              />
+                            </div>
+                          </summary>
+                          <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
+                            <li>
+                              <p className="font-light">Signed in as</p>
+                              <p>{user.email}</p>
+                            </li>
+
+                            <div className="py-2 border-b border-gray-300">
+                              <li>
+                                <a>View Profile</a>
+                              </li>
+                              <li>
+                                <a>Account Settings</a>
+                              </li>
+                              <li>
+                                <a>My Orders</a>
+                              </li>
+                              <li>
+                                <a>My Payments</a>
+                              </li>
+                              <li>
+                                <a>Support</a>
+                              </li>
+                            </div>
+
+                            <li>
+                              <button>Sign Out</button>
+                            </li>
+                          </ul>
+                        </details>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -351,9 +427,11 @@ const Header = () => {
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
-                  <Link to="/login">
-                    <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                  </Link>
+                  {!user && (
+                    <Link to="/login">
+                      <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                    </Link>
+                  )}
                   <div
                     className="indicator"
                     onClick={() => setShowRightDrawer(true)}
@@ -363,6 +441,60 @@ const Header = () => {
                     </span>
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>
+
+                  {isAuthLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    <>
+                      {user && (
+                        <details
+                          className="dropdown dropdown-end"
+                          id="not-sticky-nav"
+                        >
+                          <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
+                            <div className="w-10 rounded-full">
+                              <img
+                                alt={user.displayName || user.email}
+                                src={
+                                  user.photoURL
+                                    ? user.photoURL
+                                    : placeholderUserImg
+                                }
+                              />
+                            </div>
+                          </summary>
+                          <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
+                            <li>
+                              <p className="font-light">Signed in as</p>
+                              <p>{user.email}</p>
+                            </li>
+
+                            <div className="py-2 border-b border-gray-300">
+                              <li>
+                                <a>View Profile</a>
+                              </li>
+                              <li>
+                                <a>Account Settings</a>
+                              </li>
+                              <li>
+                                <a>My Orders</a>
+                              </li>
+                              <li>
+                                <a>My Payments</a>
+                              </li>
+                              <li>
+                                <a>Support</a>
+                              </li>
+                            </div>
+
+                            <li>
+                              <button>Sign Out</button>
+                            </li>
+                          </ul>
+                        </details>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
