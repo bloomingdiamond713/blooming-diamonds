@@ -51,3 +51,7 @@
   visibility: visible;
   transition: all 0.4s;
 }
+
+.swal2-popup {
+  font-family: var(--poppins);
+}

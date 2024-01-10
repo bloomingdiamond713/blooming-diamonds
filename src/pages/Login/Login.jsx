@@ -16,6 +16,7 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let from = location.state?.from?.pathname || "/";
+  console.log(location?.state);
 
   // react hook form settings
   const {
