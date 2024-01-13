@@ -16,6 +16,9 @@ const Shop = () => {
   const [filterLoading, setFilterLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
+  const [minimumPrice, setMinimumPrice] = useState(null);
+  const [maximumPrice, setMaximumPrice] = useState(null);
+  const [priceSortingOrder, setPriceSortingOrder] = useState("all");
 
   // set filtered products on search
   useEffect(() => {
@@ -40,7 +43,36 @@ const Shop = () => {
         setFilterLoading(false);
       });
   };
-  // console.log(filteredProducts);
+
+  // find max and min prices of the products
+  useEffect(() => {
+    const prices = products?.map((p) => parseFloat(p.price));
+    if (prices) {
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      setMinimumPrice(parseFloat(minPrice));
+      setMaximumPrice(parseFloat(maxPrice));
+    }
+  }, [products]);
+
+  // filter items by price range
+  useEffect(() => {
+    setFilterLoading(true);
+    axios
+      .get(
+        `http://localhost:5000/products/price?minprice=${minimumPrice}&maxprice=${maximumPrice}&sort=${priceSortingOrder}`
+      )
+      .then((res) => {
+        setFilteredProducts(res.data);
+        setFilterLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setFilterLoading(false);
+      });
+  }, [minimumPrice, maximumPrice, priceSortingOrder]);
+
+  // sort items by price
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,9 +86,6 @@ const Shop = () => {
       behavior: "smooth",
     });
   }, [currentPage]);
-
-  // price range minimum price
-  const [minPrice, setMinPrice] = useState(0);
 
   // right side filter options
   const { getUniqueProducts } = useFilterProducts();
@@ -107,17 +136,17 @@ const Shop = () => {
             <h3>Price</h3>
             <input
               type="range"
-              min={0}
-              max={100}
+              min={499}
+              max={maximumPrice}
               defaultValue={"0"}
               className="range mt-5"
               onChange={(e) => {
-                setMinPrice(e.target.value);
+                setMinimumPrice(e.target.value);
               }}
             />
             <div className="flex justify-between items-center px-1">
-              <p className="text-sm">{minPrice}$</p>
-              <p className="text-sm">{100}$</p>
+              <p className="text-sm">Min: {minimumPrice}$</p>
+              <p className="text-sm">Max: {maximumPrice}$</p>
             </div>
           </div>
 
@@ -167,10 +196,15 @@ const Shop = () => {
             </div>
 
             <div className="w-[30%] border-2">
-              <select className="select select-bordered w-full h-[55px] rounded-none border-black">
-                <option defaultValue={"all"}>All Price</option>
-                <option>Low to High</option>
-                <option>High to Low</option>
+              <select
+                className="select select-bordered w-full h-[55px] rounded-none border-black"
+                onChange={(e) => setPriceSortingOrder(e.target.value)}
+              >
+                <option defaultValue={"all"} value={"all"}>
+                  All Price
+                </option>
+                <option value={"asc"}>Low to High</option>
+                <option value={"desc"}>High to Low</option>
               </select>
             </div>
           </div>
