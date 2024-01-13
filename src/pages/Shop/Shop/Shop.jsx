@@ -7,6 +7,9 @@ import ProductCard from "../../../components/ProductCard/ProductCard";
 import { Pagination } from "react-pagination-bar";
 
 const Shop = () => {
+  // filters
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
   const pageProductLimit = 9;
@@ -23,7 +26,7 @@ const Shop = () => {
   // price range minimum price
   const [minPrice, setMinPrice] = useState(0);
 
-  // filter products
+  // right side filter options
   const { getUniqueProducts, allProducts } = useFilterProducts();
   const filterCategories = getUniqueProducts("category");
   const filterSizes = getUniqueProducts("size");

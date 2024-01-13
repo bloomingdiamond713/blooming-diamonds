@@ -12,7 +12,7 @@ const RelatedDynamicProducts = () => {
 
   //   todo: load data from database
   useEffect(() => {
-    const dynamicProduct = products?.find((p) => p.id === parseInt(id));
+    const dynamicProduct = products?.find((p) => p._id === id);
     const sameCategoryProducts = products?.filter(
       (p) => p.category === dynamicProduct?.category
     );
@@ -21,6 +21,7 @@ const RelatedDynamicProducts = () => {
 
   //   react slick props
   const settings = {
+    arrows: false,
     dots: true,
     infinite: true,
     speed: 800,

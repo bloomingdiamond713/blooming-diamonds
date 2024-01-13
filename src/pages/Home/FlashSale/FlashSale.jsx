@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./FlashSale.css";
 import flashSaleIcon from "../../../assets/flash sale products images/flashSale.png";
-import axios from "axios";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import CountDownTimer from "../../../components/CountDownTimer/CountDownTimer";
 import Slider from "react-slick";
@@ -10,7 +9,7 @@ import useProducts from "../../../hooks/useProducts";
 
 const FlashSale = () => {
   // TODO: LOAD DATA FROM DATABASE
-  const [products] = useProducts();
+  const [products, isProductsLoading] = useProducts();
   const [flashSaleData, setFlashSaleData] = useState([]);
   useEffect(() => {
     const filterFlashProducts = products?.filter((p) => p.flashSale === true);
@@ -28,6 +27,7 @@ const FlashSale = () => {
   };
 
   const settings = {
+    arrow: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
@@ -64,20 +64,26 @@ const FlashSale = () => {
         <CountDownTimer targetDate={targetDate} />
       </div>
 
-      <div className="w-[70%] relative">
-        {/* TODO: use _id as the key in the ProductCard */}
-        <Slider ref={sliderRef} {...settings}>
-          {flashSaleData?.map((cardData, idx) => (
-            <ProductCard key={idx + 1} cardData={cardData} flashSale={true} />
-          ))}
-        </Slider>
-        <button
-          className="button absolute bottom-1/2 -right-16 translate-x-[-50%] translate-y-[-50%] bg-[#f8da2e] rounded-badge p-5 hover:bg-slate-300 transition-all duration-200"
-          onClick={next}
-        >
-          <FaArrowRight className="" />
-        </button>
-      </div>
+      {isProductsLoading ? (
+        <div className="mx-auto">
+          <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+        </div>
+      ) : (
+        <div className="w-[70%] relative">
+          {/* TODO: use _id as the key in the ProductCard */}
+          <Slider ref={sliderRef} {...settings}>
+            {flashSaleData?.map((cardData, idx) => (
+              <ProductCard key={idx + 1} cardData={cardData} flashSale={true} />
+            ))}
+          </Slider>
+          <button
+            className="button absolute bottom-1/2 -right-16 translate-x-[-50%] translate-y-[-50%] bg-[#f8da2e] rounded-badge p-5 hover:bg-slate-300 transition-all duration-200"
+            onClick={next}
+          >
+            <FaArrowRight className="" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

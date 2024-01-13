@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./DynmicProduct.css";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import useDynamicRating from "../../hooks/useDynamicRating";
@@ -11,23 +10,20 @@ import { RiRefund2Line } from "react-icons/ri";
 import Magnifier from "react-magnifier";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 import { HashLink } from "react-router-hash-link";
+import useProducts from "../../hooks/useProducts";
 
 const DynamicProduct = () => {
   const { id } = useParams();
 
-  // todo: load data from database
   const [dynamicProduct, setDynamicProduct] = useState(null);
+  const [products] = useProducts();
 
   useEffect(() => {
-    axios.get("/products.json").then((res) => {
-      const filteredProduct = res.data.filter(
-        (data) => data.id === parseInt(id)
-      );
-      setDynamicProduct(filteredProduct[0]);
-    });
-  }, [id]);
+    const filteredProduct = products?.find((data) => data._id === id);
+    setDynamicProduct(filteredProduct);
+  }, [products, id]);
 
-  // const { name, img, category, price, details, review } = dynamicProduct;
+  console.log(dynamicProduct);
 
   const { averageRating } = useDynamicRating(dynamicProduct?.review);
 

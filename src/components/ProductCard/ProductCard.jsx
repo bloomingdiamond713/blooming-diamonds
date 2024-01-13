@@ -10,7 +10,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 const ProductCard = ({ cardData, flashSale }) => {
   const { user } = useAuthContext();
   const {
-    id,
+    _id,
     name,
     img,
     category,
@@ -77,7 +77,7 @@ const ProductCard = ({ cardData, flashSale }) => {
 
           <Link
             to={{
-              pathname: `/products/${id}/description`,
+              pathname: `/products/${_id}/description`,
             }}
             className="eye-icon-con tooltip tooltip-left block"
             data-tip="View Details"
@@ -97,7 +97,7 @@ const ProductCard = ({ cardData, flashSale }) => {
       </div>
       <div className="mt-2">
         <Link
-          to={`/products/${id}/description`}
+          to={`/products/${_id}/description`}
           className="text-lg font-bold text-[#3b3b3b]"
           state={{ from: "/" }}
         >

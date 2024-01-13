@@ -9,6 +9,7 @@ import img5 from "../../../assets/carousel 5.jpg";
 
 const Hero = () => {
   const settings = {
+    arrows: false,
     fade: true,
     infinite: true,
     slidesToShow: 1,

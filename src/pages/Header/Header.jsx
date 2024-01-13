@@ -12,15 +12,24 @@ import {
 import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
 import { HashLink } from "react-router-hash-link";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import RightSideDrawer from "../../components/RightSideDrawer/RightSideDrawer";
 import useAuthContext from "../../hooks/useAuthContext";
 import placeholderUserImg from "../../assets/placeholder-user.png";
 import toast from "react-hot-toast";
+import useFilterByQuery from "../../hooks/useFilterByQuery";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import Slider from "react-slick";
 
 const Header = () => {
   const { user, isAuthLoading, logOut } = useAuthContext();
   const [stickyNav, setStickyNav] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const location = useLocation();
+  const { filteredProducts, isFilterLoading } = useFilterByQuery({
+    queryKey: "searchText",
+    searchText,
+  });
   const [navNotifications] = useState([
     // todo: load data from database
     "Flash Sale Going On Till 5th January!",
@@ -70,6 +79,9 @@ const Header = () => {
   const handleSearchIcon = () => {
     setSearchBar("open");
   };
+  useEffect(() => {
+    setSearchBar("closed");
+  }, [location]);
 
   // react hashlink router scroll with offest
   const scrollWithOffset = (el) =>
@@ -86,6 +98,18 @@ const Header = () => {
       })
       .catch((error) => toast.error(error?.code));
   };
+
+  // slick slider settings for search items
+  const settings = {
+    dots: false,
+    infinite: true,
+    arrows: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    adaptiveHeight: true,
+  };
+
   return (
     <div className="relative">
       {/* upper navbar */}
@@ -154,26 +178,65 @@ const Header = () => {
         <div
           className={`w-full min-h-[300px] fixed top-0 left-0 right-0 bg-white z-[1005]  ${
             searchBar === "open" ? "translate-y-0" : "translate-y-[-100%]"
-          } transition-all duration-300 ease-in-out px-7 py-10`}
+          } transition-all duration-300 ease-in-out pt-2 pb-10`}
         >
           {/* close button */}
           <button
             onClick={() => setSearchBar("closed")}
-            className="flex justify-end text-3xl w-full"
+            className="flex justify-end text-3xl w-full pr-6"
           >
             <TfiClose className="hover:fill-red-400" />
           </button>
 
           {/* search bar */}
-          <div className="w-[90%] mx-auto space-y-10">
+          <div className="w-[80%] mx-auto space-y-5">
             <h5 className="text-sm uppercase font-[500]">
               what are you looking for?
             </h5>
 
             <div className="header-search-bar relative">
-              <FiSearch className="text-3xl absolute -top-1 left-0" />
-              <input type="text" id="search-input-field" placeholder="Search" />
+              <FiSearch className="text-3xl absolute -top-1 right-0" />
+              <input
+                type="text"
+                id="search-input-field"
+                placeholder="Search"
+                onBlur={(e) => setSearchText(e.target.value)}
+                onKeyDownCapture={(e) =>
+                  e.key === "Enter" && setSearchText(e.target.value)
+                }
+              />
             </div>
+          </div>
+
+          {/* searched products */}
+          <div className="mt-5 container searched-products">
+            {isFilterLoading ? (
+              <div>
+                <span className="loading loading-spinner loading-lg block mx-auto"></span>
+              </div>
+            ) : (
+              <>
+                {filteredProducts?.length ? (
+                  <Slider {...settings}>
+                    {filteredProducts?.map((product) => (
+                      <ProductCard
+                        key={product._id}
+                        cardData={product}
+                        flashSale={true}
+                      />
+                    ))}
+                  </Slider>
+                ) : (
+                  <>
+                    {searchText !== "" && (
+                      <h4 className="text-center text-red-500 text-lg font-medium">
+                        No item matched {searchText}
+                      </h4>
+                    )}
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
         <div

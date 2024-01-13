@@ -86,7 +86,6 @@ svg {
   outline: none;
   border-bottom: 1px solid lightgrey;
   transition: all 0.3s;
-  padding-left: 40px;
   padding-bottom: 15px;
   font-size: 1.2rem;
 }
@@ -94,6 +93,16 @@ svg {
   font-size: 1.2rem !important;
   color: black;
   font-weight: 500;
+}
+
+/* slick slider styles */
+.searched-products .slick-next::before,
+.searched-products .slick-prev::before {
+  color: var(--pink-gold) !important;
+  font-size: 2.5rem;
+}
+.searched-products .slick-prev {
+  left: -44px !important;
 }
 
 .header-search-bar input:focus {

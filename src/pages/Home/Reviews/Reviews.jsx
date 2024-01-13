@@ -12,13 +12,14 @@ const Reviews = () => {
   const { data: reviews, isLoading: isReviewsLoading } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
-      const res = await axios.get("/reviews.json");
+      const res = await axios.get("http://localhost:5000/reviews");
       return res.data;
     },
   });
 
   // react slick slider settings
   const settings = {
+    arrows: false,
     infinite: true,
     dots: true,
     dotsClass: "slick-dots reviews-slick-dots",
@@ -43,11 +44,17 @@ const Reviews = () => {
     <div id="reviews" className="mb-32 pt-6">
       <SectionTitle title={"Customers Say"} />
       <div className="container relative mt-16">
-        <Slider {...settings} ref={sliderRef}>
-          {reviews?.map((reviewObj) => (
-            <ReviewCard key={reviewObj.id} reviewObj={reviewObj} />
-          ))}
-        </Slider>
+        {isReviewsLoading ? (
+          <div>
+            <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+          </div>
+        ) : (
+          <Slider {...settings} ref={sliderRef}>
+            {reviews?.map((reviewObj) => (
+              <ReviewCard key={reviewObj.id} reviewObj={reviewObj} />
+            ))}
+          </Slider>
+        )}
 
         {/* slider left right buttons */}
         <button

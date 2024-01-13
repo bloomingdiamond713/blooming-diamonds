@@ -9,7 +9,7 @@ const ProductDescription = () => {
 
   // todo: load data from database
   useEffect(() => {
-    const filter = products?.find((item) => item.id == id); // find product by id
+    const filter = products?.find((item) => item._id == id); // find product by id
     setDynamicProduct(filter);
   }, [products, id]);
 

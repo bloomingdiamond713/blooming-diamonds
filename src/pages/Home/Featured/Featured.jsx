@@ -5,7 +5,7 @@ import featuredBanner from "../../../assets/featuredBanner.jpg";
 import FeaturedCard from "./FeaturedCard/FeaturedCard";
 
 const Featured = () => {
-  const [products] = useProducts();
+  const [products, isProductsLoading] = useProducts();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
 
@@ -63,11 +63,18 @@ const Featured = () => {
           >
             Featured Products
           </h4>
-          <div className="space-y-3">
-            {featuredProducts?.map((product) => (
-              <FeaturedCard key={product.id} product={product} />
-            ))}
-          </div>
+
+          {isProductsLoading ? (
+            <div>
+              <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {featuredProducts?.map((product) => (
+                <FeaturedCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
 
         <div>
@@ -77,11 +84,17 @@ const Featured = () => {
           >
             Best Sellers
           </h4>
-          <div className="space-y-3">
-            {bestSellers?.map((product) => (
-              <FeaturedCard key={product.id} product={product} />
-            ))}
-          </div>
+          {isProductsLoading ? (
+            <div>
+              <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {bestSellers?.map((product) => (
+                <FeaturedCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
