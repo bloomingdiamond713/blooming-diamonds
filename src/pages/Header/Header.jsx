@@ -17,19 +17,16 @@ import RightSideDrawer from "../../components/RightSideDrawer/RightSideDrawer";
 import useAuthContext from "../../hooks/useAuthContext";
 import placeholderUserImg from "../../assets/placeholder-user.png";
 import toast from "react-hot-toast";
-import useFilterByQuery from "../../hooks/useFilterByQuery";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Slider from "react-slick";
+import useSearchedProducts from "../../hooks/useSearchedProducts";
 
 const Header = () => {
   const { user, isAuthLoading, logOut } = useAuthContext();
   const [stickyNav, setStickyNav] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
   const location = useLocation();
-  const { filteredProducts, isFilterLoading } = useFilterByQuery({
-    queryKey: "searchText",
-    searchText,
-  });
   const [navNotifications] = useState([
     // todo: load data from database
     "Flash Sale Going On Till 5th January!",
@@ -210,15 +207,15 @@ const Header = () => {
 
           {/* searched products */}
           <div className="mt-5 container searched-products">
-            {isFilterLoading ? (
+            {isSearchLoading ? (
               <div>
                 <span className="loading loading-spinner loading-lg block mx-auto"></span>
               </div>
             ) : (
               <>
-                {filteredProducts?.length ? (
+                {searchedProducts?.length ? (
                   <Slider {...settings}>
-                    {filteredProducts?.map((product) => (
+                    {searchedProducts?.map((product) => (
                       <ProductCard
                         key={product._id}
                         cardData={product}
@@ -228,9 +225,13 @@ const Header = () => {
                   </Slider>
                 ) : (
                   <>
-                    {searchText !== "" && (
+                    {searchText !== "" ? (
                       <h4 className="text-center text-red-500 text-lg font-medium">
                         No item matched {searchText}
+                      </h4>
+                    ) : (
+                      <h4 className="text-center text-red-500 text-lg font-medium">
+                        Search box is empty!
                       </h4>
                     )}
                   </>

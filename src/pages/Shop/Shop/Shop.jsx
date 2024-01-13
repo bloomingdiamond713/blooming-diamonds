@@ -5,10 +5,27 @@ import useFilterProducts from "../../../hooks/useFilterProducts";
 import { FiSearch } from "react-icons/fi";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { Pagination } from "react-pagination-bar";
+import useFilterByQuery from "../../../hooks/useSearchedProducts";
+import useSearchedProducts from "../../../hooks/useSearchedProducts";
+import useProducts from "../../../hooks/useProducts";
 
 const Shop = () => {
   // filters
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [products, isProductsLoading] = useProducts();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchText, setSearchText] = useState("");
+  const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
+
+  console.log(searchText);
+  // set filtered products on search
+  useEffect(() => {
+    if (searchText !== "") {
+      setFilteredProducts(searchedProducts);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [searchedProducts, searchText, products]);
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,11 +44,10 @@ const Shop = () => {
   const [minPrice, setMinPrice] = useState(0);
 
   // right side filter options
-  const { getUniqueProducts, allProducts } = useFilterProducts();
+  const { getUniqueProducts } = useFilterProducts();
   const filterCategories = getUniqueProducts("category");
   const filterSizes = getUniqueProducts("size");
   const filterCarates = getUniqueProducts("carate");
-  console.log(filterSizes);
 
   return (
     <div
@@ -58,7 +74,10 @@ const Shop = () => {
               {filterCategories?.map((category) => (
                 <div
                   key={Object.keys(category)[0]}
-                  className="flex items-center gap-3 text-gray-500"
+                  className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
+                  onClick={() =>
+                    setSelectedCategory(`${Object.keys(category)[0]}`)
+                  }
                 >
                   <h5 className="text-gray-700">{Object.keys(category)[0]}</h5>
                   <span className="text-xs">
@@ -123,13 +142,12 @@ const Shop = () => {
         <div className="space-y-8">
           <div className="flex justify-between items-center px-4">
             <div className="relative w-[30%] border">
-              <FiSearch className="absolute top-4 left-2 text-xl" />
+              <FiSearch className="absolute top-4 right-3 text-xl" />
               <input
                 type="text"
-                name=""
-                id=""
                 placeholder="Search..."
-                className="border border-black outline-none ps-9 pe-2 py-3 text-lg w-full"
+                className="border border-black outline-none pl-3 py-3 text-lg w-full"
+                onChange={(e) => setSearchText(e.target.value)}
               />
             </div>
 
@@ -143,22 +161,37 @@ const Shop = () => {
           </div>
 
           {/* products */}
-          <div className="grid grid-cols-3 gap-y-20">
-            {allProducts
-              ?.slice(
-                (currentPage - 1) * pageProductLimit,
-                currentPage * pageProductLimit
-              )
-              .map((product) => (
-                <ProductCard key={product.id} cardData={product} />
-              ))}
-          </div>
+          {isProductsLoading || isSearchLoading ? (
+            <div>
+              <span className="loading loading-spinner loading-lg mx-auto block"></span>
+            </div>
+          ) : (
+            <>
+              {filteredProducts?.length ? (
+                <div className="grid grid-cols-3 gap-y-20">
+                  {filteredProducts
+                    ?.slice(
+                      (currentPage - 1) * pageProductLimit,
+                      currentPage * pageProductLimit
+                    )
+                    .map((product) => (
+                      <ProductCard key={product.id} cardData={product} />
+                    ))}
+                </div>
+              ) : (
+                <h4 className="text-center text-red-500 text-xl font-medium">
+                  No item matched {searchText}
+                </h4>
+              )}
+            </>
+          )}
+
           <div className="mx-auto">
             <Pagination
               currentPage={currentPage}
               itemsPerPage={pageProductLimit}
               onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-              totalItems={allProducts?.length}
+              totalItems={filteredProducts?.length}
               pageNeighbours={2}
               withProgressBar={true}
             />
