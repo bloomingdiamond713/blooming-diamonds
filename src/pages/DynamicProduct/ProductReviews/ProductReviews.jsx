@@ -59,7 +59,7 @@ const ProductReviews = () => {
 
           <div className=" pl-10 pr-20 product-reviews-con">
             {dynamicProduct?.review?.slice(0, reviewsLength).map((r) => (
-              <div key={r.id} className="flex items-start gap-4 ">
+              <div key={r.desc} className="flex items-start gap-4 ">
                 <div className="w-[5%]">
                   <img
                     src={r.reviewerImg}
@@ -70,7 +70,7 @@ const ProductReviews = () => {
 
                 <div className="w-[95%]">
                   <div className="flex items-center gap-4">
-                    <h5 className="text-xl text-black font-medium">
+                    <h5 className="text-xl text-black font-semibold">
                       {r.reviewerName}
                     </h5>
                     <p className="text-sm text-gray-600">{r.reviewDate}</p>

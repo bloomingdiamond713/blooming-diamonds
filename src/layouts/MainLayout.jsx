@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "../pages/Header/Header";
 import Footer from "../pages/Footer/Footer";
 import { Toaster } from "react-hot-toast";
+import TakeToLoginModal from "../components/TakeToLoginModal/TakeToLoginModal";
 
 const MainLayout = () => {
   // scroll to top on route change
@@ -40,6 +41,7 @@ const MainLayout = () => {
           },
         }}
       />
+      <TakeToLoginModal />
     </div>
   );
 };

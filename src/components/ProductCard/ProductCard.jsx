@@ -4,10 +4,8 @@ import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegHeart, FaRegEye } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
 const ProductCard = ({ cardData, flashSale }) => {
   const { user } = useAuthContext();
@@ -26,33 +24,12 @@ const ProductCard = ({ cardData, flashSale }) => {
   const { averageRating } = useDynamicRating(review);
 
   // add to cart function
-  const navigate = useNavigate();
-  const location = useLocation();
   const handleAddToCart = () => {
     if (user) {
       // todo: post the data to database
       alert("added to cart");
     } else {
-      Swal.fire({
-        title: "Are you not logged in?",
-        text: "Please Login or Sign Up to add items in cart or wishlist",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#f1b094",
-        cancelButtonColor: "#932222",
-        confirmButtonText: "Go to Login",
-        cancelButtonText: "I'll do it later",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/login", { state: { from: location }, replace: true });
-          Swal.fire({
-            title: "Success",
-            text: "Login or Create Account if you don't have one",
-            icon: "success",
-            confirmButtonColor: "#f1b094",
-          });
-        }
-      });
+      document.getElementById("takeToLoginModal").showModal();
     }
   };
 
