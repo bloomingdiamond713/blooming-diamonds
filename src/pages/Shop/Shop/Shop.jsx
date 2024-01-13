@@ -5,19 +5,18 @@ import useFilterProducts from "../../../hooks/useFilterProducts";
 import { FiSearch } from "react-icons/fi";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { Pagination } from "react-pagination-bar";
-import useFilterByQuery from "../../../hooks/useSearchedProducts";
 import useSearchedProducts from "../../../hooks/useSearchedProducts";
 import useProducts from "../../../hooks/useProducts";
+import axios from "axios";
 
 const Shop = () => {
   // filters
   const [products, isProductsLoading] = useProducts();
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [filterLoading, setFilterLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
 
-  console.log(searchText);
   // set filtered products on search
   useEffect(() => {
     if (searchText !== "") {
@@ -26,6 +25,22 @@ const Shop = () => {
       setFilteredProducts(products);
     }
   }, [searchedProducts, searchText, products]);
+
+  // filter items by category (through backend)
+  const handleFilterCategoryItems = (category) => {
+    setFilterLoading(true);
+    axios
+      .get(`http://localhost:5000/products/category/${category}`)
+      .then((res) => {
+        setFilteredProducts(res.data);
+        setFilterLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setFilterLoading(false);
+      });
+  };
+  // console.log(filteredProducts);
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
@@ -76,7 +91,7 @@ const Shop = () => {
                   key={Object.keys(category)[0]}
                   className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
                   onClick={() =>
-                    setSelectedCategory(`${Object.keys(category)[0]}`)
+                    handleFilterCategoryItems(`${Object.keys(category)[0]}`)
                   }
                 >
                   <h5 className="text-gray-700">{Object.keys(category)[0]}</h5>
@@ -161,7 +176,7 @@ const Shop = () => {
           </div>
 
           {/* products */}
-          {isProductsLoading || isSearchLoading ? (
+          {isProductsLoading || isSearchLoading || filterLoading ? (
             <div>
               <span className="loading loading-spinner loading-lg mx-auto block"></span>
             </div>
@@ -175,7 +190,7 @@ const Shop = () => {
                       currentPage * pageProductLimit
                     )
                     .map((product) => (
-                      <ProductCard key={product.id} cardData={product} />
+                      <ProductCard key={product._id} cardData={product} />
                     ))}
                 </div>
               ) : (
