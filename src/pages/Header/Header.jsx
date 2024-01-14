@@ -21,6 +21,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Slider from "react-slick";
 import useSearchedProducts from "../../hooks/useSearchedProducts";
 import axios from "axios";
+import useCart from "../../hooks/useCart";
 
 const Header = () => {
   const { user, isAuthLoading, logOut } = useAuthContext();
@@ -30,6 +31,7 @@ const Header = () => {
   const location = useLocation();
   const [navNotifications, setNavNotifications] = useState([]);
   const [showRightDrawer, setShowRightDrawer] = useState(false);
+  const [cartData] = useCart();
 
   // fetch upper nav notifications
   useEffect(() => {
@@ -365,7 +367,7 @@ const Header = () => {
                     onClick={() => setShowRightDrawer(true)}
                   >
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
-                      0
+                      {user ? cartData.length : 0}
                     </span>
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>
@@ -512,7 +514,7 @@ const Header = () => {
                     onClick={() => setShowRightDrawer(true)}
                   >
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
-                      0
+                      {user ? cartData.length : 0}
                     </span>
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>

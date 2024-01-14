@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ProductCard.css";
 import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegHeart, FaRegEye } from "react-icons/fa6";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaCheckDouble } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
+import axios from "axios";
+import useCart from "../../hooks/useCart";
+import toast from "react-hot-toast";
 
 const ProductCard = ({ cardData, flashSale }) => {
+  const [cartData, isCartLoading, refetch] = useCart();
+  const [addedToCart, setAddedToCart] = useState(false);
+
+  // check if item added to cart
+  useEffect(() => {
+    const item = cartData.find((p) => p.productId === cardData._id);
+    if (item) {
+      setAddedToCart(true);
+    } else {
+      setAddedToCart(false);
+    }
+  }, [cartData, isCartLoading, cardData._id]);
+
   const { user } = useAuthContext();
   const {
     _id,
@@ -26,9 +42,31 @@ const ProductCard = ({ cardData, flashSale }) => {
   // add to cart function
   const handleAddToCart = () => {
     if (user) {
-      // todo: post the data to database
-      alert("added to cart");
+      const productData = {
+        productId: _id,
+        name,
+        img,
+        category,
+        price: discountPrice || price,
+        quantity: 0,
+        addedAt: new Date(),
+      };
+
+      // post data to db
+      axios
+        .post("http://localhost:5000/cart", productData)
+        .then((res) => {
+          if (res.data?.insertedId) {
+            toast.success("Item added to cart!", {
+              position: "top-right",
+            });
+
+            refetch();
+          }
+        })
+        .catch((error) => console.error(error));
     } else {
+      // show modal to login if not logged in
       document.getElementById("takeToLoginModal").showModal();
     }
   };
@@ -90,9 +128,13 @@ const ProductCard = ({ cardData, flashSale }) => {
         <button
           className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg"
           onClick={handleAddToCart}
+          disabled={addedToCart}
         >
-          <FaShoppingCart />
-          <p className="text-sm">Add to Cart</p>
+          {addedToCart ? <FaCheckDouble /> : <FaShoppingCart />}
+
+          <p className="text-sm">
+            {addedToCart ? "Added to Cart" : "Add to Cart"}{" "}
+          </p>
         </button>
       </div>
       <div className="mt-2">
