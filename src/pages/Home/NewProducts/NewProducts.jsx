@@ -4,6 +4,7 @@ import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import useProducts from "../../../hooks/useProducts";
 import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
+import { Link } from "react-router-dom";
 
 const NewProducts = () => {
   const [newProducts, setNewProducts] = useState([]);
@@ -33,13 +34,15 @@ const NewProducts = () => {
         <>
           <div className="grid grid-cols-3 gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">
             {newProducts?.map((product) => (
-              <ProductCard key={product.id} cardData={product} />
+              <ProductCard key={product._id} cardData={product} />
             ))}
           </div>
 
-          <button className="btn btn-outline mx-auto block btn-wide">
-            View all items
-          </button>
+          <Link to="/shop">
+            <button className="btn btn-outline mx-auto block btn-wide">
+              View all items
+            </button>
+          </Link>
         </>
       )}
     </section>

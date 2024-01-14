@@ -9,13 +9,17 @@ import useProducts from "../../../hooks/useProducts";
 import axios from "axios";
 import { TfiClose } from "react-icons/tfi";
 import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
+import { useLocation } from "react-router-dom";
 
 const Shop = () => {
   // filters
+  const location = useLocation();
   const [products] = useProducts();
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [filterLoading, setFilterLoading] = useState(false);
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState(
+    location.state?.category?.toLowerCase() || "all"
+  );
   const [minimumPrice, setMinimumPrice] = useState(null);
   const [maximumPrice, setMaximumPrice] = useState(null);
   const [priceSortingOrder, setPriceSortingOrder] = useState("all");
@@ -23,8 +27,6 @@ const Shop = () => {
   const [carate, setCarate] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-
-  console.log(category, size, carate);
 
   // find max and min prices of the products
   useEffect(() => {
@@ -40,6 +42,7 @@ const Shop = () => {
   // filter products by category, price range, price sort, size, carate
   useEffect(() => {
     setFilterLoading(true);
+
     axios
       .get(
         `http://localhost:5000/products/filter?category=${category}&minPrice=${minimumPrice}&maxPrice=${maximumPrice}&priceOrder=${priceSortingOrder}&size=${size}&carate=${carate}&search=${searchText}`
@@ -47,6 +50,7 @@ const Shop = () => {
       .then((res) => {
         setFilteredProducts(res.data);
         setFilterLoading(false);
+        location.state = {};
       })
       .catch((error) => {
         console.error(error);
@@ -60,6 +64,7 @@ const Shop = () => {
     size,
     carate,
     searchText,
+    location,
   ]);
 
   // show filters when category, carate or size changes
@@ -74,8 +79,6 @@ const Shop = () => {
       setShowFilters(false);
     }
   }, [category, carate, size]);
-
-  console.log(showFilters);
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
@@ -295,7 +298,6 @@ const Shop = () => {
               onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
               totalItems={filteredProducts?.length}
               pageNeighbours={2}
-              withProgressBar={true}
             />
           </div>
         </div>

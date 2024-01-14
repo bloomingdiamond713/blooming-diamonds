@@ -6,6 +6,7 @@ import img2 from "../../../assets/carousel 2.jpg";
 import img3 from "../../../assets/carousel 3.jpg";
 import img4 from "../../../assets/carousel 4.jpg";
 import img5 from "../../../assets/carousel 5.jpg";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const settings = {
@@ -56,7 +57,9 @@ const Hero = () => {
           <img src={img5} alt="Slide 4" />
           <div className="hero-text">
             <h1 className="">Diamonds</h1>
-            <button>SHOP NOW</button>
+            <Link to={"/shop"}>
+              <button>SHOP NOW</button>
+            </Link>
           </div>
         </div>
       </Slider>

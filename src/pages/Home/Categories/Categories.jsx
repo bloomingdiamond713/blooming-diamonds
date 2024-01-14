@@ -8,9 +8,11 @@ import Slider from "react-slick";
 const Categories = () => {
   const [categories, setCategories] = useState([]);
 
-  // TODO: load categories data from database
   useEffect(() => {
-    axios.get("/categories.json").then((res) => setCategories(res.data));
+    axios
+      .get("http://localhost:5000/categories")
+      .then((res) => setCategories(res.data))
+      .catch((error) => console.error(error));
   }, []);
 
   const settings = {

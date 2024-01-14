@@ -37,7 +37,7 @@ const RelatedDynamicProducts = () => {
       <SectionTitle title={"Related Products"} />
       <Slider {...settings} className="pb-8">
         {relatedProducts?.map((product) => (
-          <ProductCard key={product.id} cardData={product} />
+          <ProductCard key={product._id} cardData={product} />
         ))}
       </Slider>
     </div>

@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Slider from "react-slick";
 import useSearchedProducts from "../../hooks/useSearchedProducts";
+import axios from "axios";
 
 const Header = () => {
   const { user, isAuthLoading, logOut } = useAuthContext();
@@ -27,16 +28,16 @@ const Header = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
   const location = useLocation();
-  const [navNotifications] = useState([
-    // todo: load data from database
-    "Flash Sale Going On Till 5th January!",
-    "Discount up to 35% for first purchase only this month.",
-    "Free Shipping! First in Town.",
-    "Exclusive prices only for the month",
-    "Black Friday Coming. Hurry Up!",
-    "Best offers every week! 40% Off!",
-  ]);
+  const [navNotifications, setNavNotifications] = useState([]);
   const [showRightDrawer, setShowRightDrawer] = useState(false);
+
+  // fetch upper nav notifications
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/nav-notifications")
+      .then((res) => setNavNotifications(res.data))
+      .catch((error) => console.error(error));
+  }, []);
 
   // to close drawer(on mobile devices) upon link click
   const handleLinkClicked = () => {
@@ -124,7 +125,7 @@ const Header = () => {
           <Textra
             effect="topDown"
             stopDuration={2000}
-            data={navNotifications}
+            data={navNotifications.map((n) => n.notification)}
             className="text-sm text-black"
           />
         </div>
