@@ -5,44 +5,21 @@ import useFilterProducts from "../../../hooks/useFilterProducts";
 import { FiSearch } from "react-icons/fi";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { Pagination } from "react-pagination-bar";
-import useSearchedProducts from "../../../hooks/useSearchedProducts";
 import useProducts from "../../../hooks/useProducts";
 import axios from "axios";
 
 const Shop = () => {
   // filters
-  const [products, isProductsLoading] = useProducts();
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [products] = useProducts();
+  const [filteredProducts, setFilteredProducts] = useState(products);
   const [filterLoading, setFilterLoading] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
+  const [category, setCategory] = useState("all");
   const [minimumPrice, setMinimumPrice] = useState(null);
   const [maximumPrice, setMaximumPrice] = useState(null);
   const [priceSortingOrder, setPriceSortingOrder] = useState("all");
-
-  // set filtered products on search
-  useEffect(() => {
-    if (searchText !== "") {
-      setFilteredProducts(searchedProducts);
-    } else {
-      setFilteredProducts(products);
-    }
-  }, [searchedProducts, searchText, products]);
-
-  // filter items by category (through backend)
-  const handleFilterCategoryItems = (category) => {
-    setFilterLoading(true);
-    axios
-      .get(`http://localhost:5000/products/category/${category}`)
-      .then((res) => {
-        setFilteredProducts(res.data);
-        setFilterLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setFilterLoading(false);
-      });
-  };
+  const [size, setSize] = useState("all");
+  const [carate, setCarate] = useState("all");
+  const [searchText, setSearchText] = useState("");
 
   // find max and min prices of the products
   useEffect(() => {
@@ -55,12 +32,12 @@ const Shop = () => {
     }
   }, [products]);
 
-  // filter items by price range
+  // filter products by category, price range, price sort, size, carate
   useEffect(() => {
     setFilterLoading(true);
     axios
       .get(
-        `http://localhost:5000/products/price?minprice=${minimumPrice}&maxprice=${maximumPrice}&sort=${priceSortingOrder}`
+        `http://localhost:5000/products/filter?category=${category}&minPrice=${minimumPrice}&maxPrice=${maximumPrice}&priceOrder=${priceSortingOrder}&size=${size}&carate=${carate}&search=${searchText}`
       )
       .then((res) => {
         setFilteredProducts(res.data);
@@ -70,9 +47,17 @@ const Shop = () => {
         console.error(error);
         setFilterLoading(false);
       });
-  }, [minimumPrice, maximumPrice, priceSortingOrder]);
+  }, [
+    category,
+    minimumPrice,
+    maximumPrice,
+    priceSortingOrder,
+    size,
+    carate,
+    searchText,
+  ]);
 
-  // sort items by price
+  console.log(filterLoading);
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
@@ -119,9 +104,7 @@ const Shop = () => {
                 <div
                   key={Object.keys(category)[0]}
                   className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
-                  onClick={() =>
-                    handleFilterCategoryItems(`${Object.keys(category)[0]}`)
-                  }
+                  onClick={() => setCategory(`${Object.keys(category)[0]}`)}
                 >
                   <h5 className="text-gray-700">{Object.keys(category)[0]}</h5>
                   <span className="text-xs">
@@ -156,7 +139,8 @@ const Shop = () => {
               {filterSizes?.map((size) => (
                 <div
                   key={Object.keys(size)[0]}
-                  className="flex items-center gap-3 text-gray-500"
+                  className="flex items-center gap-3 text-gray-500 cursor-pointer"
+                  onClick={() => setSize(Object.keys(size)[0])}
                 >
                   <h5 className="text-gray-700">{Object.keys(size)[0]}</h5>
                   <span className="text-xs">{size[Object.keys(size)[0]]}</span>
@@ -171,9 +155,14 @@ const Shop = () => {
               {filterCarates?.map((carate) => (
                 <div
                   key={Object.keys(carate)[0]}
-                  className="flex items-center gap-3 "
+                  className="flex items-center gap-3 cursor-pointer"
+                  onClick={() => setCarate(Object.keys(carate)[0])}
                 >
-                  <h5 className="text-gray-700">{Object.keys(carate)[0]}K</h5>
+                  <h5 className="text-gray-700">
+                    {Object.keys(carate)[0].toLowerCase() === "all"
+                      ? "All"
+                      : `${Object.keys(carate)[0].toString()}K`}
+                  </h5>
                   <span className="text-xs text-gray-500">
                     {carate[Object.keys(carate)[0]]}
                   </span>
@@ -183,7 +172,7 @@ const Shop = () => {
           </div>
         </div>
         {/* right side - products */}
-        <div className="space-y-8">
+        <div className="">
           <div className="flex justify-between items-center px-4">
             <div className="relative w-[30%] border">
               <FiSearch className="absolute top-4 right-3 text-xl" />
@@ -210,14 +199,14 @@ const Shop = () => {
           </div>
 
           {/* products */}
-          {isProductsLoading || isSearchLoading || filterLoading ? (
-            <div>
+          {filterLoading ? (
+            <div className="h-screen flex justify-center items-center">
               <span className="loading loading-spinner loading-lg mx-auto block"></span>
             </div>
           ) : (
             <>
               {filteredProducts?.length ? (
-                <div className="grid grid-cols-3 gap-y-20">
+                <div className="grid grid-cols-3 gap-y-20 mt-8">
                   {filteredProducts
                     ?.slice(
                       (currentPage - 1) * pageProductLimit,
@@ -228,14 +217,14 @@ const Shop = () => {
                     ))}
                 </div>
               ) : (
-                <h4 className="text-center text-red-500 text-xl font-medium">
+                <h4 className="text-center text-red-500 text-xl font-medium mt-8">
                   No item matched {searchText}
                 </h4>
               )}
             </>
           )}
 
-          <div className="mx-auto">
+          <div className="mx-auto mb-40">
             <Pagination
               currentPage={currentPage}
               itemsPerPage={pageProductLimit}
