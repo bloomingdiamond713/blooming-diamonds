@@ -6,6 +6,7 @@ import CountDownTimer from "../../../components/CountDownTimer/CountDownTimer";
 import Slider from "react-slick";
 import { FaArrowRight } from "react-icons/fa6";
 import useProducts from "../../../hooks/useProducts";
+import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 
 const FlashSale = () => {
   // TODO: LOAD DATA FROM DATABASE
@@ -65,8 +66,10 @@ const FlashSale = () => {
       </div>
 
       {isProductsLoading ? (
-        <div className="mx-auto">
-          <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+        <div className="mx-auto flex items-center gap-2">
+          {[...Array(3)].map((item, idx) => (
+            <CardSkeleton key={idx} height={"280px"} width={"270px"} />
+          ))}
         </div>
       ) : (
         <div className="w-[70%] relative">

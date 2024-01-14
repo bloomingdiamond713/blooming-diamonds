@@ -3,6 +3,7 @@ import "./NewProducts.css";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import useProducts from "../../../hooks/useProducts";
+import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 
 const NewProducts = () => {
   const [newProducts, setNewProducts] = useState([]);
@@ -22,8 +23,11 @@ const NewProducts = () => {
       <SectionTitle title={"New Arrivals"} />
 
       {isProductsLoading ? (
-        <div>
-          <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+        <div className="grid grid-cols-3 gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">
+          {/* iterate empty array of length 6 */}
+          {[...Array(6)].map((item, idx) => (
+            <CardSkeleton key={idx} height={"340px"} width={"330px"} />
+          ))}
         </div>
       ) : (
         <>

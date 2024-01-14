@@ -8,6 +8,7 @@ import { Pagination } from "react-pagination-bar";
 import useProducts from "../../../hooks/useProducts";
 import axios from "axios";
 import { TfiClose } from "react-icons/tfi";
+import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 
 const Shop = () => {
   // filters
@@ -263,12 +264,7 @@ const Shop = () => {
             <div className="grid grid-cols-3 gap-y-20 mt-8">
               {/* iterate empty array of length 9 */}
               {[...Array(9)].map((item, idx) => (
-                <div className="flex flex-col gap-4 w-80 mx-auto" key={idx}>
-                  <div className="skeleton h-56 w-full"></div>
-                  <div className="skeleton h-4 w-28"></div>
-                  <div className="skeleton h-4 w-full"></div>
-                  <div className="skeleton h-4 w-full"></div>
-                </div>
+                <CardSkeleton key={idx} height={"340px"} width={"330px"} />
               ))}
             </div>
           ) : (
