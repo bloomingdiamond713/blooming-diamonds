@@ -7,6 +7,7 @@ import ProductCard from "../../../components/ProductCard/ProductCard";
 import { Pagination } from "react-pagination-bar";
 import useProducts from "../../../hooks/useProducts";
 import axios from "axios";
+import { TfiClose } from "react-icons/tfi";
 
 const Shop = () => {
   // filters
@@ -20,6 +21,9 @@ const Shop = () => {
   const [size, setSize] = useState("all");
   const [carate, setCarate] = useState("all");
   const [searchText, setSearchText] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+
+  console.log(category, size, carate);
 
   // find max and min prices of the products
   useEffect(() => {
@@ -57,7 +61,20 @@ const Shop = () => {
     searchText,
   ]);
 
-  console.log(filterLoading);
+  // show filters when category, carate or size changes
+  useEffect(() => {
+    if (
+      category.toLowerCase() !== "all" ||
+      carate.toLowerCase() !== "all" ||
+      size.toLowerCase() !== "all"
+    ) {
+      setShowFilters(true);
+    } else {
+      setShowFilters(false);
+    }
+  }, [category, carate, size]);
+
+  console.log(showFilters);
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,7 +144,7 @@ const Shop = () => {
                 setMinimumPrice(e.target.value);
               }}
             />
-            <div className="flex justify-between items-center px-1">
+            <div className="flex justify-between items-center px-1 ">
               <p className="text-sm">Min: {minimumPrice}$</p>
               <p className="text-sm">Max: {maximumPrice}$</p>
             </div>
@@ -139,7 +156,7 @@ const Shop = () => {
               {filterSizes?.map((size) => (
                 <div
                   key={Object.keys(size)[0]}
-                  className="flex items-center gap-3 text-gray-500 cursor-pointer"
+                  className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
                   onClick={() => setSize(Object.keys(size)[0])}
                 >
                   <h5 className="text-gray-700">{Object.keys(size)[0]}</h5>
@@ -155,7 +172,7 @@ const Shop = () => {
               {filterCarates?.map((carate) => (
                 <div
                   key={Object.keys(carate)[0]}
-                  className="flex items-center gap-3 cursor-pointer"
+                  className="flex items-center gap-3 cursor-pointer hover:text-black hover:font-semibold"
                   onClick={() => setCarate(Object.keys(carate)[0])}
                 >
                   <h5 className="text-gray-700">
@@ -198,10 +215,61 @@ const Shop = () => {
             </div>
           </div>
 
+          {/* display filters */}
+          {showFilters && (
+            <div className="mt-4 px-4 py-3 flex items-center gap-6 flex-wrap">
+              <button
+                className="text-error flex items-baseline gap-2 hover:text-gray-400"
+                onClick={() => {
+                  setCategory("all");
+                  setCarate("all");
+                  setSize("all");
+                }}
+              >
+                <TfiClose className="text-sm" /> Clear Filters
+              </button>
+
+              {category.toLowerCase() !== "all" && (
+                <button
+                  className="flex items-baseline gap-2 hover:text-gray-400"
+                  onClick={() => setCategory("all")}
+                >
+                  <TfiClose className="text-sm" /> {category}
+                </button>
+              )}
+
+              {size.toLowerCase() !== "all" && (
+                <button
+                  className="flex items-baseline gap-2 hover:text-gray-400"
+                  onClick={() => setSize("all")}
+                >
+                  <TfiClose className="text-sm" /> {size}
+                </button>
+              )}
+
+              {carate.toLowerCase() !== "all" && (
+                <button
+                  className="flex items-baseline gap-2 hover:text-gray-400"
+                  onClick={() => setCarate("all")}
+                >
+                  <TfiClose className="text-sm" /> {carate}K
+                </button>
+              )}
+            </div>
+          )}
+
           {/* products */}
           {filterLoading ? (
-            <div className="h-screen flex justify-center items-center">
-              <span className="loading loading-spinner loading-lg mx-auto block"></span>
+            <div className="grid grid-cols-3 gap-y-20 mt-8">
+              {/* iterate empty array of length 9 */}
+              {[...Array(9)].map((item, idx) => (
+                <div className="flex flex-col gap-4 w-80 mx-auto" key={idx}>
+                  <div className="skeleton h-56 w-full"></div>
+                  <div className="skeleton h-4 w-28"></div>
+                  <div className="skeleton h-4 w-full"></div>
+                  <div className="skeleton h-4 w-full"></div>
+                </div>
+              ))}
             </div>
           ) : (
             <>

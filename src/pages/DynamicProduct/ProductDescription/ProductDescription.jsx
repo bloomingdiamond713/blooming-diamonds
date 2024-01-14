@@ -26,6 +26,24 @@ const ProductDescription = () => {
           {dynamicProduct?.details?.description}
         </p>
 
+        <div className="mt-6">
+          <h4
+            className="text-2xl font-bold mb-4"
+            style={{ fontFamily: "var(--poppins)" }}
+          >
+            FEATURES
+          </h4>
+          <div className="flex items-center gap-5">
+            <p className="text-lg text-gray-600 text-justify">
+              <span className="font-bold">Size:</span> {dynamicProduct?.size}
+            </p>
+            <p className="text-lg text-gray-600 text-justify">
+              <span className="font-bold">Carate:</span>{" "}
+              {dynamicProduct?.carate}K
+            </p>
+          </div>
+        </div>
+
         <h4
           className="text-2xl font-bold mb-4 mt-10"
           style={{ fontFamily: "var(--poppins)" }}
