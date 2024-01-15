@@ -5,19 +5,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const useWishlist = () => {
-  const { isAuthLoading } = useAuthContext();
+  const { user } = useAuthContext();
 
   const {
     data: wishlistData,
     isLoading: isWishlistLoading,
     refetch,
   } = useQuery({
+    enabled: user?.uid !== undefined,
     queryKey: ["wishlist"],
     queryFn: async () => {
       const res = await axios.get("http://localhost:5000/wishlist");
       return res.data;
     },
-    enabled: !isAuthLoading,
   });
 
   const addToWishlist = (productData) => {

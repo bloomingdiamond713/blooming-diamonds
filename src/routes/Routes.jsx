@@ -10,6 +10,7 @@ import ProductDescription from "../pages/DynamicProduct/ProductDescription/Produ
 import ProductReviews from "../pages/DynamicProduct/ProductReviews/ProductReviews";
 import Shop from "../pages/Shop/Shop/Shop";
 import Wishlist from "../pages/Wishlist/Wishlist";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
       },
       {
         path: "wishlist",
-        element: <Wishlist />,
+        element: (
+          <PrivateRoute>
+            <Wishlist />
+          </PrivateRoute>
+        ),
       },
       {
         path: "products/:id",

@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css";
 import logo from "/logo1light.svg";
-import { FiPhone, FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
+import {
+  FiPhone,
+  FiSearch,
+  FiUser,
+  FiShoppingCart,
+  FiHeart,
+} from "react-icons/fi";
 import {
   FaFacebookF,
   FaYoutube,
   FaInstagram,
   FaLinkedin,
   FaPinterest,
-  FaRegHeart,
 } from "react-icons/fa6";
 import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
@@ -358,7 +363,7 @@ const Header = () => {
                     onClick={handleSearchIcon}
                   />
                   <Link to="/wishlist">
-                    <FaRegHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                    <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </Link>
 
                   {!user && (
@@ -510,7 +515,7 @@ const Header = () => {
                     onClick={handleSearchIcon}
                   />
                   <Link to="/wishlist">
-                    <FaRegHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                    <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </Link>
                   {!user && (
                     <Link to="/login">

@@ -5,19 +5,19 @@ import useAuthContext from "./useAuthContext";
 import toast from "react-hot-toast";
 
 const useCart = () => {
-  const { isAuthLoading } = useAuthContext();
+  const { user } = useAuthContext();
 
   const {
     data: cartData,
     isLoading: isCartLoading,
     refetch,
   } = useQuery({
+    enabled: user?.uid !== undefined,
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await axios.get("http://localhost:5000/cart");
       return res.data;
     },
-    enabled: !isAuthLoading,
   });
 
   const addToCart = async (productData, quantity = 1) => {

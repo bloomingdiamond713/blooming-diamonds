@@ -22,7 +22,7 @@ const DynamicProduct = () => {
   const [presentInCart, setPresentInCart] = useState(false);
   const [presentInWishlist, setPresentInWishlist] = useState(false);
   const [products] = useProducts();
-  const [cart, , , addToCart] = useCart();
+  const [cartData, , , addToCart] = useCart();
   const [wishlistData, , , addToWishlist] = useWishlist();
 
   // find the product by id
@@ -33,14 +33,14 @@ const DynamicProduct = () => {
 
   // check if product is present in cart and wishlist
   useEffect(() => {
-    const cartProduct = cart?.find((cartItem) => cartItem.productId === id);
+    const cartProduct = cartData?.find((cartItem) => cartItem.productId === id);
     setPresentInCart(cartProduct ? true : false);
 
     const wishlistProduct = wishlistData?.find(
       (wishlistItem) => wishlistItem.productId === id
     );
     setPresentInWishlist(wishlistProduct ? true : false);
-  }, [cart, dynamicProduct, id, wishlistData]);
+  }, [cartData, dynamicProduct, id, wishlistData]);
 
   // set order quantity
   const [quantity, setQuantity] = useState(1);
