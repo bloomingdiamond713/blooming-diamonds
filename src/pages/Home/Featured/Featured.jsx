@@ -71,7 +71,7 @@ const Featured = () => {
           ) : (
             <div className="space-y-3">
               {featuredProducts?.map((product) => (
-                <FeaturedCard key={product.id} product={product} />
+                <FeaturedCard key={product._id} product={product} />
               ))}
             </div>
           )}

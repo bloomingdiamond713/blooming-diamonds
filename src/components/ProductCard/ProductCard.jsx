@@ -6,25 +6,27 @@ import { FaRegHeart, FaRegEye } from "react-icons/fa6";
 import { FaShoppingCart, FaCheckDouble } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
-import axios from "axios";
 import useCart from "../../hooks/useCart";
-import toast from "react-hot-toast";
+import useWishlist from "../../hooks/useWishlist";
 
 const ProductCard = ({ cardData, flashSale }) => {
-  const [cartData, isCartLoading, refetch] = useCart();
-  const [addedToCart, setAddedToCart] = useState(false);
-
-  // check if item added to cart
-  useEffect(() => {
-    const item = cartData.find((p) => p.productId === cardData._id);
-    if (item) {
-      setAddedToCart(true);
-    } else {
-      setAddedToCart(false);
-    }
-  }, [cartData, isCartLoading, cardData._id]);
-
   const { user } = useAuthContext();
+  const [cartData, isCartLoading, , addToCart] = useCart();
+  const [wishlistData, , , addToWishlist] = useWishlist();
+  const [presentInCart, setPresentInCart] = useState(false);
+  const [presentInWishlist, setPresentInWishlist] = useState(false);
+
+  // check if item added to cart and wishlist
+  useEffect(() => {
+    const itemInCart = cartData?.find((p) => p.productId === cardData._id);
+    const itemInWishlist = wishlistData?.find(
+      (p) => p.productId === cardData._id
+    );
+
+    itemInCart ? setPresentInCart(true) : setPresentInCart(false);
+    itemInWishlist ? setPresentInWishlist(true) : setPresentInWishlist(false);
+  }, [cartData, isCartLoading, cardData._id, wishlistData]);
+
   const {
     _id,
     name,
@@ -40,31 +42,13 @@ const ProductCard = ({ cardData, flashSale }) => {
   const { averageRating } = useDynamicRating(review);
 
   // add to cart function
-  const handleAddToCart = () => {
+  const handleAddToCartWishlist = (where) => {
     if (user) {
-      const productData = {
-        productId: _id,
-        name,
-        img,
-        category,
-        price: discountPrice || price,
-        quantity: 0,
-        addedAt: new Date(),
-      };
-
-      // post data to db
-      axios
-        .post("http://localhost:5000/cart", productData)
-        .then((res) => {
-          if (res.data?.insertedId) {
-            toast.success("Item added to cart!", {
-              position: "top-right",
-            });
-
-            refetch();
-          }
-        })
-        .catch((error) => console.error(error));
+      if (where === "cart") {
+        addToCart(cardData);
+      } else {
+        addToWishlist(cardData);
+      }
     } else {
       // show modal to login if not logged in
       document.getElementById("takeToLoginModal").showModal();
@@ -106,12 +90,16 @@ const ProductCard = ({ cardData, flashSale }) => {
 
         {/* icons */}
         <div className="absolute top-3 right-3 space-y-3">
-          <div
-            className="heart-icon-con tooltip tooltip-left block"
+          <button
+            className={`heart-icon-con tooltip tooltip-left block ${
+              presentInWishlist && "hidden"
+            }`}
             data-tip="Add to Wishlist"
+            onClick={() => handleAddToCartWishlist("wishlist")}
+            disabled={presentInWishlist}
           >
             <FaRegHeart className="text-xl text-gray-600" />
-          </div>
+          </button>
 
           <Link
             to={{
@@ -127,13 +115,13 @@ const ProductCard = ({ cardData, flashSale }) => {
 
         <button
           className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg"
-          onClick={handleAddToCart}
-          disabled={addedToCart}
+          onClick={() => handleAddToCartWishlist("cart")}
+          disabled={presentInCart}
         >
-          {addedToCart ? <FaCheckDouble /> : <FaShoppingCart />}
+          {presentInCart ? <FaCheckDouble /> : <FaShoppingCart />}
 
           <p className="text-sm">
-            {addedToCart ? "Added to Cart" : "Add to Cart"}{" "}
+            {presentInCart ? "Added to Cart" : "Add to Cart"}
           </p>
         </button>
       </div>

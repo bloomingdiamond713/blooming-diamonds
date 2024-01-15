@@ -10,14 +10,16 @@ import {
   FaPinterest,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Footer = () => {
   // todo: load category data from data
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch("/categories.json")
-      .then((res) => res.json())
-      .then((data) => setCategories(data));
+    axios
+      .get("http://localhost:5000/categories")
+      .then((res) => setCategories(res.data))
+      .catch((error) => console.error(error));
   }, []);
 
   return (

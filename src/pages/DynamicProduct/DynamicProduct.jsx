@@ -11,24 +11,54 @@ import Magnifier from "react-magnifier";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 import { HashLink } from "react-router-hash-link";
 import useProducts from "../../hooks/useProducts";
+import useCart from "../../hooks/useCart";
+import useAuthContext from "../../hooks/useAuthContext";
+import useWishlist from "../../hooks/useWishlist";
 
 const DynamicProduct = () => {
   const { id } = useParams();
-
+  const { user } = useAuthContext();
   const [dynamicProduct, setDynamicProduct] = useState(null);
+  const [presentInCart, setPresentInCart] = useState(false);
+  const [presentInWishlist, setPresentInWishlist] = useState(false);
   const [products] = useProducts();
+  const [cart, , , addToCart] = useCart();
+  const [wishlistData, , , addToWishlist] = useWishlist();
 
+  // find the product by id
   useEffect(() => {
     const filteredProduct = products?.find((data) => data._id === id);
     setDynamicProduct(filteredProduct);
   }, [products, id]);
 
-  console.log(dynamicProduct);
+  // check if product is present in cart and wishlist
+  useEffect(() => {
+    const cartProduct = cart?.find((cartItem) => cartItem.productId === id);
+    setPresentInCart(cartProduct ? true : false);
 
+    const wishlistProduct = wishlistData?.find(
+      (wishlistItem) => wishlistItem.productId === id
+    );
+    setPresentInWishlist(wishlistProduct ? true : false);
+  }, [cart, dynamicProduct, id, wishlistData]);
+
+  // set order quantity
+  const [quantity, setQuantity] = useState(1);
+
+  // add to cart function
+  const handleAddToCartWishlist = (where) => {
+    if (user) {
+      where === "cart"
+        ? addToCart(dynamicProduct, quantity)
+        : addToWishlist(dynamicProduct);
+    } else {
+      // show modal to login if not logged in
+      document.getElementById("takeToLoginModal").showModal();
+    }
+  };
+
+  // get calculated average rating
   const { averageRating } = useDynamicRating(dynamicProduct?.review);
-
-  // product order quantity
-  const [orderQuantity, setOrderQuantity] = useState(0);
 
   return (
     <div className="my-16">
@@ -92,15 +122,13 @@ const DynamicProduct = () => {
               <div className="w-[35%]">
                 <div className="flex items-center justify-between border border-black mt-2 py-2 px-2">
                   <button
-                    disabled={orderQuantity === 0}
-                    onClick={() =>
-                      orderQuantity > 0 && setOrderQuantity(orderQuantity - 1)
-                    }
+                    disabled={quantity === 0}
+                    onClick={() => quantity > 0 && setQuantity(quantity - 1)}
                   >
                     <FaMinus />
                   </button>
-                  <span className="font-bold text-lg">{orderQuantity}</span>
-                  <button onClick={() => setOrderQuantity(orderQuantity + 1)}>
+                  <span className="font-bold text-lg">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)}>
                     <FaPlus />
                   </button>
                 </div>
@@ -115,11 +143,19 @@ const DynamicProduct = () => {
           {/* ---------------------- */}
           {/* buttons part */}
           <div className="flex items-center gap-5 mt-6 w-[60%]">
-            <button className="btn rounded-none flex-1 bg-[var(--pink-gold)] font-bold">
+            <button
+              className="btn rounded-none flex-1 bg-[var(--pink-gold)] font-bold"
+              disabled={presentInCart}
+              onClick={() => handleAddToCartWishlist("cart")}
+            >
               <FaCartShopping />
-              <span>ADD TO CART</span>
+              <span>{presentInCart ? "ADDED TO CART" : "ADD TO CART"}</span>
             </button>
-            <button className="btn rounded-none flex-1 font-bold text-white bg-black hover:text-black">
+            <button
+              className="btn rounded-none flex-1 font-bold text-white bg-black hover:text-black"
+              disabled={presentInWishlist}
+              onClick={() => handleAddToCartWishlist("wishlist")}
+            >
               <FaRegHeart />
               SAVE
             </button>

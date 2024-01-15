@@ -9,6 +9,7 @@ import ProductPageLayout from "../layouts/ProductPageLayout";
 import ProductDescription from "../pages/DynamicProduct/ProductDescription/ProductDescription";
 import ProductReviews from "../pages/DynamicProduct/ProductReviews/ProductReviews";
 import Shop from "../pages/Shop/Shop/Shop";
+import Wishlist from "../pages/Wishlist/Wishlist";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "wishlist",
+        element: <Wishlist />,
       },
       {
         path: "products/:id",

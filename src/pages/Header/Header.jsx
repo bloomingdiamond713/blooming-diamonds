@@ -8,6 +8,7 @@ import {
   FaInstagram,
   FaLinkedin,
   FaPinterest,
+  FaRegHeart,
 } from "react-icons/fa6";
 import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
@@ -356,6 +357,10 @@ const Header = () => {
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
+                  <Link to="/wishlist">
+                    <FaRegHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                  </Link>
+
                   {!user && (
                     <Link to="/login">
                       <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
@@ -367,7 +372,7 @@ const Header = () => {
                     onClick={() => setShowRightDrawer(true)}
                   >
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
-                      {user ? cartData.length : 0}
+                      {user ? cartData?.length : 0}
                     </span>
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>
@@ -504,6 +509,9 @@ const Header = () => {
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
+                  <Link to="/wishlist">
+                    <FaRegHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                  </Link>
                   {!user && (
                     <Link to="/login">
                       <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
@@ -514,7 +522,7 @@ const Header = () => {
                     onClick={() => setShowRightDrawer(true)}
                   >
                     <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
-                      {user ? cartData.length : 0}
+                      {user ? cartData?.length : 0}
                     </span>
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>
