@@ -171,9 +171,11 @@ const RightSideDrawer = () => {
               <p>${parseFloat(subtotal).toFixed(2)}</p>
             </div>
 
-            <button className="btn btn-neutral btn-block text-white">
-              Checkout
-            </button>
+            <Link to="/checkout">
+              <button className="btn btn-neutral btn-block text-white">
+                Checkout
+              </button>
+            </Link>
           </div>
         </>
       )}

@@ -15,6 +15,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
+import Checkout from "../pages/Checkout/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Wishlist />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/checkout",
+        element: (
+          <PrivateRoute>
+            <Checkout />
           </PrivateRoute>
         ),
       },

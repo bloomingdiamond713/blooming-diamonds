@@ -577,13 +577,17 @@ const Header = () => {
                                 </Link>
                               </li>
                               <li>
-                                <Link>My Orders</Link>
+                                <Link to="/dashboard/myOrder">My Orders</Link>
                               </li>
                               <li>
-                                <Link>Address Book</Link>
+                                <Link to="/dashboard/myAddress">
+                                  Address Book
+                                </Link>
                               </li>
                               <li>
-                                <Link>Add Review</Link>
+                                <Link to="/dashboard/addReview">
+                                  Add Review
+                                </Link>
                               </li>
                             </div>
 

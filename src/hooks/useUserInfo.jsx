@@ -7,7 +7,7 @@ const useUserInfo = () => {
   const { user } = useAuthContext();
   const {
     data: userFromDB,
-    isloading: isUserLoading,
+    isLoading: isUserLoading,
     refetch,
   } = useQuery({
     enabled: user?.uid !== undefined,

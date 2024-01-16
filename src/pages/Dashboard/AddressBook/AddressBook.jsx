@@ -3,6 +3,9 @@ import "./AddressBook.css";
 import useUserInfo from "../../../hooks/useUserInfo";
 import { useForm } from "react-hook-form";
 import { City, Country, State } from "country-state-city";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { FaPencil } from "react-icons/fa6";
 
 const AddressBook = () => {
   // react hook form props
@@ -12,17 +15,19 @@ const AddressBook = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const [userFromDB] = useUserInfo();
+  const [userFromDB, , refetch] = useUserInfo();
   const [shippingAdd, setShippingAdd] = useState(null);
 
   // check if user's db contains shipping add
   useEffect(() => {
     if (userFromDB?.shippingAddress) {
       setShippingAdd(userFromDB.shippingAddress);
+    } else {
+      setShippingAdd(null);
     }
   }, [userFromDB]);
 
-  // country, state, city settings
+  // country, state, city settings from country,state,city api
   const countryData = Country.getAllCountries();
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
@@ -63,9 +68,43 @@ const AddressBook = () => {
 
     reset({ ...defaultValues });
   }, [userFromDB, reset]);
+
   // react hook form data
   const onSubmit = (data) => {
-    console.log(data);
+    data.state = State.getStateByCodeAndCountry(data.state, data.country).name;
+    data.country = Country.getCountryByCode(data.country).name;
+
+    // post the data to user db
+    axios
+      .patch(
+        `http://localhost:5000/users/shipping-address?email=${data.email}`,
+        data
+      )
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          toast.success("Shipping address added successfully");
+          refetch();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  // delete address
+  const handleDeleteAddress = () => {
+    axios
+      .patch(
+        `http://localhost:5000/users/delete-address?email=${userFromDB?.email}`
+      )
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          refetch();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -80,8 +119,42 @@ const AddressBook = () => {
       <div className="mt-6">
         <h4 className="text-xl font-medium mb-6">Shipping Address</h4>
         {shippingAdd ? (
-          <div>
-            <h4>this is your shipping address</h4>
+          <div className="border-2 border-gray-200 rounded-xl shadow p-4 w-fit">
+            <div className="text-lg space-y-3 ">
+              <p>
+                Name:{" "}
+                <span className="font-bold">
+                  {shippingAdd.firstName + " " + shippingAdd.lastName}
+                </span>
+              </p>
+              <p>
+                Email: <span className="font-bold">{shippingAdd.email}</span>
+              </p>
+              <p>
+                Phone:{" "}
+                <span className="font-bold">+{shippingAdd.mobileNumber}</span>
+              </p>
+              <p>
+                City:{" "}
+                <span className="font-bold">
+                  {shippingAdd.streetAddress}, {shippingAdd.city}
+                </span>
+              </p>
+              <p>
+                State: <span className="font-bold">{shippingAdd.state}</span>
+              </p>
+              <p>
+                Country:{" "}
+                <span className="font-bold">{shippingAdd.country}</span>
+              </p>
+            </div>
+
+            <button
+              className="btn btn-outline btn-wide mt-8"
+              onClick={handleDeleteAddress}
+            >
+              <FaPencil /> Edit
+            </button>
           </div>
         ) : (
           <div>
@@ -123,6 +196,7 @@ const AddressBook = () => {
                 <input
                   type="number"
                   {...register("mobileNumber", { required: true })}
+                  placeholder="Enter mobile number with country code(e.g +880)"
                 />
                 {errors.mobileNumber && (
                   <span className="text-red-400">
