@@ -1,0 +1,13 @@
+.dashboard-nav a {
+  padding: 20px 0;
+  border-bottom: 2px solid rgb(241, 239, 239);
+  font-size: 1.2rem;
+}
+
+.dashboard-nav a:last-child {
+  border-bottom: none;
+}
+
+.dashboard-nav a.active {
+  font-weight: bolder;
+}
