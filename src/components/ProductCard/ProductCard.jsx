@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ProductCard.css";
 import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
-import { FaRegHeart, FaRegEye } from "react-icons/fa6";
+import { FaRegHeart, FaRegEye, FaHeart } from "react-icons/fa6";
 import { FaShoppingCart, FaCheckDouble } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
@@ -91,14 +91,18 @@ const ProductCard = ({ cardData, flashSale }) => {
         {/* icons */}
         <div className="absolute top-3 right-3 space-y-3">
           <button
-            className={`heart-icon-con tooltip tooltip-left block ${
-              presentInWishlist && "hidden"
-            }`}
-            data-tip="Add to Wishlist"
+            className={`heart-icon-con tooltip tooltip-left block`}
+            data-tip={
+              presentInWishlist ? "Added to Wishlist" : "Add to Wishlist"
+            }
             onClick={() => handleAddToCartWishlist("wishlist")}
             disabled={presentInWishlist}
           >
-            <FaRegHeart className="text-xl text-gray-600" />
+            {presentInWishlist ? (
+              <FaHeart className="text-xl text-[var(--light-pink)]" />
+            ) : (
+              <FaRegHeart className="text-xl text-gray-600" />
+            )}
           </button>
 
           <Link

@@ -39,8 +39,14 @@ const Header = () => {
   const [showRightDrawer, setShowRightDrawer] = useState(false);
   const [cartData] = useCart();
 
-  // fetch upper nav notifications
+  // fetch or update upper nav notifications
   useEffect(() => {
+    // un-comment to add new notification(reminder: notification array is in backend)
+    // axios.post("http://localhost:5000/nav-notifications", {}).then((res) => {
+    //   console.log(res.data);
+    // });
+
+    // fetching notifications
     axios
       .get("http://localhost:5000/nav-notifications")
       .then((res) => setNavNotifications(res.data))
@@ -386,7 +392,7 @@ const Header = () => {
                     <span className="loading loading-spinner loading-sm"></span>
                   ) : (
                     <>
-                      {user && (
+                      {user ? (
                         <details
                           className="dropdown dropdown-end"
                           id="sticky-nav"
@@ -404,26 +410,25 @@ const Header = () => {
                             </div>
                           </summary>
                           <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
-                            <li>
-                              <p className="font-light">Signed in as</p>
-                              <p>{user.email}</p>
-                            </li>
+                            <div className="hover:bg-white text-left email-con">
+                              <p className="text-xs mb-1">Signed in as</p>
+                              <Link>{user.email}</Link>
+                            </div>
 
                             <div className="py-2 border-b border-gray-300">
                               <li>
-                                <a>View Profile</a>
+                                <Link to="/dashboard/myDashboard">
+                                  Dashboard
+                                </Link>
                               </li>
                               <li>
-                                <a>Account Settings</a>
+                                <Link>My Orders</Link>
                               </li>
                               <li>
-                                <a>My Orders</a>
+                                <Link>Address Book</Link>
                               </li>
                               <li>
-                                <a>My Payments</a>
-                              </li>
-                              <li>
-                                <a>Support</a>
+                                <Link>Add Review</Link>
                               </li>
                             </div>
 
@@ -432,6 +437,8 @@ const Header = () => {
                             </li>
                           </ul>
                         </details>
+                      ) : (
+                        ""
                       )}
                     </>
                   )}
@@ -554,26 +561,25 @@ const Header = () => {
                             </div>
                           </summary>
                           <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
-                            <li>
-                              <p className="font-light">Signed in as</p>
-                              <p>{user.email}</p>
-                            </li>
+                            <div className="hover:bg-white text-left email-con">
+                              <p className="text-xs mb-1">Signed in as</p>
+                              <Link>{user.email}</Link>
+                            </div>
 
                             <div className="py-2 border-b border-gray-300">
                               <li>
-                                <a>View Profile</a>
+                                <Link to="/dashboard/myDashboard">
+                                  Dashboard
+                                </Link>
                               </li>
                               <li>
-                                <a>Account Settings</a>
+                                <Link>My Orders</Link>
                               </li>
                               <li>
-                                <a>My Orders</a>
+                                <Link>Address Book</Link>
                               </li>
                               <li>
-                                <a>My Payments</a>
-                              </li>
-                              <li>
-                                <a>Support</a>
+                                <Link>Add Review</Link>
                               </li>
                             </div>
 

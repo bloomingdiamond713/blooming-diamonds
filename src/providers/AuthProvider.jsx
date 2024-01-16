@@ -20,11 +20,10 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [isAuthLoading, setIsAuthLoading] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // Sign Up with email/pass
   const signUp = (email, password) => {
-    setIsAuthLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
@@ -38,7 +37,6 @@ const AuthProvider = ({ children }) => {
 
   // Sign In with email/pass
   const signIn = (email, password) => {
-    setIsAuthLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -61,6 +59,8 @@ const AuthProvider = ({ children }) => {
 
     return () => unsubscribe();
   }, []);
+
+  console.log("authLoading from authprovider:", isAuthLoading);
 
   const value = {
     user,

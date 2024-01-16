@@ -11,6 +11,10 @@ import ProductReviews from "../pages/DynamicProduct/ProductReviews/ProductReview
 import Shop from "../pages/Shop/Shop/Shop";
 import Wishlist from "../pages/Wishlist/Wishlist";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
+import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
+import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
+import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +46,29 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "dashboard",
+        element: (
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            path: "myDashboard",
+            element: <MyDashboard />,
+          },
+          {
+            path: "myOrders",
+            element: <MyOrders />,
+          },
+          {
+            path: "myAddress",
+            element: <AddressBook />,
+          },
+        ],
+      },
+
       {
         path: "products/:id",
         element: <ProductPageLayout />,

@@ -15,18 +15,24 @@ const useWishlist = () => {
     enabled: user?.uid !== undefined,
     queryKey: ["wishlist"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/wishlist");
+      const res = await axios.get(
+        `http://localhost:5000/wishlist?email=${user?.email}`
+      );
       return res.data;
     },
   });
 
   const addToWishlist = (productData) => {
     const { ["_id"]: excludedKey, ...otherProps } = productData;
-    const wishlistData = { productId: excludedKey, ...otherProps };
+    const wishlistData = {
+      productId: excludedKey,
+      email: user?.email,
+      ...otherProps,
+    };
 
     // post data to wishlist db
     axios
-      .post("http://localhost:5000/wishlist", wishlistData)
+      .post(`http://localhost:5000/wishlist?email=${user?.email}`, wishlistData)
       .then((res) => {
         if (res.data?.insertedId) {
           toast.success("Item added to your wishlist!", {

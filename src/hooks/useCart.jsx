@@ -15,7 +15,9 @@ const useCart = () => {
     enabled: user?.uid !== undefined,
     queryKey: ["cart"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/cart");
+      const res = await axios.get(
+        `http://localhost:5000/cart?email=${user?.email}`
+      );
       return res.data;
     },
   });
@@ -25,6 +27,7 @@ const useCart = () => {
 
     const cartProductData = {
       productId: _id,
+      email: user?.email,
       name,
       img,
       category,

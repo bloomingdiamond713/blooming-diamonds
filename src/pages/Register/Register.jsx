@@ -99,13 +99,21 @@ const Register = () => {
                     setRegisterLoading(false);
                     navigate(from, { replace: true });
                   })
-                  .catch((error) => setRegisterError(error?.code));
+                  .catch((error) => {
+                    setRegisterError(error?.code);
+                    setRegisterLoading(false);
+                  });
               }
             })
-            .catch((error) => setRegisterError(error?.code));
+            .catch((error) => {
+              setRegisterError(error?.code);
+              setRegisterLoading(false);
+            });
         }
       });
   };
+
+  console.log(registerError);
 
   // google sign in
   const handleGoogleSignIn = () => {
@@ -142,6 +150,7 @@ const Register = () => {
             className="stroke-current shrink-0 h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
+            onClick={() => setRegisterError(null)}
           >
             <path
               strokeLinecap="round"
@@ -208,8 +217,8 @@ const Register = () => {
 
           {!errors.confirmPassword && errors.password?.type === "pattern" && (
             <span className="text-red-500 mt-1 block">
-              Password must have one uppercase, one lowercase, one number and
-              one special character
+              Password must have one uppercase, one lowercase, one number, one
+              special character and 8 characters long!
             </span>
           )}
           <div className="absolute top-10 right-1">

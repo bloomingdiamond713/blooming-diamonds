@@ -47,10 +47,12 @@ const RightSideDrawer = () => {
 
   // get subtotal amount of the cart
   useEffect(() => {
-    axios.get("http://localhost:5000/cart/subtotal").then((res) => {
-      setSubTotal(res.data.subtotal);
-    });
-  }, [cartData]);
+    axios
+      .get(`http://localhost:5000/cart/subtotal?email=${user?.email}`)
+      .then((res) => {
+        setSubTotal(res.data.subtotal);
+      });
+  }, [cartData, user]);
 
   return (
     <div
