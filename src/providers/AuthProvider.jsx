@@ -60,8 +60,6 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  console.log("authLoading from authprovider:", isAuthLoading);
-
   const value = {
     user,
     isAuthLoading,

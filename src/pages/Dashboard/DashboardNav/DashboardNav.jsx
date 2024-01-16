@@ -2,6 +2,7 @@ import React from "react";
 import "./DashboardNav.css";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
+import { NavLink } from "react-router-dom";
 
 const DashboardNav = () => {
   const { logOut } = useAuthContext();
@@ -15,9 +16,40 @@ const DashboardNav = () => {
   };
   return (
     <nav className="border h-[300px] flex flex-col gap-3">
-      <Link to={"/dashboard/myDashboard"}>Account Dashboard</Link>
-      <Link to={"/dashboard/myOrders"}>My Orders</Link>
-      <Link to={"/dashboard/myAddress"}>Address Book</Link>
+      <NavLink
+        to={"/dashboard/myDashboard"}
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active" : ""
+        }
+      >
+        Account Dashboard
+      </NavLink>
+      <NavLink
+        to={"/dashboard/myOrders"}
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active" : ""
+        }
+      >
+        My Orders
+      </NavLink>
+      <NavLink
+        to={"/dashboard/myAddress"}
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active" : ""
+        }
+      >
+        Address Book
+      </NavLink>
+
+      <NavLink
+        to={"/dashboard/addReview"}
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active" : ""
+        }
+      >
+        Add Review
+      </NavLink>
+
       <Link onClick={handleLogOut}>Log Out</Link>
     </nav>
   );

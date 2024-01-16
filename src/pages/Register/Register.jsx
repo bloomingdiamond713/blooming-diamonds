@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
@@ -65,6 +66,14 @@ const Register = () => {
   const [registerLoading, setRegisterLoading] = useState(false);
   const [registerError, setRegisterError] = useState(null);
 
+  // add user to users collection in db
+  const addUserToDB = (name, email) => {
+    return axios.post("http://localhost:5000/users", {
+      name,
+      email,
+    });
+  };
+
   const onSubmit = (data) => {
     setRegisterLoading(true);
     setRegisterError(false);
@@ -87,13 +96,21 @@ const Register = () => {
 
           // sign up user with email, password
           signUp(data.email, data.password)
-            .then((res) => {
+            .then((result) => {
               // update user's profile
-              if (res.user?.uid) {
+              if (result.user?.uid) {
                 updateUserProfile(data.name, data.profilePic)
                   .then(() => {
-                    console.log(res.user);
-                    toast.success(`Authenticated as ${res.user?.email}`);
+                    // add user data to user db
+                    addUserToDB(data.name, result.user?.email).then(
+                      (response) => {
+                        if (response.data?.insertedId) {
+                          toast.success(
+                            `Authenticated as ${result.user?.email}`
+                          );
+                        }
+                      }
+                    );
                     reset(); // reset the form
                     setProfilePicFile(null); // reset profile pic state
                     setRegisterLoading(false);
@@ -108,12 +125,15 @@ const Register = () => {
             .catch((error) => {
               setRegisterError(error?.code);
               setRegisterLoading(false);
+              document.documentElement.scroll({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              });
             });
         }
       });
   };
-
-  console.log(registerError);
 
   // google sign in
   const handleGoogleSignIn = () => {
@@ -124,7 +144,14 @@ const Register = () => {
         toast.success(`Authenticated as ${res?.user?.email}`);
         navigate(from, { replace: true });
       })
-      .catch((error) => setRegisterError(error?.code));
+      .catch((error) => {
+        setRegisterError(error?.code);
+        document.documentElement.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      });
   };
 
   return (
@@ -340,11 +367,11 @@ const Register = () => {
         <div className="mt-16 flex items-center gap-3">
           <button
             type="submit"
-            className="uppercase text-sm text-white bg-black px-8 py-3 hover:rounded-xl transition-all duration-300"
+            className="uppercase text-sm text-white bg-black w-[140px] h-[45px] hover:rounded-xl transition-all duration-300"
             disabled={registerLoading}
           >
             {registerLoading ? (
-              <span className="loading loading-spinner loading-md"></span>
+              <span className="loading loading-spinner loading-sm"></span>
             ) : (
               "Sign Up"
             )}
