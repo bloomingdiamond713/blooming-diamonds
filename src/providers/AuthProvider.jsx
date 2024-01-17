@@ -11,6 +11,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -55,6 +56,13 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setIsAuthLoading(false);
+      if (currentUser) {
+        // add user to users collection in db
+        axios.post("http://localhost:5000/users", {
+          name: currentUser.displayName,
+          email: currentUser.email,
+        });
+      }
     });
 
     return () => unsubscribe();

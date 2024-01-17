@@ -11,7 +11,7 @@ const RightSideDrawer = () => {
   // Reminder: Right side drawer is called from the Header.jsx file
 
   const { user } = useAuthContext();
-  const [cartData, isCartLoading, refetch] = useCart();
+  const { cartData, isCartLoading, refetch } = useCart();
   const [subtotal, setSubTotal] = useState(0);
 
   // update product quantity
@@ -171,7 +171,7 @@ const RightSideDrawer = () => {
               <p>${parseFloat(subtotal).toFixed(2)}</p>
             </div>
 
-            <Link to="/checkout">
+            <Link to="/checkout" className="block">
               <button className="btn btn-neutral btn-block text-white">
                 Checkout
               </button>

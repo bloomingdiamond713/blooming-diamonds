@@ -1,9 +1,55 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import useUserInfo from "../../hooks/useUserInfo";
+import Payment from "../Payment/Payment";
+import useCart from "../../hooks/useCart";
+import { FaPencil } from "react-icons/fa6";
+import axios from "axios";
+import useOrders from "../../hooks/useOrders";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const Checkout = () => {
+  const { user } = useAuthContext();
   const [userFromDB] = useUserInfo();
+
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentInfo, setPaymentInfo] = useState(null);
+  const { cartData, cartSubtotal } = useCart();
+  const { orders } = useOrders();
+  const navigate = useNavigate();
+
+  // POST ORDER DATA TO DB
+  const handlePlaceOrder = () => {
+    axios
+      .post("http://localhost:5000/orders", {
+        orderId: orders?.length + 1,
+        name: user?.displayName,
+        email: user?.email,
+        total: cartSubtotal,
+        paymentMethod,
+        paymentStatus: paymentInfo ? "paid" : "unpaid",
+        transactionId: paymentInfo ? paymentInfo.id : null,
+        orderDetails: cartData,
+        shippingAddress: userFromDB?.shippingAddress,
+        orderStatus: "processing",
+      })
+      .then((res) => {
+        if (res.data.insertedId) {
+          axios
+            .delete(
+              `http://localhost:5000/delete-cart-items?email=${user?.email}`
+            )
+            .then((res) => {
+              console.log(res);
+              if (res.data.deletedCount > 0) {
+                navigate("/order-details");
+                setPaymentInfo(null);
+              }
+            });
+        }
+      });
+  };
+
   return (
     <div className="container mb-20" style={{ fontFamily: "var(--poppins)" }}>
       <div className="text-sm breadcrumbs">
@@ -17,66 +63,203 @@ const Checkout = () => {
         </ul>
       </div>
 
-      {/* left side - shipping address, payment */}
-      <div className="mt-10">
-        <div>
-          <h1 className="text-lg font-semibold mb-5">
-            Shipping/Billing Address
-          </h1>
-          {userFromDB?.shippingAddress ? (
-            <div className="border-2 border-gray-200 rounded-xl shadow p-4 w-fit">
-              <div className="text-lg space-y-3 ">
-                <p>
-                  Name:{" "}
-                  <span className="font-bold">
-                    {userFromDB?.shippingAddress.firstName +
-                      " " +
-                      userFromDB?.shippingAddress.lastName}
-                  </span>
-                </p>
-                <p>
-                  Email:{" "}
-                  <span className="font-bold">
-                    {userFromDB?.shippingAddress.email}
-                  </span>
-                </p>
-                <p>
-                  Phone:{" "}
-                  <span className="font-bold">
-                    +{userFromDB?.shippingAddress.mobileNumber}
-                  </span>
-                </p>
-                <p>
-                  City:{" "}
-                  <span className="font-bold">
-                    {userFromDB?.shippingAddress.streetAddress},{" "}
-                    {userFromDB?.shippingAddress.city}
-                  </span>
-                </p>
-                <p>
-                  State:{" "}
-                  <span className="font-bold">
-                    {userFromDB?.shippingAddress.state}
-                  </span>
-                </p>
-                <p>
-                  Country:{" "}
-                  <span className="font-bold">
-                    {userFromDB?.shippingAddress.country}
-                  </span>
-                </p>
+      <section className="flex justify-between items-start gap-6 pt-10">
+        {/* left side - shipping address, payment */}
+        <div className="flex-grow">
+          <div>
+            <h1 className="text-xl font-semibold mb-5">
+              Shipping/Billing Address
+            </h1>
+            {userFromDB?.shippingAddress ? (
+              <div className="border-2 border-gray-200 rounded-xl shadow p-4 w-fit">
+                <div className="text-lg space-y-3 ">
+                  <p>
+                    Name:{" "}
+                    <span className="font-bold">
+                      {userFromDB?.shippingAddress.firstName +
+                        " " +
+                        userFromDB?.shippingAddress.lastName}
+                    </span>
+                  </p>
+                  <p>
+                    Email:{" "}
+                    <span className="font-bold">
+                      {userFromDB?.shippingAddress.email}
+                    </span>
+                  </p>
+                  <p>
+                    Phone:{" "}
+                    <span className="font-bold">
+                      +{userFromDB?.shippingAddress.mobileNumber}
+                    </span>
+                  </p>
+                  <p>
+                    City:{" "}
+                    <span className="font-bold">
+                      {userFromDB?.shippingAddress.streetAddress},{" "}
+                      {userFromDB?.shippingAddress.city}
+                    </span>
+                  </p>
+                  <p>
+                    State:{" "}
+                    <span className="font-bold">
+                      {userFromDB?.shippingAddress.state}
+                    </span>
+                  </p>
+                  <p>
+                    Country:{" "}
+                    <span className="font-bold">
+                      {userFromDB?.shippingAddress.country}
+                    </span>
+                  </p>
+                  <Link to="/dashboard/myAddress">
+                    <button className="btn btn-outline btn-wide mt-8">
+                      <FaPencil /> Edit
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p>You have not added a shipping or billing address yet!</p>
+                <Link to="/dashboard/myAddress">
+                  <button className="btn btn-outline btn-wide mt-6">ADD</button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* payment method */}
+          <div className="mt-16">
+            <h1 className="text-xl font-semibold mb-4">
+              Choose Payment Method
+            </h1>
+            <p>
+              All transactions are secured and encrypted by{" "}
+              <a
+                href="https://stripe.com/en-gb-us"
+                target="_blank"
+                rel="noreferrer"
+                className="underline font-medium text-blue-700"
+              >
+                Stripe
+              </a>
+            </p>
+
+            <div className="mt-8">
+              {/* by card */}
+              <div
+                className={`p-4 ${paymentMethod === "card" && "rounded-lg"}`}
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    id="radio-pay-card"
+                    className="radio radio-primary"
+                    value={"card"}
+                    checked={paymentMethod === "card"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <label
+                    htmlFor="radio-pay-card"
+                    className={`${paymentMethod === "card" && "font-bold"}`}
+                  >
+                    Pay with Card
+                  </label>
+                </div>
+
+                {paymentMethod == "card" && (
+                  <Payment setPaymentInfo={setPaymentInfo} />
+                )}
+              </div>
+
+              {/* cash on delivery */}
+              <div
+                className={`p-4 mt-5  ${
+                  paymentMethod === "cod" && "rounded-lg"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    id="radio-pay-cod"
+                    className="radio radio-primary"
+                    value={"cod"}
+                    checked={paymentMethod == "cod"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <label
+                    htmlFor="radio-pay-cod"
+                    className={`${paymentMethod === "cod" && "font-bold"}`}
+                  >
+                    Cash On Delivery
+                  </label>
+                </div>
               </div>
             </div>
-          ) : (
-            <div>
-              <p>You have not added a shipping or billing address yet!</p>
-              <Link to="/dashboard/myAddress">
-                <button className="btn btn-outline btn-wide mt-6">ADD</button>
-              </Link>
-            </div>
-          )}
+          </div>
         </div>
-      </div>
+
+        {/* right side - cart items, place order button */}
+        <div className="bg-slate-100 rounded-lg p-6 w-[35%]">
+          <div>
+            <h6 className="text-lg font-semibold">Your order(s)</h6>
+            <div className="my-4 space-y-4">
+              {cartData?.map((item) => (
+                <div
+                  key={item._id}
+                  className="flex items-center gap-3 w-full shadow rounded-lg"
+                >
+                  <img src={item.img} alt={item.name} className="w-[25%]" />
+                  <div className="flex-grow space-y-2">
+                    <h4 className="text-lg  font-medium">
+                      {item.name}{" "}
+                      <span className="font-bold">x {item.quantity}</span>
+                    </h4>
+                    <p className="font-bold">${item.price}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="divider"></div>
+          <div className="flex justify-between items-center font-bold text-lg">
+            <h5>Total</h5>
+            <h5>${cartSubtotal}</h5>
+          </div>
+          <div className="divider"></div>
+          <div>
+            {paymentMethod === "cod" ? (
+              <div className="font-bold my-5 flex justify-between items-center text-lg">
+                <h4>Payment Method:</h4>
+                <span className="font-bold">Cash on delivery</span>
+              </div>
+            ) : (
+              <>
+                {paymentInfo && (
+                  <div className="font-bold my-5 flex justify-between items-center text-lg">
+                    <h4>Payment Status:</h4>
+                    <span className="text-success">PAID</span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          <button
+            className="btn btn-block btn-neutral text-white mt-4"
+            disabled={
+              (!paymentInfo && paymentMethod !== "cod") ||
+              !userFromDB.shippingAddress
+            }
+            onClick={handlePlaceOrder}
+          >
+            Place Order
+          </button>
+        </div>
+      </section>
     </div>
   );
 };

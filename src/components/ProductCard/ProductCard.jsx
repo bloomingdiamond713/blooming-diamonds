@@ -11,7 +11,7 @@ import useWishlist from "../../hooks/useWishlist";
 
 const ProductCard = ({ cardData, flashSale }) => {
   const { user } = useAuthContext();
-  const [cartData, isCartLoading, , addToCart] = useCart();
+  const { cartData, isCartLoading, addToCart } = useCart();
   const [wishlistData, , , addToWishlist] = useWishlist();
   const [presentInCart, setPresentInCart] = useState(false);
   const [presentInWishlist, setPresentInWishlist] = useState(false);

@@ -117,7 +117,9 @@ const AddressBook = () => {
       </div>
 
       <div className="mt-6">
-        <h4 className="text-xl font-medium mb-6">Shipping Address</h4>
+        <h4 className="text-xl font-semibold mb-10 underline">
+          Add Shipping/Billing Address
+        </h4>
         {shippingAdd ? (
           <div className="border-2 border-gray-200 rounded-xl shadow p-4 w-fit">
             <div className="text-lg space-y-3 ">

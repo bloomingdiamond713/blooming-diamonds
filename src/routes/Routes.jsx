@@ -16,6 +16,7 @@ import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
 import Checkout from "../pages/Checkout/Checkout";
+import OrderDetails from "../pages/OrderDetails/OrderDetails";
 
 const router = createBrowserRouter([
   {
@@ -48,10 +49,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/checkout",
+        path: "checkout",
         element: (
           <PrivateRoute>
             <Checkout />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "order-details",
+        element: (
+          <PrivateRoute>
+            <OrderDetails />
           </PrivateRoute>
         ),
       },

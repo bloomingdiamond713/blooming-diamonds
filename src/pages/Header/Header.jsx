@@ -32,12 +32,12 @@ import useCart from "../../hooks/useCart";
 const Header = () => {
   const { user, isAuthLoading, logOut } = useAuthContext();
   const [stickyNav, setStickyNav] = useState("");
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(null);
   const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
   const location = useLocation();
   const [navNotifications, setNavNotifications] = useState([]);
   const [showRightDrawer, setShowRightDrawer] = useState(false);
-  const [cartData] = useCart();
+  const { cartData } = useCart();
 
   // fetch or update upper nav notifications
   useEffect(() => {
@@ -222,32 +222,32 @@ const Header = () => {
 
           {/* searched products */}
           <div className="mt-5 container searched-products">
-            {isSearchLoading ? (
-              <div>
-                <span className="loading loading-spinner loading-lg block mx-auto"></span>
-              </div>
-            ) : (
+            {searchText && (
               <>
-                {searchedProducts?.length ? (
-                  <Slider {...settings}>
-                    {searchedProducts?.map((product) => (
-                      <ProductCard
-                        key={product._id}
-                        cardData={product}
-                        flashSale={true}
-                      />
-                    ))}
-                  </Slider>
+                {isSearchLoading ? (
+                  <div>
+                    <span className="loading loading-spinner loading-lg block mx-auto"></span>
+                  </div>
                 ) : (
                   <>
-                    {searchText !== "" ? (
-                      <h4 className="text-center text-red-500 text-lg font-medium">
-                        No item matched {searchText}
-                      </h4>
+                    {searchedProducts?.length ? (
+                      <Slider {...settings}>
+                        {searchedProducts?.map((product) => (
+                          <ProductCard
+                            key={product._id}
+                            cardData={product}
+                            flashSale={true}
+                          />
+                        ))}
+                      </Slider>
                     ) : (
-                      <h4 className="text-center text-red-500 text-lg font-medium">
-                        Search box is empty!
-                      </h4>
+                      <>
+                        {searchText !== "" && (
+                          <h4 className="text-center text-red-500 text-lg font-medium">
+                            No item matched &quot;{searchText}&quot;
+                          </h4>
+                        )}
+                      </>
                     )}
                   </>
                 )}
@@ -258,7 +258,8 @@ const Header = () => {
         <div
           className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
             searchBar === "open" ? "opacity-1 visible" : "opacity-0 invisible"
-          } transition-all duration-200 ease-in-out`}
+          } transition-all duration-200 ease-in-out cursor-pointer`}
+          onClick={() => setSearchBar("closed")}
         ></div>
       </div>
 
@@ -641,7 +642,8 @@ const Header = () => {
       <div
         className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
           showRightDrawer ? "opacity-1 visible" : "opacity-0 invisible"
-        } transition-all duration-200 ease-in-out`}
+        } transition-all duration-200 ease-in-out cursor-pointer`}
+        onClick={() => setShowRightDrawer(false)}
       ></div>
     </div>
   );

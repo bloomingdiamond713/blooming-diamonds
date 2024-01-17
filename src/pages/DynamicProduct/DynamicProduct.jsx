@@ -22,7 +22,7 @@ const DynamicProduct = () => {
   const [presentInCart, setPresentInCart] = useState(false);
   const [presentInWishlist, setPresentInWishlist] = useState(false);
   const [products] = useProducts();
-  const [cartData, , , addToCart] = useCart();
+  const { cartData, addToCart } = useCart();
   const [wishlistData, , , addToWishlist] = useWishlist();
 
   // find the product by id
