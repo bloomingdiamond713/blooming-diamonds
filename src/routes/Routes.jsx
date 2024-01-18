@@ -16,7 +16,7 @@ import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
 import Checkout from "../pages/Checkout/Checkout";
-import OrderDetails from "../pages/OrderDetails/OrderDetails";
+import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
 
 const router = createBrowserRouter([
   {
@@ -57,10 +57,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "order-details",
+        path: "order-success",
         element: (
           <PrivateRoute>
-            <OrderDetails />
+            <OrderSuccess />
           </PrivateRoute>
         ),
       },

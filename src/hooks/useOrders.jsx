@@ -6,6 +6,7 @@ import axios from "axios";
 const useOrders = () => {
   const { user } = useAuthContext();
 
+  // get all orders by email
   const {
     data: orders,
     isLoading: isOrdersLoading,

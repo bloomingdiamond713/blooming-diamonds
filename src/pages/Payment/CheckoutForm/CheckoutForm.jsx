@@ -14,8 +14,6 @@ const CheckoutForm = ({ setPaymentInfo }) => {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(message);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,8 +50,6 @@ const CheckoutForm = ({ setPaymentInfo }) => {
   const paymentElementOptions = {
     layout: "tabs",
   };
-
-  console.log(elements);
 
   return (
     <form

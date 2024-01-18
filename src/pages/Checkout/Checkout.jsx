@@ -14,9 +14,11 @@ const Checkout = () => {
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [paymentInfo, setPaymentInfo] = useState(null);
-  const { cartData, cartSubtotal } = useCart();
+  const { cartData, cartSubtotal, refetch } = useCart();
   const { orders } = useOrders();
   const navigate = useNavigate();
+
+  // console.log(paymentInfo);
 
   // POST ORDER DATA TO DB
   const handlePlaceOrder = () => {
@@ -40,10 +42,18 @@ const Checkout = () => {
               `http://localhost:5000/delete-cart-items?email=${user?.email}`
             )
             .then((res) => {
-              console.log(res);
               if (res.data.deletedCount > 0) {
-                navigate("/order-details");
+                // set orderId in link state to uniquely identify the order in orderSuccess page
+                navigate("/order-success", {
+                  state: {
+                    orderStatus: "success",
+                    orderId: orders?.length + 1,
+                  },
+                });
                 setPaymentInfo(null);
+
+                // update cart
+                refetch();
               }
             });
         }

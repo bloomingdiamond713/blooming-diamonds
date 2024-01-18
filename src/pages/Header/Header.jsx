@@ -637,7 +637,7 @@ const Header = () => {
             <TfiClose />
           </button>
         </div>
-        <RightSideDrawer />
+        <RightSideDrawer setShowRightDrawer={setShowRightDrawer} />
       </div>
       <div
         className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${

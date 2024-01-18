@@ -7,7 +7,7 @@ import useCart from "../../hooks/useCart";
 import { FaMinus, FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import axios from "axios";
 
-const RightSideDrawer = () => {
+const RightSideDrawer = ({ setShowRightDrawer }) => {
   // Reminder: Right side drawer is called from the Header.jsx file
 
   const { user } = useAuthContext();
@@ -172,7 +172,10 @@ const RightSideDrawer = () => {
             </div>
 
             <Link to="/checkout" className="block">
-              <button className="btn btn-neutral btn-block text-white">
+              <button
+                className="btn btn-neutral btn-block text-white"
+                onClick={() => setShowRightDrawer(false)}
+              >
                 Checkout
               </button>
             </Link>
