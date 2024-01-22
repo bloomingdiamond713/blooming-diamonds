@@ -110,13 +110,13 @@ const AddressBook = () => {
   return (
     <div>
       <div className="pb-4 border-b space-y-2">
-        <h1 className="text-2xl font-semibold">Address Book</h1>
+        <h1 className="text-4xl font-semibold">Address Book</h1>
         <p>
           The following addresses will be used on the checkout page by default.
         </p>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 mb-10">
         <h4 className="text-xl font-semibold mb-10 underline">
           Add Shipping/Billing Address
         </h4>

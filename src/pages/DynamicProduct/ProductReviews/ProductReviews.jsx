@@ -1,24 +1,52 @@
 import React, { useEffect, useState } from "react";
 import "./ProductReviews.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
 import useDynamicRating from "../../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegThumbsUp } from "react-icons/fa";
+import { CiEdit } from "react-icons/ci";
+import { Link } from "react-router-dom";
+import useAuthContext from "../../../hooks/useAuthContext";
+import axios from "axios";
+import useUserInfo from "../../../hooks/useUserInfo";
+import toast from "react-hot-toast";
 
 const ProductReviews = () => {
   const { id } = useParams();
-  const [products] = useProducts();
+  const { user } = useAuthContext();
+  const [userFromDB] = useUserInfo();
+  const [products, , refetch] = useProducts();
   const [dynamicProduct, setDynamicProduct] = useState(null);
   const { averageRating } = useDynamicRating(dynamicProduct?.review);
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [reviewsLength, setReviewsLength] = useState(1); // for showing limited reviews in the page
+  const location = useLocation();
+  const [productReviewError, setProductReviewError] = useState("");
+  const [hasUserReviewed, setHasUserReviewed] = useState(false);
 
-  // todo: load data from database
+  // fetch dynamic product data
   useEffect(() => {
-    const filter = products?.find((item) => item._id == id); // find product by id
-    setDynamicProduct(filter);
-  }, [products, id]);
+    axios
+      .get(`http://localhost:5000/single-product/${id}`)
+      .then((res) => setDynamicProduct(res.data))
+      .catch((error) => console.error(error));
+  }, [id, products]);
+
+  // check if user already reviewed or not
+  useEffect(() => {
+    if (user) {
+      const reviewFound = dynamicProduct?.review?.find((r) => {
+        if (r.email) {
+          return r.reviewerEmail === user?.email;
+        } else {
+          return r.reviewerName === userFromDB?.name;
+        }
+      });
+
+      setHasUserReviewed(reviewFound ? true : false);
+    }
+  }, [dynamicProduct, user, userFromDB]);
 
   // show reviews conditionally
   const handleShowReviews = () => {
@@ -26,11 +54,64 @@ const ProductReviews = () => {
   };
   useEffect(() => {
     if (!showAllReviews) {
-      setReviewsLength(1);
+      setReviewsLength(2);
     } else {
       setReviewsLength(dynamicProduct?.review?.length);
     }
   }, [showAllReviews, dynamicProduct?.review?.length]);
+
+  // data to show in dynamic star ratings
+  const [starRating, setStarRating] = useState(0);
+  const handleRatingChange = (newRating) => {
+    setStarRating(newRating);
+  };
+
+  const handleSubmitProductReview = (e) => {
+    e.preventDefault();
+    setProductReviewError("");
+
+    if (!starRating) {
+      setProductReviewError("Rating value is required");
+      return;
+    }
+
+    const form = e.target;
+    const reviewTitle = form.reviewTitle.value;
+    const reviewDesc = form.reviewDesc.value;
+
+    // post review to specific product reviews data
+    axios
+      .post(`http://localhost:5000/products/add-review/${dynamicProduct._id}`, {
+        reviewerName: userFromDB?.name,
+        reviewerEmail: user?.email,
+        reviewerImg: user?.photoURL,
+        rating: parseFloat(starRating),
+        title: reviewTitle,
+        desc: reviewDesc,
+      })
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          toast.success("Your review was added successfully");
+          form.reset();
+          setStarRating(0);
+          setProductReviewError("");
+        }
+        refetch();
+      })
+      .catch((e) => setProductReviewError(e));
+  };
+
+  const deleteProductReview = () => {
+    axios
+      .delete(
+        `http://localhost:5000/products/delete-review/${dynamicProduct._id}/reviewer-email/${user?.email}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        refetch();
+      })
+      .catch((e) => console.error(e));
+  };
 
   return (
     <div className="mt-7 mb-32 px-3" id="productReviews">
@@ -73,7 +154,15 @@ const ProductReviews = () => {
                     <h5 className="text-xl text-black font-semibold">
                       {r.reviewerName}
                     </h5>
-                    <p className="text-sm text-gray-600">{r.reviewDate}</p>
+                    <p className="text-sm text-gray-600">
+                      {r.reviewDate.slice(0, 10)}
+                    </p>
+                    {user?.email === r.reviewerEmail && (
+                      <CiEdit
+                        className="text-xl text-black"
+                        onClick={deleteProductReview}
+                      />
+                    )}
                   </div>
                   <StarRatings
                     rating={r.rating}
@@ -101,13 +190,94 @@ const ProductReviews = () => {
           <button
             onClick={handleShowReviews}
             className={`mx-auto block border-b-2 border-b-black ${
-              dynamicProduct?.review?.length === 1 && "hidden"
+              dynamicProduct?.review?.length === 2 && "hidden"
             }`}
           >
             {showAllReviews ? "Show Less" : "View All Reviews"}
           </button>
         </div>
       )}
+
+      <div className="mt-16">
+        {!user?.uid ? (
+          <div>
+            <h4 className="font-bold text-2xl uppercase mb-4">
+              Write a Review
+            </h4>
+            <p>
+              You must be{" "}
+              <Link
+                to="/login"
+                className="text-primary"
+                state={{ from: location }}
+              >
+                logged in
+              </Link>{" "}
+              to write a review.
+            </p>
+          </div>
+        ) : (
+          <>
+            {!hasUserReviewed && (
+              <div>
+                <h4 className="font-bold text-2xl uppercase">Write a Review</h4>
+                <form
+                  onSubmit={handleSubmitProductReview}
+                  className="mt-8 px-2 space-y-8"
+                >
+                  {productReviewError && (
+                    <p className="text-error">{productReviewError}</p>
+                  )}
+                  <div className="space-y-2">
+                    <h5 className="font-bold">
+                      What would you rate the product?
+                    </h5>
+                    <StarRatings
+                      rating={starRating}
+                      starRatedColor="#d4647c"
+                      starHoverColor="#d4647c"
+                      starEmptyColor="#c7c7c7"
+                      changeRating={handleRatingChange}
+                      numberOfStars={5}
+                      starDimension="22px"
+                      starSpacing="4px"
+                      required="true"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h5 className="font-bold">Review Title</h5>
+                    <textarea
+                      rows={1}
+                      required
+                      name="reviewTitle"
+                      placeholder="Great Product"
+                      className="outline-none border-2 border-black rounded-lg w-full p-3"
+                      minLength={10}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h5 className="font-bold">Review Content</h5>
+                    <textarea
+                      rows={5}
+                      required
+                      name="reviewDesc"
+                      placeholder="Write a detailed review about what you liked about the product ..."
+                      className="outline-none border-2 border-black rounded-lg w-full p-3"
+                      minLength={20}
+                    />
+                  </div>
+
+                  <button className="btn btn-outline btn-neutral btn-wide border-2">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

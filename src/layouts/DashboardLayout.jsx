@@ -1,11 +1,11 @@
 import React from "react";
 import DashboardNav from "../pages/Dashboard/DashboardNav/DashboardNav";
 import { Outlet } from "react-router-dom";
-import useAuthContext from "../hooks/useAuthContext";
 import CustomHelmet from "../components/CustomHelmet/CustomHelmet";
+import useUserInfo from "../hooks/useUserInfo";
 
 const DashboardLayout = () => {
-  const { user } = useAuthContext();
+  const [userFromDB] = useUserInfo();
   return (
     <div
       className="w-full p-4 md:container mt-10 mb-10 text-center md:text-left"
@@ -17,7 +17,7 @@ const DashboardLayout = () => {
         className="text-4xl font-bold text-black tracking-wide"
         style={{ fontFamily: "var(--italiana)" }}
       >
-        Welcome, {user?.displayName}
+        Welcome, {userFromDB?.name}
       </h1>
 
       <div className="flex flex-col md:flex-row items-start mt-16">

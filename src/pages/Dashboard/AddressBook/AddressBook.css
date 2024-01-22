@@ -7,7 +7,7 @@
   font-size: 1rem;
 }
 
-.address-form input {
+.address-form input:not(input[type="radio"]) {
   margin-top: 5px;
   height: 40px;
   border-bottom: 2px solid rgb(63, 58, 58);

@@ -63,11 +63,13 @@ const ProductCard = ({ cardData, flashSale }) => {
       style={{ fontFamily: "var(--poppins)" }}
     >
       <div className="relative">
-        <div
-          className={`product-img-overlay ${
-            flashSale ? "h-[280px]" : "h-[340px]"
-          } rounded-lg`}
-        ></div>
+        <Link to={`/products/${_id}/description`} state={{ from: "/" }}>
+          <div
+            className={`product-img-overlay ${
+              flashSale ? "h-[280px]" : "h-[340px]"
+            } rounded-lg`}
+          ></div>
+        </Link>
         <img
           src={img}
           alt={name}

@@ -6,6 +6,7 @@ import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 import { Link } from "react-router-dom";
 import easyinvoice from "easyinvoice";
 import emptyBox from "../../assets/emptybox.jpg";
+import toast from "react-hot-toast";
 
 const OrderSuccess = () => {
   const location = useLocation();
@@ -15,15 +16,17 @@ const OrderSuccess = () => {
   const [orderDate, setOrderDate] = useState(null);
   const [invoiceLoading, setInvoiceLoading] = useState(false);
 
+  console.log(location);
+
   // get specific order by orderId & email for orderSuccess page
   useEffect(() => {
-    if (location?.state?.orderStatus === "success") {
-      const findOrderById = orders?.find(
-        (order) => order.orderId === location?.state?.orderId
-      );
-      setOrderObj(findOrderById);
-    }
+    const findOrderById = orders?.find(
+      (order) => order.orderId == location?.state?.orderId
+    );
+    setOrderObj(findOrderById);
   }, [location?.state, orders]);
+
+  console.log(orderObj);
 
   useEffect(() => {
     const today = new Date(orderObj?.date);
@@ -77,9 +80,14 @@ const OrderSuccess = () => {
         currency: "USD",
       },
     };
-    if (invoiceData) {
-      const result = await easyinvoice.createInvoice(invoiceData);
-      easyinvoice.download(`invoice_${orderObj?.orderId}.pdf`, result?.pdf);
+
+    try {
+      if (invoiceData) {
+        const result = await easyinvoice.createInvoice(invoiceData);
+        easyinvoice.download(`invoice_${orderObj?.orderId}.pdf`, result?.pdf);
+      }
+    } catch (error) {
+      toast.error("Sorry, our download server is busy. Please try again later");
     }
     // clear location state
     setInvoiceLoading(false);
@@ -103,7 +111,11 @@ const OrderSuccess = () => {
           </div>
 
           <div className="border rounded bg-green-600 text-center py-1 text-sm text-gray-100 font-semibold my-3">
-            <p>Thank You! Your order has been received.</p>
+            {location?.state?.from?.pathname === "checkout" ? (
+              <p>Thank You! Your order has been received.</p>
+            ) : (
+              <p>Thank You! Your order has been {orderObj?.orderStatus}.</p>
+            )}
           </div>
 
           <div className="order-info-con my-10 grid grid-cols-2 gap-x-10">

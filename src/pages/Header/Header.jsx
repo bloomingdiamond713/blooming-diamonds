@@ -423,7 +423,7 @@ const Header = () => {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/dashboard/myOrder">My Orders</Link>
+                                <Link to="/dashboard/myOrders">My Orders</Link>
                               </li>
                               <li>
                                 <Link to="/dashboard/myAddress">
@@ -578,7 +578,7 @@ const Header = () => {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/dashboard/myOrder">My Orders</Link>
+                                <Link to="/dashboard/myOrders">My Orders</Link>
                               </li>
                               <li>
                                 <Link to="/dashboard/myAddress">

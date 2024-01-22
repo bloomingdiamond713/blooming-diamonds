@@ -15,8 +15,8 @@ const OtherFeatures = () => {
         <LiaShippingFastSolid className="text-6xl" />
         <div>
           <h4 className="text-xl font-bold mb-2 text-black">Free Shipping</h4>
-          <p className="text-gray-600">
-            Free Shipping worldwide for orders over $130
+          <p className="text-gray-900">
+            Free Shipping worldwide for orders over $1130
           </p>
         </div>
       </div>
@@ -24,7 +24,7 @@ const OtherFeatures = () => {
         <RiRefund2Line className="text-6xl" />
         <div>
           <h4 className="text-xl font-bold mb-2 text-black">Money Guarentee</h4>
-          <p className="text-gray-600">
+          <p className="text-gray-900">
             Replacement within 30 days without any questions
           </p>
         </div>
@@ -35,7 +35,7 @@ const OtherFeatures = () => {
           <h4 className="text-xl font-bold mb-2 text-black">
             Flexible Payment
           </h4>
-          <p className="text-gray-600">
+          <p className="text-gray-900">
             Pay with multiple credit cards without any problems
           </p>
         </div>
@@ -44,7 +44,7 @@ const OtherFeatures = () => {
         <BiSupport className="text-6xl" />
         <div>
           <h4 className="text-xl font-bold mb-2 text-black">Online Support</h4>
-          <p className="text-gray-600">
+          <p className="text-gray-900">
             24 hours a day, 7 days a week continuous support
           </p>
         </div>

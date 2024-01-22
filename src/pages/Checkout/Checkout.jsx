@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useUserInfo from "../../hooks/useUserInfo";
 import Payment from "../Payment/Payment";
 import useCart from "../../hooks/useCart";
@@ -17,8 +17,7 @@ const Checkout = () => {
   const { cartData, cartSubtotal, refetch } = useCart();
   const { orders } = useOrders();
   const navigate = useNavigate();
-
-  // console.log(paymentInfo);
+  const location = useLocation();
 
   // POST ORDER DATA TO DB
   const handlePlaceOrder = () => {
@@ -47,6 +46,7 @@ const Checkout = () => {
                 navigate("/order-success", {
                   state: {
                     orderStatus: "success",
+                    from: location,
                     orderId: orders?.length + 1,
                   },
                 });

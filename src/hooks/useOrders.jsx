@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import useAuthContext from "./useAuthContext";
 import axios from "axios";
@@ -22,7 +22,19 @@ const useOrders = () => {
     },
   });
 
-  return { orders, isOrdersLoading, refetch };
+  // get total amount spent on the orders
+  const [totalSpent, setTotalSpent] = useState(0);
+  useEffect(() => {
+    if (orders) {
+      const sum = orders.reduce((totalAmount, item) => {
+        return totalAmount + parseFloat(item.total);
+      }, 0);
+
+      setTotalSpent(sum.toFixed(2));
+    }
+  }, [orders]);
+
+  return { orders, isOrdersLoading, refetch, totalSpent };
 };
 
 export default useOrders;

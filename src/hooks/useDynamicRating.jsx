@@ -5,7 +5,7 @@ const useDynamicRating = (review) => {
   useEffect(() => {
     if (review?.length) {
       const totalRating = review?.reduce(
-        (sum, reviewObj) => sum + reviewObj.rating,
+        (sum, reviewObj) => sum + reviewObj?.rating,
         0
       );
       setAverageRating(parseFloat((totalRating / review?.length).toFixed(2)));
