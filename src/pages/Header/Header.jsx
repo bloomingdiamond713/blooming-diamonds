@@ -413,7 +413,7 @@ const Header = () => {
                           <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
                             <div className="hover:bg-white text-left email-con">
                               <p className="text-xs mb-1">Signed in as</p>
-                              <Link>{user.email}</Link>
+                              <Link to="/myDashboard">{user.email}</Link>
                             </div>
 
                             <div className="py-2 border-b border-gray-300">
@@ -568,7 +568,7 @@ const Header = () => {
                           <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
                             <div className="hover:bg-white text-left email-con">
                               <p className="text-xs mb-1">Signed in as</p>
-                              <Link>{user.email}</Link>
+                              <Link to="/myDashboard">{user.email}</Link>
                             </div>
 
                             <div className="py-2 border-b border-gray-300">
