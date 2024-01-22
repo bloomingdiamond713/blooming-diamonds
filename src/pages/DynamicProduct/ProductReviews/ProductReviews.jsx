@@ -4,7 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
 import useDynamicRating from "../../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
-import { FaRegThumbsUp } from "react-icons/fa";
+import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
@@ -101,6 +101,7 @@ const ProductReviews = () => {
       .catch((e) => setProductReviewError(e));
   };
 
+  // delete/update specific product review
   const deleteProductReview = () => {
     axios
       .delete(
@@ -112,6 +113,29 @@ const ProductReviews = () => {
       })
       .catch((e) => console.error(e));
   };
+
+  // UPDATE PRODUCT LIKE STATUS
+  // const [likeCount, setLikeCount] = useState(0);
+  // const [likedByLoggedUser, setLikedByLoggedUser] = useState(false);
+
+  const handleLikeStatus = (reviewObjId) => {
+    axios
+      .post("http://localhost:5000/single-product-like-update", {
+        productId: dynamicProduct._id,
+        reviewId: reviewObjId,
+        email: user?.email,
+      })
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          refetch();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  console.log(dynamicProduct);
 
   return (
     <div className="mt-7 mb-32 px-3" id="productReviews">
@@ -140,7 +164,7 @@ const ProductReviews = () => {
 
           <div className=" pl-10 pr-20 product-reviews-con">
             {dynamicProduct?.review?.slice(0, reviewsLength).map((r) => (
-              <div key={r.desc} className="flex items-start gap-4 ">
+              <div key={r._id} className="flex items-start gap-4 ">
                 <div className="w-[5%]">
                   <img
                     src={r.reviewerImg}
@@ -179,9 +203,23 @@ const ProductReviews = () => {
                     <p className="text-gray-600">{r.desc}</p>
                   </div>
 
-                  <div className="flex items-baseline gap-2 mt-5 text-gray-700 cursor-pointer">
-                    <FaRegThumbsUp />
-                    <span>Like</span>
+                  <div
+                    className="flex items-baseline gap-2 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
+                    onClick={() => handleLikeStatus(r._id)}
+                  >
+                    {r.likedBy?.includes(user?.email) ? (
+                      <FaThumbsUp className="text-[var(--light-brown)]" />
+                    ) : (
+                      <FaRegThumbsUp />
+                    )}
+
+                    <span>
+                      {r.likeCount > 0 ? (
+                        <span className="font-bold">{r.likeCount}</span>
+                      ) : (
+                        "Like"
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
