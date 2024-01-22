@@ -18,14 +18,16 @@ const ProductCard = ({ cardData, flashSale }) => {
 
   // check if item added to cart and wishlist
   useEffect(() => {
-    const itemInCart = cartData?.find((p) => p.productId === cardData._id);
-    const itemInWishlist = wishlistData?.find(
-      (p) => p.productId === cardData._id
-    );
+    if (user?.uid) {
+      const itemInCart = cartData?.find((p) => p.productId === cardData._id);
+      const itemInWishlist = wishlistData?.find(
+        (p) => p.productId === cardData._id
+      );
 
-    itemInCart ? setPresentInCart(true) : setPresentInCart(false);
-    itemInWishlist ? setPresentInWishlist(true) : setPresentInWishlist(false);
-  }, [cartData, isCartLoading, cardData._id, wishlistData]);
+      itemInCart ? setPresentInCart(true) : setPresentInCart(false);
+      itemInWishlist ? setPresentInWishlist(true) : setPresentInWishlist(false);
+    }
+  }, [cartData, isCartLoading, cardData._id, wishlistData, user]);
 
   const {
     _id,

@@ -67,7 +67,11 @@ const MyDashboard = () => {
 
             <div>
               <h6>Mobile Number</h6>
-              <h6>+{userFromDB?.mobileNumber || "- not added -"}</h6>
+              <h6>
+                {userFromDB?.mobileNumber
+                  ? `+${userFromDB.mobileNumber}`
+                  : "- not added -"}
+              </h6>
             </div>
 
             <div>

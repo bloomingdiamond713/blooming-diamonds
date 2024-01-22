@@ -115,8 +115,6 @@ const ProductReviews = () => {
   };
 
   // UPDATE PRODUCT LIKE STATUS
-  // const [likeCount, setLikeCount] = useState(0);
-  // const [likedByLoggedUser, setLikedByLoggedUser] = useState(false);
 
   const handleLikeStatus = (reviewObjId) => {
     axios
@@ -134,8 +132,6 @@ const ProductReviews = () => {
         console.error(error);
       });
   };
-
-  console.log(dynamicProduct);
 
   return (
     <div className="mt-7 mb-32 px-3" id="productReviews">
@@ -181,7 +177,7 @@ const ProductReviews = () => {
                     <p className="text-sm text-gray-600">
                       {r.reviewDate.slice(0, 10)}
                     </p>
-                    {user?.email === r.reviewerEmail && (
+                    {user && user?.email === r.reviewerEmail && (
                       <CiEdit
                         className="text-xl text-black"
                         onClick={deleteProductReview}
@@ -203,9 +199,11 @@ const ProductReviews = () => {
                     <p className="text-gray-600">{r.desc}</p>
                   </div>
 
-                  <div
+                  <button
                     className="flex items-baseline gap-2 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
                     onClick={() => handleLikeStatus(r._id)}
+                    disabled={!user}
+                    title={!user && "Please login to give reaction"}
                   >
                     {r.likedBy?.includes(user?.email) ? (
                       <FaThumbsUp className="text-[var(--light-brown)]" />
@@ -220,7 +218,7 @@ const ProductReviews = () => {
                         "Like"
                       )}
                     </span>
-                  </div>
+                  </button>
                 </div>
               </div>
             ))}

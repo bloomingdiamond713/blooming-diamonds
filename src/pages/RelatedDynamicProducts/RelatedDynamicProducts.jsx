@@ -30,6 +30,7 @@ const RelatedDynamicProducts = () => {
     autoplay: true,
     autoplaySpeed: 4000,
     pauseOnHover: true,
+    adaptiveHeight: true,
   };
 
   return (

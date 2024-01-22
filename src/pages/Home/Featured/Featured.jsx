@@ -3,6 +3,7 @@ import "./Featured.css";
 import useProducts from "../../../hooks/useProducts";
 import featuredBanner from "../../../assets/featuredBanner.jpg";
 import FeaturedCard from "./FeaturedCard/FeaturedCard";
+import { Link } from "react-router-dom";
 
 const Featured = () => {
   const [products, isProductsLoading] = useProducts();
@@ -49,9 +50,11 @@ const Featured = () => {
             Wedding Rings
           </h4>
 
-          <button className="border-b-2 border-b-black hover:border-b-[var(--pink-gold)] hover:text-[var(--pink-gold)] transition-all duration-150 ease">
-            Shop Now
-          </button>
+          <Link to="/shop" state={{ category: "diamond rings" }}>
+            <button className="border-b-2 border-b-black hover:border-b-[var(--pink-gold)] hover:text-[var(--pink-gold)] transition-all duration-150 ease">
+              Shop Now
+            </button>
+          </Link>
         </div>
       </div>
 

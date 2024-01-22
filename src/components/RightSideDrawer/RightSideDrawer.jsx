@@ -79,6 +79,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
               <Link
                 to={"/login"}
                 className="text-[--light-brown] font-bold underline"
+                onClick={() => setShowRightDrawer(false)}
               >
                 Login
               </Link>{" "}
@@ -86,6 +87,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
               <Link
                 to={"/register"}
                 className="text-[--light-brown] font-bold underline"
+                onClick={() => setShowRightDrawer(false)}
               >
                 Sign Up
               </Link>{" "}
@@ -101,7 +103,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
                 <span className="loading loading-spinner loading-md"></span>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-6 mb-10">
                 {cartData?.map((product) => (
                   <div
                     key={product._id}

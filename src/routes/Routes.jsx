@@ -17,6 +17,7 @@ import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
 import Checkout from "../pages/Checkout/Checkout";
 import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
+import AddReview from "../pages/Dashboard/AddReview/AddReview";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           {
             path: "myAddress",
             element: <AddressBook />,
+          },
+          {
+            path: "addReview",
+            element: <AddReview />,
           },
         ],
       },
