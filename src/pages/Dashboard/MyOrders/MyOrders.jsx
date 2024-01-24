@@ -2,9 +2,57 @@ import React from "react";
 import "./MyOrders.css";
 import useOrders from "../../../hooks/useOrders";
 import { Link } from "react-router-dom";
+import { TfiTrash } from "react-icons/tfi";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const MyOrders = () => {
-  const { orders, totalSpent } = useOrders();
+  const { orders, totalSpent, refetch } = useOrders();
+
+  const handleDeleteOrder = (order) => {
+    // date count: no order can be deleted after 7 days of ordering
+    const today = new Date();
+    const orderDate = new Date(order.date);
+
+    const diffInDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
+
+    if (diffInDays > 7) {
+      Swal.fire({
+        title: "Too Late",
+        text: "No orders can be cancelled after 7 days of ordering.",
+        icon: "error",
+        confirmButtonColor: "#000",
+        confirmButtonText: "Ok, take me back",
+      });
+    } else {
+      Swal.fire({
+        title: "Are you sure?",
+        html: `Your order will be cancelled.<br/>Check out our <a href="https://www.google.com" target="_blank" class="underline text-primary">refund policy</a>`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#000",
+        cancelButtonColor: "#ef4c53",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:5000/delete-order/${order._id}`)
+            .then((res) => {
+              if (res.data.deletedCount > 0) {
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your order has been deleted successfully",
+                  icon: "success",
+                });
+
+                refetch();
+              }
+            })
+            .catch((error) => console.error(error));
+        }
+      });
+    }
+  };
 
   return (
     <section>
@@ -45,6 +93,7 @@ const MyOrders = () => {
                 <th>Product(s)</th>
                 <th>Total</th>
                 <th>Status</th>
+                <th>Action</th>
                 <th></th>
               </tr>
             </thead>
@@ -78,6 +127,15 @@ const MyOrders = () => {
                         (word) => word.charAt(0).toUpperCase() + word.slice(1)
                       )
                       .join(" ")}
+                  </td>
+
+                  <td>
+                    <button
+                      className="border rounded-lg p-2 block mx-auto hover:bg-red-500 hover:text-white hover:border-none transition-all duration-100 linear"
+                      onClick={() => handleDeleteOrder(order)}
+                    >
+                      <TfiTrash className="text-xl" />
+                    </button>
                   </td>
                   <td>
                     <Link

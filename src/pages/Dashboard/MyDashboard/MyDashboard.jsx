@@ -76,7 +76,7 @@ const MyDashboard = () => {
 
             <div>
               <h6>Gender</h6>
-              <h6>{userFromDB?.gender || "- not added -"}</h6>
+              <h6>{userFromDB?.gender?.toUpperCase() || "- not added -"}</h6>
             </div>
 
             <div>

@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   const [userFromDB] = useUserInfo();
   return (
     <div
-      className="w-full p-4 md:container mt-10 mb-10 text-center md:text-left"
+      className="w-full p-4 md:container mt-10 mb-10 text-left"
       style={{ fontFamily: "var(--poppins)" }}
     >
       <CustomHelmet title={"Dashboard"} />
@@ -21,10 +21,10 @@ const DashboardLayout = () => {
       </h1>
 
       <div className="flex flex-col md:flex-row items-start mt-16">
-        <div className="w-full md:w-[25%] border md:border-none px-3">
+        <div className="w-full md:w-[25%] md:border-none overflow-auto">
           <DashboardNav />
         </div>
-        <div className="divider lg:divider-horizontal"></div>
+        <div className="md:divider md:divider-horizontal"></div>
         <div className="md:w-[75%] md:pl-8 mt-10 md:mt-0">
           <Outlet />
         </div>

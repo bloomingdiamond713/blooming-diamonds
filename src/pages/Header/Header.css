@@ -40,15 +40,12 @@ svg {
 }
 
 /* navbar links styles */
-.menu a {
+.menu a,
+.menu p {
   font-family: var(--montserrat);
   font-weight: 700;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-}
-.menu:not(.dropdown-content) .active {
-  transition: all 0.3s ease-out;
-  border-bottom: 2px solid var(--pink-gold);
 }
 
 .menu:not(.dropdown-content) a::after {

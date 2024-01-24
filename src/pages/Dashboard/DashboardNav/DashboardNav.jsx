@@ -15,7 +15,7 @@ const DashboardNav = () => {
       .catch((err) => console.error(err));
   };
   return (
-    <nav className="flex flex-col dashboard-nav">
+    <nav className="w-full flex flex-row md:flex-col dashboard-nav border-b pr-2 overflow-auto">
       <NavLink
         to={"/dashboard/myDashboard"}
         className={({ isActive, isPending }) =>

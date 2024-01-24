@@ -294,12 +294,12 @@ const Header = () => {
                     </svg>
                   </label>
                 </div>
-                <div className="w-[25%] px-2 text-center">
+                <div className="w-[27%] md:w-[25%] md:px-2 text-center">
                   <Link to="/">
                     <img
                       src={logo}
                       alt="logo"
-                      className="w-[170px] h-[90px] cursor-pointer"
+                      className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
                     />
                   </Link>
                 </div>
@@ -364,12 +364,12 @@ const Header = () => {
                   </ul>
                 </div>
 
-                <div className="w-[25%] flex justify-end items-center space-x-5 text-center">
+                <div className="md:w-[25%] flex justify-end items-center space-x-5 text-center ml-auto">
                   <FiSearch
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
-                  <Link to="/wishlist">
+                  <Link to="/wishlist" className="hidden md:inline">
                     <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </Link>
 
@@ -453,7 +453,7 @@ const Header = () => {
 
             {/* Main Navbar non sticky */}
             <div className={`w-full navbar bg-white z-[1000]`}>
-              <div className="md:container text-center">
+              <div className="w-full md:container text-center">
                 <div className="flex-none lg:hidden">
                   <label
                     htmlFor="my-drawer-3"
@@ -475,12 +475,12 @@ const Header = () => {
                     </svg>
                   </label>
                 </div>
-                <div className="w-[25%] px-2 text-center">
+                <div className="w-[27%] md:w-[25%] md:px-2 text-center">
                   <Link to="/">
                     <img
                       src={logo}
                       alt="logo"
-                      className="w-[170px] h-[90px] cursor-pointer"
+                      className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
                     />
                   </Link>
                 </div>
@@ -521,12 +521,12 @@ const Header = () => {
                   </ul>
                 </div>
 
-                <div className="w-[20%] flex justify-end items-center space-x-5 text-center">
+                <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto">
                   <FiSearch
                     className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                     onClick={handleSearchIcon}
                   />
-                  <Link to="/wishlist">
+                  <Link to="/wishlist" className="hidden md:inline">
                     <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </Link>
                   {!user && (
@@ -544,77 +544,110 @@ const Header = () => {
                     <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                   </div>
 
-                  {isAuthLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
-                  ) : (
-                    <>
-                      {user && (
-                        <details
-                          className="dropdown dropdown-end"
-                          id="not-sticky-nav"
-                        >
-                          <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
-                            <div className="w-10 rounded-full">
-                              <img
-                                alt={user.displayName || user.email}
-                                src={
-                                  user.photoURL
-                                    ? user.photoURL
-                                    : placeholderUserImg
-                                }
-                              />
-                            </div>
-                          </summary>
-                          <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
-                            <div className="hover:bg-white text-left email-con">
-                              <p className="text-xs mb-1">Signed in as</p>
-                              <Link to="/myDashboard">{user.email}</Link>
-                            </div>
+                  <div>
+                    {isAuthLoading ? (
+                      <span className="loading loading-spinner loading-sm"></span>
+                    ) : (
+                      <>
+                        {user && (
+                          <details
+                            className="dropdown dropdown-end"
+                            id="not-sticky-nav"
+                          >
+                            <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
+                              <div className="w-10 rounded-full">
+                                <img
+                                  alt={user.displayName || user.email}
+                                  src={
+                                    user.photoURL
+                                      ? user.photoURL
+                                      : placeholderUserImg
+                                  }
+                                />
+                              </div>
+                            </summary>
+                            <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
+                              <div className="hover:bg-white text-left email-con">
+                                <p className="text-xs mb-1">Signed in as</p>
+                                <Link to="/myDashboard">{user.email}</Link>
+                              </div>
 
-                            <div className="py-2 border-b border-gray-300">
-                              <li>
-                                <Link to="/dashboard/myDashboard">
-                                  Dashboard
-                                </Link>
-                              </li>
-                              <li>
-                                <Link to="/dashboard/myOrders">My Orders</Link>
-                              </li>
-                              <li>
-                                <Link to="/dashboard/myAddress">
-                                  Address Book
-                                </Link>
-                              </li>
-                              <li>
-                                <Link to="/dashboard/addReview">
-                                  Add Review
-                                </Link>
-                              </li>
-                            </div>
+                              <div className="py-2 border-b border-gray-300">
+                                <li>
+                                  <Link to="/dashboard/myDashboard">
+                                    Dashboard
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link to="/dashboard/myOrders">
+                                    My Orders
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link to="/dashboard/myAddress">
+                                    Address Book
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link to="/dashboard/addReview">
+                                    Add Review
+                                  </Link>
+                                </li>
+                              </div>
 
-                            <li>
-                              <button onClick={handleSignOut}>Sign Out</button>
-                            </li>
-                          </ul>
-                        </details>
-                      )}
-                    </>
-                  )}
+                              <li>
+                                <button onClick={handleSignOut}>
+                                  Sign Out
+                                </button>
+                              </li>
+                            </ul>
+                          </details>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* sidebar */}
+          {/* sidebar on visible mobile*/}
           <div className="drawer-side z-[1010]">
-            <label
-              htmlFor="my-drawer-3"
-              aria-label="close sidebar"
-              className="drawer-overlay"
-            ></label>
-            <ul className="menu p-4 w-80 min-h-full bg-base-200">
+            <ul className="menu w-full min-h-screen bg-base-100 border-2 flex flex-col justify-center items-center space-y-5 relative">
+              <div
+                className="border absolute top-5 right-5"
+                onClick={handleLinkClicked}
+              >
+                <TfiClose className="text-3xl" />
+              </div>
+
               {/* Sidebar content here */}
-              <HashLink to="/#something" onClick={handleLinkClicked}>
+              <HashLink
+                to="/dashboard/myDashboard"
+                onClick={handleLinkClicked}
+                className="block"
+              >
+                Dashboard
+              </HashLink>
+              <HashLink
+                to="/#something"
+                onClick={handleLinkClicked}
+                className="block"
+              >
+                Something2
+              </HashLink>
+              <HashLink
+                to="/#something"
+                onClick={handleLinkClicked}
+                className="block"
+              >
+                Something2
+              </HashLink>
+              <HashLink
+                to="/#something"
+                onClick={handleLinkClicked}
+                className="block"
+              >
                 Something2
               </HashLink>
             </ul>
@@ -623,7 +656,7 @@ const Header = () => {
       </nav>
       {/* Navigation Bar End */}
 
-      {/* right side drawer */}
+      {/* right side drawer for cart */}
       <div
         className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-2xl rounded-bl-2xl ${
           showRightDrawer ? "transform-x-0" : "translate-x-full"

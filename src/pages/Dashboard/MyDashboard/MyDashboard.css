@@ -22,3 +22,9 @@
 .profile-details-con button {
   margin-top: 50px !important;
 }
+
+@media screen and (max-width: 480px) {
+  .profile-details-con > div {
+    display: block;
+  }
+}

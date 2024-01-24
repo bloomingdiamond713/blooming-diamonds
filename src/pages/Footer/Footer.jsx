@@ -24,7 +24,7 @@ const Footer = () => {
 
   return (
     <div
-      className="bg-[#f7f7f7] px-12 pt-16 pb-4"
+      className="bg-[#f7f7f7] px-12 pt-16 pb-4 hidden md:block"
       style={{ fontFamily: "var(--poppins)" }}
     >
       <div className="footer flex items-start justify-between gap-4 py-10">
