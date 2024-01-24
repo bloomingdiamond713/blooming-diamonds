@@ -18,6 +18,8 @@ import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
 import Checkout from "../pages/Checkout/Checkout";
 import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
 import AddReview from "../pages/Dashboard/AddReview/AddReview";
+import AdminDashboard from "../pages/Dashboard/AdminDashboard/AdminDashboard";
+import AdminRoute from "./AdminRoute/AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +90,14 @@ const router = createBrowserRouter([
           {
             path: "addReview",
             element: <AddReview />,
+          },
+          {
+            path: "adminDashboard",
+            element: (
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            ),
           },
         ],
       },

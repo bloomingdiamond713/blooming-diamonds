@@ -28,6 +28,7 @@ import Slider from "react-slick";
 import useSearchedProducts from "../../hooks/useSearchedProducts";
 import axios from "axios";
 import useCart from "../../hooks/useCart";
+import useUserInfo from "../../hooks/useUserInfo";
 
 const Header = () => {
   const { user, isAuthLoading, logOut } = useAuthContext();
@@ -38,6 +39,9 @@ const Header = () => {
   const [navNotifications, setNavNotifications] = useState([]);
   const [showRightDrawer, setShowRightDrawer] = useState(false);
   const { cartData } = useCart();
+  const [userFromDB, isUserLoading] = useUserInfo();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminRoute, setIsAdminRoute] = useState(false);
 
   // fetch or update upper nav notifications
   useEffect(() => {
@@ -122,563 +126,622 @@ const Header = () => {
     adaptiveHeight: true,
   };
 
+  // check if user is admin and route is admin dashboard
+  useEffect(() => {
+    if (userFromDB?.admin) {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+
+    if (userFromDB?.admin && location?.pathname?.includes("admin")) {
+      setIsAdminRoute(true);
+    } else {
+      setIsAdminRoute(false);
+    }
+  }, [userFromDB, location]);
+
+  // admin routes links
+  const adminRoutes = (
+    <>
+      <li>
+        <Link to="/dashboard/adminDashboard">Dashboard</Link>
+      </li>
+      {/* <li>
+          <Link to="/dashboard/myOrders">My Orders</Link>
+        </li>
+        <li>
+          <Link to="/dashboard/myAddress">Address Book</Link>
+        </li>
+        <li>
+          <Link to="/dashboard/addReview">Add Review</Link>
+        </li> */}
+    </>
+  );
+
   return (
-    <div className="relative">
-      {/* upper navbar */}
-      <div
-        className="hidden md:flex justify-between items-center container py-3 z-[1000]"
-        style={{ fontFamily: "var(--montserrat)" }}
-      >
-        <div className="w-[75%] upper-nav-left">
-          <div className="flex items-center gap-3 font-semibold">
-            <FiPhone className="text-lg" />
-            <a href="tel:+8801306734299" className="text-sm">
-              (+880) 13067-34299
-            </a>
-          </div>
-          <Textra
-            effect="topDown"
-            stopDuration={2000}
-            data={navNotifications.map((n) => n.notification)}
-            className="text-sm text-black"
-          />
-        </div>
-        <div className="w-[25%] flex justify-end items-center gap-3 upper-nav-right">
-          {/* TODO: Create relevant social media accounts for ub-jewellers */}
-
-          <a
-            href="https://www.facebook.com/uzzal.bhowmik01"
-            target="_blank"
-            rel="noreferrer"
+    <>
+      {!isAdminRoute && !isUserLoading && (
+        <div className="relative">
+          {/* upper navbar */}
+          <div
+            className="hidden md:flex justify-between items-center container py-3 z-[1000]"
+            style={{ fontFamily: "var(--montserrat)" }}
           >
-            <FaFacebookF className="text-xl" />
-          </a>
-          <a
-            href="https://youtu.be/xuuNZQwhEn4?si=iqIPgbobYcA7EhOD"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaYoutube className="text-xl" />
-          </a>
-          <a
-            href="https://www.instagram.com/reel/C1UC-rjMkAE/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaInstagram className="text-xl" />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/uzzal-bhowmik-76973319a/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaLinkedin className="text-xl" />
-          </a>
-          <a
-            href="https://www.pinterest.com/pin/pick-your-fave-video--745134700851924406/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaPinterest className="text-xl" />
-          </a>
-        </div>
-      </div>
-
-      {/* Header Search Bar */}
-
-      <div style={{ fontFamily: "var(--montserrat)" }}>
-        <div
-          className={`w-full min-h-[300px] fixed top-0 left-0 right-0 bg-white z-[1005]  ${
-            searchBar === "open" ? "translate-y-0" : "translate-y-[-100%]"
-          } transition-all duration-300 ease-in-out pt-2 pb-10`}
-        >
-          {/* close button */}
-          <button
-            onClick={() => setSearchBar("closed")}
-            className="flex justify-end text-3xl w-full pr-6"
-          >
-            <TfiClose className="hover:fill-red-400" />
-          </button>
-
-          {/* search bar */}
-          <div className="w-[80%] mx-auto space-y-5">
-            <h5 className="text-sm uppercase font-[500]">
-              what are you looking for?
-            </h5>
-
-            <div className="header-search-bar relative">
-              <FiSearch className="text-3xl absolute -top-1 right-0" />
-              <input
-                type="text"
-                id="search-input-field"
-                placeholder="Search"
-                onBlur={(e) => setSearchText(e.target.value)}
-                onKeyDownCapture={(e) =>
-                  e.key === "Enter" && setSearchText(e.target.value)
-                }
+            <div className="w-[75%] upper-nav-left">
+              <div className="flex items-center gap-3 font-semibold">
+                <FiPhone className="text-lg" />
+                <a href="tel:+8801306734299" className="text-sm">
+                  (+880) 13067-34299
+                </a>
+              </div>
+              <Textra
+                effect="topDown"
+                stopDuration={2000}
+                data={navNotifications.map((n) => n.notification)}
+                className="text-sm text-black"
               />
+            </div>
+            <div className="w-[25%] flex justify-end items-center gap-3 upper-nav-right">
+              {/* TODO: Create relevant social media accounts for ub-jewellers */}
+
+              <a
+                href="https://www.facebook.com/uzzal.bhowmik01"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaFacebookF className="text-xl" />
+              </a>
+              <a
+                href="https://youtu.be/xuuNZQwhEn4?si=iqIPgbobYcA7EhOD"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaYoutube className="text-xl" />
+              </a>
+              <a
+                href="https://www.instagram.com/reel/C1UC-rjMkAE/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaInstagram className="text-xl" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/uzzal-bhowmik-76973319a/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaLinkedin className="text-xl" />
+              </a>
+              <a
+                href="https://www.pinterest.com/pin/pick-your-fave-video--745134700851924406/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaPinterest className="text-xl" />
+              </a>
             </div>
           </div>
 
-          {/* searched products */}
-          <div className="mt-5 container searched-products">
-            {searchText && (
-              <>
-                {isSearchLoading ? (
-                  <div>
-                    <span className="loading loading-spinner loading-lg block mx-auto"></span>
-                  </div>
-                ) : (
+          {/* Header Search Bar */}
+
+          <div style={{ fontFamily: "var(--montserrat)" }}>
+            <div
+              className={`w-full min-h-[300px] fixed top-0 left-0 right-0 bg-white z-[1005]  ${
+                searchBar === "open" ? "translate-y-0" : "translate-y-[-100%]"
+              } transition-all duration-300 ease-in-out pt-2 pb-10`}
+            >
+              {/* close button */}
+              <button
+                onClick={() => setSearchBar("closed")}
+                className="flex justify-end text-3xl w-full pr-6"
+              >
+                <TfiClose className="hover:fill-red-400" />
+              </button>
+
+              {/* search bar */}
+              <div className="w-[80%] mx-auto space-y-5">
+                <h5 className="text-sm uppercase font-[500]">
+                  what are you looking for?
+                </h5>
+
+                <div className="header-search-bar relative">
+                  <FiSearch className="text-3xl absolute -top-1 right-0" />
+                  <input
+                    type="text"
+                    id="search-input-field"
+                    placeholder="Search"
+                    onBlur={(e) => setSearchText(e.target.value)}
+                    onKeyDownCapture={(e) =>
+                      e.key === "Enter" && setSearchText(e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* searched products */}
+              <div className="mt-5 container searched-products">
+                {searchText && (
                   <>
-                    {searchedProducts?.length ? (
-                      <Slider {...settings}>
-                        {searchedProducts?.map((product) => (
-                          <ProductCard
-                            key={product._id}
-                            cardData={product}
-                            flashSale={true}
-                          />
-                        ))}
-                      </Slider>
+                    {isSearchLoading ? (
+                      <div>
+                        <span className="loading loading-spinner loading-lg block mx-auto"></span>
+                      </div>
                     ) : (
                       <>
-                        {searchText !== "" && (
-                          <h4 className="text-center text-red-500 text-lg font-medium">
-                            No item matched &quot;{searchText}&quot;
-                          </h4>
+                        {searchedProducts?.length ? (
+                          <Slider {...settings}>
+                            {searchedProducts?.map((product) => (
+                              <ProductCard
+                                key={product._id}
+                                cardData={product}
+                                flashSale={true}
+                              />
+                            ))}
+                          </Slider>
+                        ) : (
+                          <>
+                            {searchText !== "" && (
+                              <h4 className="text-center text-red-500 text-lg font-medium">
+                                No item matched &quot;{searchText}&quot;
+                              </h4>
+                            )}
+                          </>
                         )}
                       </>
                     )}
                   </>
                 )}
-              </>
-            )}
-          </div>
-        </div>
-        <div
-          className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
-            searchBar === "open" ? "opacity-1 visible" : "opacity-0 invisible"
-          } transition-all duration-200 ease-in-out cursor-pointer`}
-          onClick={() => setSearchBar("closed")}
-        ></div>
-      </div>
-
-      {/* Navigation Bar */}
-      <nav>
-        <div className="drawer">
-          <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content flex flex-col">
-            {/* Sticky Navbar visible on scroll*/}
+              </div>
+            </div>
             <div
-              className={`w-full navbar opacity-0 invisible fixed top-0 left-0 bg-white ${stickyNav} shadow-lg`}
-            >
-              <div className="md:container text-center">
-                <div className="flex-none lg:hidden">
-                  <label
-                    htmlFor="my-drawer-3"
-                    aria-label="open sidebar"
-                    className="btn btn-square btn-ghost"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      className="inline-block w-6 h-6 stroke-current"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                      ></path>
-                    </svg>
-                  </label>
-                </div>
-                <div className="w-[27%] md:w-[25%] md:px-2 text-center">
-                  <Link to="/">
-                    <img
-                      src={logo}
-                      alt="logo"
-                      className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
-                    />
-                  </Link>
-                </div>
-                <div className="w-[50%] hidden lg:block text-center">
-                  <ul className="menu menu-horizontal space-x-8">
-                    {/* Navbar menu content here */}
-                    <HashLink
-                      to="/#hero"
-                      smooth
-                      scroll={(el) => scrollWithOffset(el)}
-                    >
-                      Home
-                    </HashLink>
-                    <HashLink
-                      to="/#categories"
-                      smooth
-                      scroll={(el) => scrollWithOffset(el)}
-                    >
-                      Categories
-                    </HashLink>
-                    <div className="flex items-baseline gap-1">
-                      <HashLink
-                        smooth
-                        scroll={(el) => scrollWithOffset(el)}
-                        to="/#flashSale"
+              className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
+                searchBar === "open"
+                  ? "opacity-1 visible"
+                  : "opacity-0 invisible"
+              } transition-all duration-200 ease-in-out cursor-pointer`}
+              onClick={() => setSearchBar("closed")}
+            ></div>
+          </div>
+
+          {/* Navigation Bar */}
+          <nav>
+            <div className="drawer">
+              <input
+                id="my-drawer-3"
+                type="checkbox"
+                className="drawer-toggle"
+              />
+              <div className="drawer-content flex flex-col">
+                {/* Sticky Navbar visible on scroll*/}
+                <div
+                  className={`w-full navbar opacity-0 invisible fixed top-0 left-0 bg-white ${stickyNav} shadow-lg`}
+                >
+                  <div className="md:container text-center">
+                    <div className="flex-none lg:hidden">
+                      <label
+                        htmlFor="my-drawer-3"
+                        aria-label="open sidebar"
+                        className="btn btn-square btn-ghost"
                       >
-                        Sale
-                      </HashLink>
-                      <div
-                        className="badge badge-warning text-white rounded-md uppercase font-bold"
-                        style={{
-                          fontFamily: "var(--montserrat)",
-                          fontSize: "10px",
-                        }}
-                      >
-                        Hot
-                      </div>
-                    </div>
-                    <HashLink
-                      to="/#products"
-                      smooth
-                      scroll={(el) => scrollWithOffset(el)}
-                    >
-                      Products
-                    </HashLink>
-                    <Link to="/Shop">Shop</Link>
-
-                    <HashLink
-                      to="/#reviews"
-                      smooth
-                      scroll={(el) => scrollWithOffset(el)}
-                    >
-                      Reviews
-                    </HashLink>
-                    <HashLink
-                      to="/#connect"
-                      smooth
-                      scroll={(el) => scrollWithOffset(el)}
-                    >
-                      Connect Us
-                    </HashLink>
-                  </ul>
-                </div>
-
-                <div className="md:w-[25%] flex justify-end items-center space-x-5 text-center ml-auto">
-                  <FiSearch
-                    className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
-                    onClick={handleSearchIcon}
-                  />
-                  <Link to="/wishlist" className="hidden md:inline">
-                    <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                  </Link>
-
-                  {!user && (
-                    <Link to="/login">
-                      <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                    </Link>
-                  )}
-
-                  <div
-                    className="indicator"
-                    onClick={() => setShowRightDrawer(true)}
-                  >
-                    <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
-                      {user ? cartData?.length : 0}
-                    </span>
-                    <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                  </div>
-
-                  {isAuthLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
-                  ) : (
-                    <>
-                      {user ? (
-                        <details
-                          className="dropdown dropdown-end"
-                          id="sticky-nav"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          className="inline-block w-6 h-6 stroke-current"
                         >
-                          <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
-                            <div className="w-10 rounded-full">
-                              <img
-                                alt={user.displayName || user.email}
-                                src={
-                                  user.photoURL
-                                    ? user.photoURL
-                                    : placeholderUserImg
-                                }
-                              />
-                            </div>
-                          </summary>
-                          <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
-                            <div className="hover:bg-white text-left email-con">
-                              <p className="text-xs mb-1">Signed in as</p>
-                              <Link to="/myDashboard">{user.email}</Link>
-                            </div>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h16M4 18h16"
+                          ></path>
+                        </svg>
+                      </label>
+                    </div>
+                    <div className="w-[27%] md:w-[25%] md:px-2 text-center">
+                      <Link to="/">
+                        <img
+                          src={logo}
+                          alt="logo"
+                          className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
+                        />
+                      </Link>
+                    </div>
+                    <div className="w-[50%] hidden lg:block text-center">
+                      <ul className="menu menu-horizontal space-x-8">
+                        {/* Navbar menu content here */}
+                        <HashLink
+                          to="/#hero"
+                          smooth
+                          scroll={(el) => scrollWithOffset(el)}
+                        >
+                          Home
+                        </HashLink>
+                        <HashLink
+                          to="/#categories"
+                          smooth
+                          scroll={(el) => scrollWithOffset(el)}
+                        >
+                          Categories
+                        </HashLink>
+                        <div className="flex items-baseline gap-1">
+                          <HashLink
+                            smooth
+                            scroll={(el) => scrollWithOffset(el)}
+                            to="/#flashSale"
+                          >
+                            Sale
+                          </HashLink>
+                          <div
+                            className="badge badge-warning text-white rounded-md uppercase font-bold"
+                            style={{
+                              fontFamily: "var(--montserrat)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            Hot
+                          </div>
+                        </div>
+                        <HashLink
+                          to="/#products"
+                          smooth
+                          scroll={(el) => scrollWithOffset(el)}
+                        >
+                          Products
+                        </HashLink>
+                        <Link to="/Shop">Shop</Link>
 
-                            <div className="py-2 border-b border-gray-300">
-                              <li>
-                                <Link to="/dashboard/myDashboard">
-                                  Dashboard
-                                </Link>
-                              </li>
-                              <li>
-                                <Link to="/dashboard/myOrders">My Orders</Link>
-                              </li>
-                              <li>
-                                <Link to="/dashboard/myAddress">
-                                  Address Book
-                                </Link>
-                              </li>
-                              <li>
-                                <Link to="/dashboard/addReview">
-                                  Add Review
-                                </Link>
-                              </li>
-                            </div>
+                        <HashLink
+                          to="/#reviews"
+                          smooth
+                          scroll={(el) => scrollWithOffset(el)}
+                        >
+                          Reviews
+                        </HashLink>
+                        <HashLink
+                          to="/#connect"
+                          smooth
+                          scroll={(el) => scrollWithOffset(el)}
+                        >
+                          Connect Us
+                        </HashLink>
+                      </ul>
+                    </div>
 
-                            <li>
-                              <button onClick={handleSignOut}>Sign Out</button>
-                            </li>
-                          </ul>
-                        </details>
-                      ) : (
-                        ""
+                    <div className="md:w-[25%] flex justify-end items-center space-x-5 text-center ml-auto">
+                      <FiSearch
+                        className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
+                        onClick={handleSearchIcon}
+                      />
+                      <Link to="/wishlist" className="hidden md:inline">
+                        <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                      </Link>
+
+                      {!user && (
+                        <Link to="/login">
+                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        </Link>
                       )}
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
 
-            {/* Main Navbar non sticky */}
-            <div className={`w-full navbar bg-white z-[1000]`}>
-              <div className="w-full md:container text-center">
-                <div className="flex-none lg:hidden">
-                  <label
-                    htmlFor="my-drawer-3"
-                    aria-label="open sidebar"
-                    className="btn btn-square btn-ghost"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      className="inline-block w-6 h-6 stroke-current"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                      ></path>
-                    </svg>
-                  </label>
-                </div>
-                <div className="w-[27%] md:w-[25%] md:px-2 text-center">
-                  <Link to="/">
-                    <img
-                      src={logo}
-                      alt="logo"
-                      className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
-                    />
-                  </Link>
-                </div>
-                <div className="w-[55%] hidden lg:block text-center">
-                  <ul className="menu menu-horizontal space-x-8">
-                    {/* Navbar menu content here */}
-                    <HashLink to="/#hero" smooth>
-                      Home
-                    </HashLink>
-                    <HashLink to="/#categories" smooth>
-                      Categories
-                    </HashLink>
-                    <div className="flex items-baseline gap-1">
-                      <HashLink smooth to="/#flashSale">
-                        Sale
-                      </HashLink>
                       <div
-                        className="badge badge-warning text-white rounded-md uppercase font-bold"
-                        style={{
-                          fontFamily: "var(--montserrat)",
-                          fontSize: "10px",
-                        }}
+                        className="indicator"
+                        onClick={() => setShowRightDrawer(true)}
                       >
-                        Hot
+                        <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
+                          {user ? cartData?.length : 0}
+                        </span>
+                        <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                      </div>
+
+                      {isAuthLoading ? (
+                        <span className="loading loading-spinner loading-sm"></span>
+                      ) : (
+                        <>
+                          {user ? (
+                            <details
+                              className="dropdown dropdown-end"
+                              id="sticky-nav"
+                            >
+                              <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
+                                <div className="w-10 rounded-full">
+                                  <img
+                                    alt={user.displayName || user.email}
+                                    src={
+                                      user.photoURL
+                                        ? user.photoURL
+                                        : placeholderUserImg
+                                    }
+                                  />
+                                </div>
+                              </summary>
+                              <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
+                                <div className="hover:bg-white text-left email-con">
+                                  <p className="text-xs mb-1">Signed in as</p>
+                                  <Link to="/myDashboard">{user.email}</Link>
+                                </div>
+
+                                <div className="py-2 border-b border-gray-300">
+                                  {isAdmin && !isUserLoading ? (
+                                    adminRoutes
+                                  ) : (
+                                    <>
+                                      <li>
+                                        <Link to="/dashboard/myDashboard">
+                                          Dashboard
+                                        </Link>
+                                      </li>
+                                      <li>
+                                        <Link to="/dashboard/myOrders">
+                                          My Orders
+                                        </Link>
+                                      </li>
+                                      <li>
+                                        <Link to="/dashboard/myAddress">
+                                          Address Book
+                                        </Link>
+                                      </li>
+                                      <li>
+                                        <Link to="/dashboard/addReview">
+                                          Add Review
+                                        </Link>
+                                      </li>
+                                    </>
+                                  )}
+                                </div>
+
+                                <li>
+                                  <button onClick={handleSignOut}>
+                                    Sign Out
+                                  </button>
+                                </li>
+                              </ul>
+                            </details>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Main Navbar non sticky */}
+                <div className={`w-full navbar bg-white z-[1000]`}>
+                  <div className="w-full md:container text-center">
+                    <div className="flex-none lg:hidden">
+                      <label
+                        htmlFor="my-drawer-3"
+                        aria-label="open sidebar"
+                        className="btn btn-square btn-ghost"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          className="inline-block w-6 h-6 stroke-current"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h16M4 18h16"
+                          ></path>
+                        </svg>
+                      </label>
+                    </div>
+                    <div className="w-[27%] md:w-[25%] md:px-2 text-center">
+                      <Link to="/">
+                        <img
+                          src={logo}
+                          alt="logo"
+                          className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
+                        />
+                      </Link>
+                    </div>
+                    <div className="w-[55%] hidden lg:block text-center">
+                      <ul className="menu menu-horizontal space-x-8">
+                        {/* Navbar menu content here */}
+                        <HashLink to="/#hero" smooth>
+                          Home
+                        </HashLink>
+                        <HashLink to="/#categories" smooth>
+                          Categories
+                        </HashLink>
+                        <div className="flex items-baseline gap-1">
+                          <HashLink smooth to="/#flashSale">
+                            Sale
+                          </HashLink>
+                          <div
+                            className="badge badge-warning text-white rounded-md uppercase font-bold"
+                            style={{
+                              fontFamily: "var(--montserrat)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            Hot
+                          </div>
+                        </div>
+                        <HashLink to="/#products" smooth>
+                          Products
+                        </HashLink>
+                        <Link to="/Shop">Shop</Link>
+
+                        <HashLink to="/#reviews" smooth>
+                          Reviews
+                        </HashLink>
+                        <HashLink to="/#connect" smooth>
+                          Connect Us
+                        </HashLink>
+                      </ul>
+                    </div>
+
+                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto">
+                      <FiSearch
+                        className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
+                        onClick={handleSearchIcon}
+                      />
+                      <Link to="/wishlist" className="hidden md:inline">
+                        <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                      </Link>
+                      {!user && (
+                        <Link to="/login">
+                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        </Link>
+                      )}
+                      <div
+                        className="indicator"
+                        onClick={() => setShowRightDrawer(true)}
+                      >
+                        <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
+                          {user ? cartData?.length : 0}
+                        </span>
+                        <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                      </div>
+
+                      <div>
+                        {isAuthLoading ? (
+                          <span className="loading loading-spinner loading-sm"></span>
+                        ) : (
+                          <>
+                            {user && (
+                              <details
+                                className="dropdown dropdown-end"
+                                id="not-sticky-nav"
+                              >
+                                <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
+                                  <div className="w-10 rounded-full">
+                                    <img
+                                      alt={user.displayName || user.email}
+                                      src={
+                                        user.photoURL
+                                          ? user.photoURL
+                                          : placeholderUserImg
+                                      }
+                                    />
+                                  </div>
+                                </summary>
+                                <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
+                                  <div className="hover:bg-white text-left email-con">
+                                    <p className="text-xs mb-1">Signed in as</p>
+                                    <Link to="/myDashboard">{user.email}</Link>
+                                  </div>
+
+                                  <div className="py-2 border-b border-gray-300">
+                                    {isAdmin && !isUserLoading ? (
+                                      adminRoutes
+                                    ) : (
+                                      <>
+                                        <li>
+                                          <Link to="/dashboard/myDashboard">
+                                            Dashboard
+                                          </Link>
+                                        </li>
+                                        <li>
+                                          <Link to="/dashboard/myOrders">
+                                            My Orders
+                                          </Link>
+                                        </li>
+                                        <li>
+                                          <Link to="/dashboard/myAddress">
+                                            Address Book
+                                          </Link>
+                                        </li>
+                                        <li>
+                                          <Link to="/dashboard/addReview">
+                                            Add Review
+                                          </Link>
+                                        </li>
+                                      </>
+                                    )}
+                                  </div>
+
+                                  <li>
+                                    <button onClick={handleSignOut}>
+                                      Sign Out
+                                    </button>
+                                  </li>
+                                </ul>
+                              </details>
+                            )}
+                          </>
+                        )}
                       </div>
                     </div>
-                    <HashLink to="/#products" smooth>
-                      Products
-                    </HashLink>
-                    <Link to="/Shop">Shop</Link>
-
-                    <HashLink to="/#reviews" smooth>
-                      Reviews
-                    </HashLink>
-                    <HashLink to="/#connect" smooth>
-                      Connect Us
-                    </HashLink>
-                  </ul>
+                  </div>
                 </div>
+              </div>
 
-                <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto">
-                  <FiSearch
-                    className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
-                    onClick={handleSearchIcon}
-                  />
-                  <Link to="/wishlist" className="hidden md:inline">
-                    <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                  </Link>
-                  {!user && (
-                    <Link to="/login">
-                      <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                    </Link>
-                  )}
+              {/* sidebar on visible mobile*/}
+              <div className="drawer-side z-[1010]">
+                <ul className="menu w-full min-h-screen bg-base-100 border-2 flex flex-col justify-center items-center space-y-5 relative">
                   <div
-                    className="indicator"
-                    onClick={() => setShowRightDrawer(true)}
+                    className="border absolute top-5 right-5"
+                    onClick={handleLinkClicked}
                   >
-                    <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
-                      {user ? cartData?.length : 0}
-                    </span>
-                    <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                    <TfiClose className="text-3xl" />
                   </div>
 
-                  <div>
-                    {isAuthLoading ? (
-                      <span className="loading loading-spinner loading-sm"></span>
-                    ) : (
-                      <>
-                        {user && (
-                          <details
-                            className="dropdown dropdown-end"
-                            id="not-sticky-nav"
-                          >
-                            <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
-                              <div className="w-10 rounded-full">
-                                <img
-                                  alt={user.displayName || user.email}
-                                  src={
-                                    user.photoURL
-                                      ? user.photoURL
-                                      : placeholderUserImg
-                                  }
-                                />
-                              </div>
-                            </summary>
-                            <ul className="mt-2 p-2 shadow-xl menu menu-sm dropdown-content z-[1] bg-base-100 rounded-lg w-60 border border-[var(--pink-gold)]">
-                              <div className="hover:bg-white text-left email-con">
-                                <p className="text-xs mb-1">Signed in as</p>
-                                <Link to="/myDashboard">{user.email}</Link>
-                              </div>
-
-                              <div className="py-2 border-b border-gray-300">
-                                <li>
-                                  <Link to="/dashboard/myDashboard">
-                                    Dashboard
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link to="/dashboard/myOrders">
-                                    My Orders
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link to="/dashboard/myAddress">
-                                    Address Book
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link to="/dashboard/addReview">
-                                    Add Review
-                                  </Link>
-                                </li>
-                              </div>
-
-                              <li>
-                                <button onClick={handleSignOut}>
-                                  Sign Out
-                                </button>
-                              </li>
-                            </ul>
-                          </details>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
+                  {/* Sidebar content here */}
+                  <HashLink
+                    to="/dashboard/myDashboard"
+                    onClick={handleLinkClicked}
+                    className="block"
+                  >
+                    Dashboard
+                  </HashLink>
+                  <HashLink
+                    to="/#something"
+                    onClick={handleLinkClicked}
+                    className="block"
+                  >
+                    Something2
+                  </HashLink>
+                  <HashLink
+                    to="/#something"
+                    onClick={handleLinkClicked}
+                    className="block"
+                  >
+                    Something2
+                  </HashLink>
+                  <HashLink
+                    to="/#something"
+                    onClick={handleLinkClicked}
+                    className="block"
+                  >
+                    Something2
+                  </HashLink>
+                </ul>
               </div>
             </div>
-          </div>
+          </nav>
+          {/* Navigation Bar End */}
 
-          {/* sidebar on visible mobile*/}
-          <div className="drawer-side z-[1010]">
-            <ul className="menu w-full min-h-screen bg-base-100 border-2 flex flex-col justify-center items-center space-y-5 relative">
-              <div
-                className="border absolute top-5 right-5"
-                onClick={handleLinkClicked}
-              >
-                <TfiClose className="text-3xl" />
-              </div>
-
-              {/* Sidebar content here */}
-              <HashLink
-                to="/dashboard/myDashboard"
-                onClick={handleLinkClicked}
-                className="block"
-              >
-                Dashboard
-              </HashLink>
-              <HashLink
-                to="/#something"
-                onClick={handleLinkClicked}
-                className="block"
-              >
-                Something2
-              </HashLink>
-              <HashLink
-                to="/#something"
-                onClick={handleLinkClicked}
-                className="block"
-              >
-                Something2
-              </HashLink>
-              <HashLink
-                to="/#something"
-                onClick={handleLinkClicked}
-                className="block"
-              >
-                Something2
-              </HashLink>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      {/* Navigation Bar End */}
-
-      {/* right side drawer for cart */}
-      <div
-        className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-2xl rounded-bl-2xl ${
-          showRightDrawer ? "transform-x-0" : "translate-x-full"
-        } transition-all duration-300 ease-in-out  z-[9999]`}
-      >
-        <div className="relative ">
-          <button
-            className="text-2xl absolute top-6 right-5"
-            onClick={() => setShowRightDrawer(false)}
+          {/* right side drawer for cart */}
+          <div
+            className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-2xl rounded-bl-2xl ${
+              showRightDrawer ? "transform-x-0" : "translate-x-full"
+            } transition-all duration-300 ease-in-out  z-[9999]`}
           >
-            <TfiClose />
-          </button>
+            <div className="relative ">
+              <button
+                className="text-2xl absolute top-6 right-5"
+                onClick={() => setShowRightDrawer(false)}
+              >
+                <TfiClose />
+              </button>
+            </div>
+            <RightSideDrawer setShowRightDrawer={setShowRightDrawer} />
+          </div>
+          <div
+            className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
+              showRightDrawer ? "opacity-1 visible" : "opacity-0 invisible"
+            } transition-all duration-200 ease-in-out cursor-pointer`}
+            onClick={() => setShowRightDrawer(false)}
+          ></div>
         </div>
-        <RightSideDrawer setShowRightDrawer={setShowRightDrawer} />
-      </div>
-      <div
-        className={`h-screen fixed top-0 left-0 right-0 bg-[rgba(0,0,0,.6)] z-[1004] ${
-          showRightDrawer ? "opacity-1 visible" : "opacity-0 invisible"
-        } transition-all duration-200 ease-in-out cursor-pointer`}
-        onClick={() => setShowRightDrawer(false)}
-      ></div>
-    </div>
+      )}
+    </>
   );
 };
 
