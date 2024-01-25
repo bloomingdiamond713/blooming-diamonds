@@ -9,10 +9,11 @@ import {
   FaLinkedin,
   FaPinterest,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Footer = () => {
+  const location = useLocation();
   // todo: load category data from data
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -24,7 +25,9 @@ const Footer = () => {
 
   return (
     <div
-      className="bg-[#f7f7f7] px-12 pt-16 pb-4 hidden md:block"
+      className={`bg-[#f7f7f7] px-12 pt-16 pb-4 hidden md:${
+        location?.pathname?.includes("admin") ? "hidden" : "block"
+      }`}
       style={{ fontFamily: "var(--poppins)" }}
     >
       <div className="footer flex items-start justify-between gap-4 py-10">

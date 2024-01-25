@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardNav from "../pages/Dashboard/DashboardNav/DashboardNav";
 import { Outlet } from "react-router-dom";
 import CustomHelmet from "../components/CustomHelmet/CustomHelmet";
@@ -7,6 +7,10 @@ import AdminNavigation from "../pages/Dashboard/AdminNavigation/AdminNavigation"
 
 const DashboardLayout = () => {
   const [userFromDB, isUserLoading] = useUserInfo();
+
+  // dashboard sidenav control
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
     <div style={{ fontFamily: "var(--poppins)" }}>
       <CustomHelmet title={"Dashboard"} />
@@ -33,9 +37,18 @@ const DashboardLayout = () => {
           </div>
         ) : (
           <div>
-            <AdminNavigation />
+            <AdminNavigation
+              sidebarCollapsed={sidebarCollapsed}
+              setSidebarCollapsed={setSidebarCollapsed}
+            />
             <div className="my-24">
-              <Outlet />
+              <div
+                className={`w-[100wh-75px] ml-[75px] ${
+                  !sidebarCollapsed && "w-[calc(100%-20%)] ml-[calc(100%-80%)]"
+                } p-5 right-0 transition-all duration-500 ease-in-out border`}
+              >
+                <Outlet />
+              </div>
             </div>
           </div>
         )}
