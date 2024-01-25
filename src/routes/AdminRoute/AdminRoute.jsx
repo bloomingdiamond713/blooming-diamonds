@@ -19,7 +19,7 @@ const AdminRoute = ({ children }) => {
     return children;
   }
 
-  return <Navigate to={"/404"} />;
+  return <Navigate to={"/"} />;
 };
 
 export default AdminRoute;

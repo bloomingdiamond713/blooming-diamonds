@@ -20,6 +20,10 @@ import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
 import AddReview from "../pages/Dashboard/AddReview/AddReview";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard/AdminDashboard";
 import AdminRoute from "./AdminRoute/AdminRoute";
+import AdminProducts from "../pages/Dashboard/AdminProducts/AdminProducts";
+import AdminAddProduct from "../pages/Dashboard/AdminAddProduct/AdminAddProduct";
+import AdminManageUsers from "../pages/AdminManageUsers/AdminManageUsers";
+import AdminCategories from "../pages/AdminCategories/AdminCategories";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +100,39 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <AdminDashboard />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "adminCategories",
+            element: (
+              <AdminRoute>
+                <AdminCategories />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "adminProducts",
+            element: (
+              <AdminRoute>
+                <AdminProducts />
+              </AdminRoute>
+            ),
+          },
+
+          {
+            path: "adminAddProducts",
+            element: (
+              <AdminRoute>
+                <AdminAddProduct />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "adminManageUsers",
+            element: (
+              <AdminRoute>
+                <AdminManageUsers />
               </AdminRoute>
             ),
           },

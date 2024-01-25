@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "/logo1dark.svg";
-import { FaArrowLeft } from "react-icons/fa";
+import "./AdminNavigation.css";
+import {
+  FaAngleRight,
+  FaArrowLeft,
+  FaGift,
+  FaList,
+  FaSignOutAlt,
+  FaUsers,
+} from "react-icons/fa";
 import useAuthContext from "../../../hooks/useAuthContext";
 import useUserInfo from "../../../hooks/useUserInfo";
-import { Link } from "react-router-dom";
 import { FaHouse } from "react-icons/fa6";
+import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
-  const { user } = useAuthContext();
+  const { user, logOut } = useAuthContext();
   const [userFromDB] = useUserInfo();
+  const [productSubmenuCollapsed, setProductSubmenuCollapsed] = useState(true);
 
   const collapseSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  // handle logout user
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        // logout successful
+      })
+      .catch((e) => console.error(e?.code));
   };
 
   return (
@@ -23,7 +42,9 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
               className="flex-grow flex items-center justify-around bg-[var(--pink-gold)] px-2 py-7 h-16"
               style={{ boxShadow: "inset -2px 0px 5px rgba(0, 0, 0, 0.2)" }}
             >
-              <img src={logo} alt="logo" className="w-[55%]" />
+              <Link to={"/"} className="block w-[55%]">
+                <img src={logo} alt="logo" className="w-full" />
+              </Link>
               <div className=" bg-white px-5 py-1 rounded-sm">
                 <p className="text-black uppercase text-xs font-bold">Admin</p>
               </div>
@@ -35,7 +56,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
               onClick={collapseSidebar}
             >
               <FaArrowLeft
-                className={`text-2xl block mx-auto transition-all duration-700 ease-in-out ${
+                className={`text-xl block mx-auto transition-all duration-700 ease-in-out ${
                   sidebarCollapsed && "rotate-180"
                 }`}
               />
@@ -67,31 +88,112 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
       </header>
 
       <aside
-        className={`w-[68px] ${
-          !sidebarCollapsed && "lg:w-[19.7%]"
-        } h-[calc(100vh-100px)] whitespace-nowrap fixed shadow overflow-x-hidden transition-all duration-500 ease-in-out top-16 bg-[#3d464d]`}
+        className={`w-[55px] ${
+          !sidebarCollapsed && "lg:w-[19.72%]"
+        } h-[calc(100vh-64px)] whitespace-nowrap fixed shadow overflow-x-hidden transition-all duration-500 ease-in-out top-16 bg-black`}
       >
-        <div className="flex flex-col justify-between h-full">
-          <ul className="flex flex-col gap-1 mt-2">
-            <li className="text-white hover:bg-[#b0aeae76] px-2">
-              <Link
-                className="w-full flex items-center py-3"
+        <div className="sidebar-menu-con flex flex-col justify-between h-full">
+          <ul className="flex flex-col gap-2 mt-2">
+            <li className="text-white">
+              {/* ------- ADMIN HOME --------- */}
+              <NavLink
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? `active` : ""
+                }
                 to="/dashboard/adminDashboard"
               >
                 <div className="px-4">
-                  <FaHouse className="text-2xl block" />
+                  <FaHouse className="text-xl block" />
                 </div>
                 <p className={`whitespace-nowrap pt-1 pl-1`}>Dashboard</p>
-              </Link>
+              </NavLink>
             </li>
+            {/* ------------ CATEGORIES ------------ */}
+            <li className="text-white">
+              <NavLink
+                to="/dashboard/adminCategories"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? `active` : ""
+                }
+              >
+                <div className="px-4">
+                  <FaList className="text-xl block" />
+                </div>
+                <p className={`whitespace-nowrap pt-1 pl-1`}>Categories</p>
+              </NavLink>
+            </li>
+            {/* ------------ PRODUCTS ------------ */}
+            <li className="text-white">
+              <button
+                onClick={() =>
+                  setProductSubmenuCollapsed(!productSubmenuCollapsed)
+                }
+                className="product-collapse-link"
+              >
+                <div className="px-4">
+                  <FaGift className="text-xl block" />
+                </div>
+                <p className={`whitespace-nowrap pt-1 pl-1`}>Products</p>
+                <div
+                  className={`ml-auto transition-all duration-200 ease-in-out ${
+                    !productSubmenuCollapsed ? "-rotate-90 mr-2" : "mr-2 mt-1"
+                  }`}
+                >
+                  <FaAngleRight />
+                </div>
+              </button>
+              <div
+                className={`submenu ${
+                  productSubmenuCollapsed ? "hidden" : "flex"
+                } flex-col w-full space-y-3`}
+              >
+                <NavLink
+                  to="/dashboard/adminProducts"
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? `active` : ""
+                  }
+                >
+                  Manage Products
+                </NavLink>
+                <NavLink
+                  to="/dashboard/adminAddProducts"
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? `active` : ""
+                  }
+                >
+                  Add Product
+                </NavLink>
+              </div>
+            </li>
+            {/* ------------ USERS ------------ */}
+            <li className="text-white">
+              <NavLink
+                to="/dashboard/adminManageUsers"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? `active` : ""
+                }
+              >
+                <div className="px-4">
+                  <FaUsers className="text-xl block" />
+                </div>
+                <p className={`whitespace-nowrap pt-1 pl-1`}>Users</p>
+              </NavLink>
+            </li>
+            {/* ------------------------ */}
           </ul>
 
+          <div className="divider"></div>
+
           <ul className="flex flex-col gap-1 mt-2">
-            <li className="text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-              <a className="w-full flex items-center py-3" href="#">
-                <i className="fa-solid fa-right-from-bracket text-center"></i>
-                <span className="pl-1">Logout</span>
-              </a>
+            <li className="text-white" onClick={handleLogout}>
+              <button className="logout-btn">
+                <div className="px-4">
+                  <FaSignOutAlt className="text-xl block" />
+                </div>
+                <button className={`whitespace-nowrap block pt-1 pl-1`}>
+                  Logout
+                </button>
+              </button>
             </li>
           </ul>
         </div>
