@@ -6,12 +6,17 @@ import {
   PiCurrencyDollarBold,
   PiChartBarBold,
   PiUsersThreeBold,
+  PiChartLineDown,
+  PiChartLine,
 } from "react-icons/pi";
 import RadarChartComponent from "../../../components/RadarChartComponent/RadarChartComponent";
 import BarChartComponent from "../../../components/BarChartComponent/BarChartComponent";
 import StarRatings from "react-star-ratings";
+import useAdminStats from "../../../hooks/useAdminStats";
 
 const AdminDashboard = () => {
+  const { adminStats } = useAdminStats();
+
   return (
     <div>
       <div className="space-y-1 mb-8">
@@ -27,17 +32,55 @@ const AdminDashboard = () => {
       <div className="w-full flex flex-col md:flex-row gap-4 justify-between items-stretch">
         <div className="flex justify-between items-start border p-4 rounded-lg w-full md:w-1/4 shadow">
           <div>
-            <h4 className="text-2xl font-bold mb-1">$1111</h4>
+            <h4 className="text-2xl font-bold mb-1">
+              $
+              {parseFloat(
+                adminStats?.currentMonthStatsData?.totalSells
+              ).toFixed(2)}
+            </h4>
             <p className="text-gray-600 text-sm">Total Sells</p>
 
             <div>
               <div className="mt-6 flex items-center gap-2 w-fit bg-green-100 text-green-600 px-2 py-1 text-sm rounded">
-                <span>12%</span>
-                <PiChartLineUp />
+                {adminStats?.lastMonthComparisonPercentage?.totalSellsPercentage
+                  ?.direction === "up" ? (
+                  <>
+                    <span>
+                      {parseFloat(
+                        adminStats?.lastMonthComparisonPercentage
+                          ?.totalSellsPercentage?.percentageValue
+                      ).toFixed(2)}
+                      %
+                    </span>
+                    <PiChartLineUp />
+                  </>
+                ) : (
+                  <>
+                    {adminStats?.lastMonthComparisonPercentage
+                      ?.totalSellsPercentage?.direction !== "no-change" ? (
+                      <>
+                        <span>
+                          {parseFloat(
+                            adminStats?.lastMonthComparisonPercentage
+                              ?.totalSellsPercentage?.percentageValue
+                          ).toFixed(2)}
+                          %
+                        </span>
+                        <PiChartLineDown />
+                      </>
+                    ) : (
+                      <>
+                        <span>0</span>
+                        <PiChartLine />
+                      </>
+                    )}
+                  </>
+                )}
               </div>
 
               <p className="text-xs text-gray-500 pt-1">
-                Compared to December, 2023
+                Compared to {adminStats?.lastMonthStatsData?.lastMonth},{" "}
+                {adminStats?.lastMonthStatsData?.year}
               </p>
             </div>
           </div>
@@ -51,17 +94,52 @@ const AdminDashboard = () => {
         {/* ----------------------------------------- */}
         <div className="flex justify-between items-start border p-4 rounded-lg w-full md:w-1/4 shadow">
           <div>
-            <h4 className="text-2xl font-bold mb-1">356</h4>
+            <h4 className="text-2xl font-bold mb-1">
+              {adminStats?.currentMonthStatsData?.totalOrders}
+            </h4>
             <p className="text-gray-600 text-sm">Orders Received</p>
 
             <div>
               <div className="mt-6 flex items-center gap-2 w-fit bg-purple-100 text-purple-600 px-2 py-1 text-sm rounded">
-                <span>12%</span>
-                <PiChartLineUp />
+                {adminStats?.lastMonthComparisonPercentage
+                  ?.totalOrdersPercentage?.direction === "up" ? (
+                  <>
+                    <span>
+                      {parseFloat(
+                        adminStats?.lastMonthComparisonPercentage
+                          ?.totalOrdersPercentage?.percentageValue
+                      ).toFixed(2)}
+                      %
+                    </span>
+                    <PiChartLineUp />
+                  </>
+                ) : (
+                  <>
+                    {adminStats?.lastMonthComparisonPercentage
+                      ?.totalOrdersPercentage?.direction !== "no-change" ? (
+                      <>
+                        <span>
+                          {parseFloat(
+                            adminStats?.lastMonthComparisonPercentage
+                              ?.totalOrdersPercentage?.percentageValue
+                          ).toFixed(2)}
+                          %
+                        </span>
+                        <PiChartLineDown />
+                      </>
+                    ) : (
+                      <>
+                        <span>0</span>
+                        <PiChartLine />
+                      </>
+                    )}
+                  </>
+                )}
               </div>
 
               <p className="text-xs text-gray-500 pt-1">
-                Compared to December, 2023
+                Compared to {adminStats?.lastMonthStatsData?.lastMonth},{" "}
+                {adminStats?.lastMonthStatsData?.year}
               </p>
             </div>
           </div>
@@ -75,17 +153,56 @@ const AdminDashboard = () => {
         {/* -------------------------------------------- */}
         <div className="flex justify-between items-start border p-4 rounded-lg w-full md:w-1/4 shadow">
           <div>
-            <h4 className="text-2xl font-bold mb-1">$100</h4>
+            <h4 className="text-2xl font-bold mb-1">
+              $
+              {parseFloat(
+                adminStats?.currentMonthStatsData?.averageOrderValue
+              ).toFixed(2)}
+            </h4>
             <p className="text-gray-600 text-sm">Average Order Value</p>
 
             <div>
               <div className="mt-6 flex items-center gap-2 w-fit bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded">
-                <span>12%</span>
-                <PiChartLineUp />
+                {adminStats?.lastMonthComparisonPercentage
+                  ?.averageOrderValuePercentage?.direction === "up" ? (
+                  <>
+                    <span>
+                      {parseFloat(
+                        adminStats?.lastMonthComparisonPercentage
+                          ?.averageOrderValuePercentage?.percentageValue
+                      ).toFixed(2)}
+                      %
+                    </span>
+                    <PiChartLineUp />
+                  </>
+                ) : (
+                  <>
+                    {adminStats?.lastMonthComparisonPercentage
+                      ?.averageOrderValuePercentage?.direction !==
+                    "no-change" ? (
+                      <>
+                        <span>
+                          {parseFloat(
+                            adminStats?.lastMonthComparisonPercentage
+                              ?.averageOrderValuePercentage?.percentageValue
+                          ).toFixed(2)}
+                          %
+                        </span>
+                        <PiChartLineDown />
+                      </>
+                    ) : (
+                      <>
+                        <span>0</span>
+                        <PiChartLine />
+                      </>
+                    )}
+                  </>
+                )}
               </div>
 
               <p className="text-xs text-gray-500 pt-1">
-                Compared to December, 2023
+                Compared to {adminStats?.lastMonthStatsData?.lastMonth},{" "}
+                {adminStats?.lastMonthStatsData?.year}
               </p>
             </div>
           </div>
@@ -99,13 +216,47 @@ const AdminDashboard = () => {
         {/* --------------------------------------------- */}
         <div className="flex justify-between items-start border p-4 rounded-lg w-full md:w-1/4 shadow">
           <div>
-            <h4 className="text-2xl font-bold mb-1">20</h4>
+            <h4 className="text-2xl font-bold mb-1">
+              {adminStats?.customerStatsData?.newCustomers}
+            </h4>
             <p className="text-gray-600 text-sm">New Customers</p>
 
             <div>
               <div className="mt-6 flex items-center gap-2 w-fit bg-yellow-100 text-yellow-600 px-2 py-1 text-sm rounded">
-                <span>12%</span>
-                <PiChartLineUp />
+                {adminStats?.lastMonthComparisonPercentage?.customersPercentage
+                  ?.direction === "up" ? (
+                  <>
+                    <span>
+                      {parseFloat(
+                        adminStats?.lastMonthComparisonPercentage
+                          ?.customersPercentage?.percentageValue
+                      ).toFixed(2)}
+                      %
+                    </span>
+                    <PiChartLineUp />
+                  </>
+                ) : (
+                  <>
+                    {adminStats?.lastMonthComparisonPercentage
+                      ?.customersPercentage?.direction !== "no-change" ? (
+                      <>
+                        <span>
+                          {parseFloat(
+                            adminStats?.lastMonthComparisonPercentage
+                              ?.customersPercentage?.percentageValue
+                          ).toFixed(2)}
+                          %
+                        </span>
+                        <PiChartLineDown />
+                      </>
+                    ) : (
+                      <>
+                        <span>0</span>
+                        <PiChartLine />
+                      </>
+                    )}
+                  </>
+                )}
               </div>
 
               <p className="text-xs text-gray-500 pt-1">

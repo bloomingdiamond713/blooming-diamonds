@@ -12,7 +12,7 @@ const DashboardLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div style={{ fontFamily: "var(--poppins)" }}>
+    <div style={{ fontFamily: "var(--poppins)" }} className="max-w-screen-2xl">
       <CustomHelmet title={"Dashboard"} />
 
       <>

@@ -92,6 +92,9 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
                 </HashLink>
               </li>
               <li>
+                <Link to="/shop">Shop</Link>
+              </li>
+              <li>
                 <HashLink to="/#reviews" smooth>
                   Reviews
                 </HashLink>

@@ -33,6 +33,7 @@ const Checkout = () => {
         orderDetails: cartData,
         shippingAddress: userFromDB?.shippingAddress,
         orderStatus: "processing",
+        date: new Date(),
       })
       .then((res) => {
         if (res.data.insertedId) {

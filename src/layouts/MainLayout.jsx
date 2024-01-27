@@ -26,7 +26,7 @@ const MainLayout = () => {
   }, [location]);
 
   return (
-    <div>
+    <div className="max-w-screen-2xl mx-auto">
       <Header />
       <Outlet />
       <Footer />
