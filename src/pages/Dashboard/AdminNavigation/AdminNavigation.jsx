@@ -260,9 +260,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
                 <div className="px-4">
                   <FaSignOutAlt className="text-xl block" />
                 </div>
-                <button className={`whitespace-nowrap block pt-1 pl-1`}>
-                  Logout
-                </button>
+                <p className={`whitespace-nowrap block pt-1 pl-1`}>Logout</p>
               </button>
             </li>
           </ul>
