@@ -15,7 +15,8 @@ import StarRatings from "react-star-ratings";
 import useAdminStats from "../../../hooks/useAdminStats";
 
 const AdminDashboard = () => {
-  const { adminStats } = useAdminStats();
+  const { adminStats, topCategories, totalCategories, incomeStats } =
+    useAdminStats();
 
   return (
     <div>
@@ -275,16 +276,19 @@ const AdminDashboard = () => {
       <section className="mt-16 flex flex-col md:flex-row items-center gap-6">
         <div className="w-[35%] h-[450px] border rounded-lg pb-10 shadow">
           <h3 className=" font-semibold text-gray-600 p-4 pb-0">
-            Most Selling Category
+            Most Selling Category{" "}
+            <span className="text-xs text-gray-400">
+              (out of {totalCategories})
+            </span>
           </h3>
-          <RadarChartComponent />
+          <RadarChartComponent data={topCategories} />
         </div>
 
         <div className="w-full md:w-[65%] h-[450px] border p-4 rounded-lg pb-16 shadow">
           <h3 className=" font-semibold mb-8 text-gray-600">
             Income Statistics
           </h3>
-          <BarChartComponent />
+          <BarChartComponent data={incomeStats} />
         </div>
       </section>
 
