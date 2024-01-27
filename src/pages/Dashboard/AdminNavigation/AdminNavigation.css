@@ -9,7 +9,8 @@
   padding: 12px 0;
 }
 
-.sidebar-menu-con li a.active {
+.sidebar-menu-con li a.active,
+.sidebar-menu-con li button.active {
   background-color: #d0cece62;
   color: var(--pink-gold);
   border-left: 4px solid var(--pink-gold);
@@ -30,4 +31,19 @@
 }
 .sidebar-menu-con li .submenu a {
   padding: 6px 0 6px 5px;
+}
+
+.sidebar-menu-con > ul::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-menu-con > ul::-webkit-scrollbar-thumb {
+  background: var(--pink-gold);
+  border-radius: 1rem;
+  visibility: hidden;
+  transition: all 0.9s;
+}
+
+.sidebar-menu-con > ul:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
 }

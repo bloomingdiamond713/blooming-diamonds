@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   let from = location.state?.from?.pathname || "/";
 
-  from = from?.includes("dashboard") && "/";
+  from = from?.includes("dashboard") ? "/" : from;
 
   // react hook form settings
   const {
@@ -40,7 +40,15 @@ const Login = () => {
         setLoginLoading(false);
         navigate(from, { replace: true });
       })
-      .catch((error) => setLoginError(error?.code));
+      .catch((error) => {
+        setLoginError(error?.code);
+        setLoginLoading(false);
+        document.documentElement.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      });
   };
 
   // sign in with google

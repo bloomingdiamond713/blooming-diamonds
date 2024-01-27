@@ -18,7 +18,7 @@ const FlashSale = () => {
   }, [products]);
 
   // countdown timer values
-  const targetDate = new Date(2024, 0, 10, 12, 0, 0, 0);
+  const targetDate = new Date(2024, 1, 10, 12, 0, 0, 0);
 
   // slick slider settings
   const sliderRef = useRef(null);

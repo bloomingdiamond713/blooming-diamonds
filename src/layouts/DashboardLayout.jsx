@@ -41,11 +41,13 @@ const DashboardLayout = () => {
               sidebarCollapsed={sidebarCollapsed}
               setSidebarCollapsed={setSidebarCollapsed}
             />
-            <div className="my-24">
+            <div className="mt-20 mb-24">
               <div
-                className={`w-[100wh-75px] ml-[75px] ${
-                  !sidebarCollapsed && "w-[calc(100%-20%)] ml-[calc(100%-80%)]"
-                } p-5 right-0 transition-all duration-500 ease-in-out border`}
+                className={`w-[100wh-75px] ${
+                  !sidebarCollapsed
+                    ? "lg:w-[calc(100vw-300px)] lg:ml-[300px] pr-4"
+                    : "ml-[75px] lg:w-[calc(100vw-100px)]"
+                } py-5 transition-all duration-500 ease-in-out`}
               >
                 <Outlet />
               </div>

@@ -17,7 +17,7 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
-  from = from?.includes("dashboard") && "/";
+  from = from?.includes("dashboard") ? "/" : from;
 
   // react hook form settings
   const {
