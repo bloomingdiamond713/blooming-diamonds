@@ -408,7 +408,10 @@ const AdminDashboard = () => {
                         })
                       }
                     >
-                      {showFullReview?.state ? "Show Less" : "Show All"}
+                      {showFullReview?.state &&
+                      showFullReview?.id === reviewObj._id
+                        ? "Show Less"
+                        : "Show All"}
                     </button>
                   </p>
                 </div>

@@ -26,7 +26,7 @@ const useCart = () => {
   // fetch subtotal amount of cart
 
   useEffect(() => {
-    if (user?.email) {
+    if (user) {
       axios
         .get(`http://localhost:5000/cart/subtotal?email=${user?.email}`)
         .then((res) => setCartSubtotal(res.data.subtotal));

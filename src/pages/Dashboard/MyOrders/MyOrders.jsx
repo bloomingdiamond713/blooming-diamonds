@@ -88,7 +88,7 @@ const MyOrders = () => {
             {/* head */}
             <thead>
               <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Date</th>
                 <th>Product(s)</th>
                 <th>Total</th>
@@ -98,9 +98,9 @@ const MyOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {orders?.map((order) => (
+              {orders?.map((order, idx) => (
                 <tr key={order._id} className="order-history-tr">
-                  <td>#{order.orderId}</td>
+                  <td>{idx + 1}</td>
                   <td>{order.date.slice(0, 10)}</td>
                   <td className="space-y-2">
                     {order.orderDetails.map((item, idx) => (

@@ -20,8 +20,8 @@ const Shop = () => {
   const [category, setCategory] = useState(
     location.state?.category?.toLowerCase() || "all"
   );
-  const [minimumPrice, setMinimumPrice] = useState(null);
-  const [maximumPrice, setMaximumPrice] = useState(null);
+  const [minimumPrice, setMinimumPrice] = useState(0);
+  const [maximumPrice, setMaximumPrice] = useState(0);
   const [priceSortingOrder, setPriceSortingOrder] = useState("all");
   const [size, setSize] = useState("all");
   const [carate, setCarate] = useState("all");
@@ -30,10 +30,12 @@ const Shop = () => {
 
   // find max and min prices of the products
   useEffect(() => {
+    console.log(products);
     const prices = products?.map((p) => parseFloat(p.price));
     if (prices) {
       const minPrice = Math.min(...prices);
       const maxPrice = Math.max(...prices);
+      // console.log(minPrice, maxPrice);
       setMinimumPrice(parseFloat(minPrice));
       setMaximumPrice(parseFloat(maxPrice));
     }

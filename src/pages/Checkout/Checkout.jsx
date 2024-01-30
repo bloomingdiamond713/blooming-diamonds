@@ -5,8 +5,8 @@ import Payment from "../Payment/Payment";
 import useCart from "../../hooks/useCart";
 import { FaPencil } from "react-icons/fa6";
 import axios from "axios";
-import useOrders from "../../hooks/useOrders";
 import useAuthContext from "../../hooks/useAuthContext";
+import { v4 as uuidv4 } from "uuid";
 
 const Checkout = () => {
   const { user } = useAuthContext();
@@ -15,50 +15,52 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [paymentInfo, setPaymentInfo] = useState(null);
   const { cartData, cartSubtotal, refetch } = useCart();
-  const { orders } = useOrders();
   const navigate = useNavigate();
   const location = useLocation();
 
   // POST ORDER DATA TO DB
   const handlePlaceOrder = () => {
-    axios
-      .post("http://localhost:5000/orders", {
-        orderId: orders?.length + 1,
-        name: user?.displayName,
-        email: user?.email,
-        total: cartSubtotal,
-        paymentMethod,
-        paymentStatus: paymentInfo ? "paid" : "unpaid",
-        transactionId: paymentInfo ? paymentInfo.id : null,
-        orderDetails: cartData,
-        shippingAddress: userFromDB?.shippingAddress,
-        orderStatus: "processing",
-        date: new Date(),
-      })
-      .then((res) => {
-        if (res.data.insertedId) {
-          axios
-            .delete(
-              `http://localhost:5000/delete-cart-items?email=${user?.email}`
-            )
-            .then((res) => {
-              if (res.data.deletedCount > 0) {
-                // set orderId in link state to uniquely identify the order in orderSuccess page
-                navigate("/order-success", {
-                  state: {
-                    orderStatus: "success",
-                    from: location,
-                    orderId: orders?.length + 1,
-                  },
-                });
-                setPaymentInfo(null);
+    const orderId = uuidv4();
 
-                // update cart
-                refetch();
-              }
-            });
-        }
-      });
+    if (orderId) {
+      axios
+        .post("http://localhost:5000/orders", {
+          orderId: orderId,
+          name: user?.displayName,
+          email: user?.email,
+          total: cartSubtotal,
+          paymentMethod,
+          paymentStatus: paymentInfo ? "paid" : "unpaid",
+          transactionId: paymentInfo ? paymentInfo.id : null,
+          orderDetails: cartData,
+          shippingAddress: userFromDB?.shippingAddress,
+          orderStatus: "processing",
+          date: new Date(),
+        })
+        .then((res) => {
+          if (res.data.insertedId) {
+            axios
+              .delete(
+                `http://localhost:5000/delete-cart-items?email=${user?.email}`
+              )
+              .then((res) => {
+                if (res.data.deletedCount > 0) {
+                  // set orderId in link state to uniquely identify the order in orderSuccess page
+                  navigate("/order-success", {
+                    state: {
+                      orderStatus: "success",
+                      from: location,
+                      orderId: orderId,
+                    },
+                  });
+                  setPaymentInfo(null);
+                  // update cart
+                  refetch();
+                }
+              });
+          }
+        });
+    }
   };
 
   return (

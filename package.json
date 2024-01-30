@@ -37,7 +37,9 @@
     "recharts": "^2.10.4",
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
-    "sweetalert2": "^11.10.2"
+    "sweetalert2": "^11.10.2",
+    "uuid": "^9.0.1",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

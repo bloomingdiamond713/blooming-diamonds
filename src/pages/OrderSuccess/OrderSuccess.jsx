@@ -26,8 +26,6 @@ const OrderSuccess = () => {
     setOrderObj(findOrderById);
   }, [location?.state, orders]);
 
-  console.log(orderObj);
-
   useEffect(() => {
     const today = new Date(orderObj?.date);
     const date = today.getDate();
