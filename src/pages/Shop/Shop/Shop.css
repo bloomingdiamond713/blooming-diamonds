@@ -22,6 +22,9 @@
 .rpb-root {
   display: block !important;
   margin-inline: auto !important;
+  margin-top: 30px !important;
+}
+.shop-pagination {
   margin-top: 60px !important;
 }
 .rpb-item {

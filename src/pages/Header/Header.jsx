@@ -147,15 +147,6 @@ const Header = () => {
       <li>
         <Link to="/dashboard/adminDashboard">Dashboard</Link>
       </li>
-      {/* <li>
-          <Link to="/dashboard/myOrders">My Orders</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/myAddress">Address Book</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/addReview">Add Review</Link>
-        </li> */}
     </>
   );
 

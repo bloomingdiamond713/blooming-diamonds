@@ -293,7 +293,7 @@ const Shop = () => {
             </>
           )}
 
-          <div className="mx-auto mb-40">
+          <div className="shop-pagination mx-auto mb-40">
             <Pagination
               currentPage={currentPage}
               itemsPerPage={pageProductLimit}
