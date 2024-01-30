@@ -6,7 +6,12 @@ const ReviewCard = ({ reviewObj }) => {
   return (
     <div className="border border-black w-[80%] mx-auto flex items-start gap-4 p-10 bg-white">
       <div className="w-[20%]">
-        <img src={img} alt={name} className="rounded-full w-full" />
+        <img
+          src={img}
+          alt={name}
+          className="rounded-full w-full"
+          referrerPolicy="no-referrer"
+        />
       </div>
       <div style={{ fontFamily: "var(--poppins)" }} className="w-[80%]">
         <h4 className="text-lg text-black font-medium">{review}</h4>

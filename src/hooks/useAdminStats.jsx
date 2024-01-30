@@ -8,6 +8,8 @@ const useAdminStats = () => {
   const [totalCategories, setTotalCategories] = useState(0);
   const [topCategories, setTopCategories] = useState([]);
   const [incomeStats, setIncomeStats] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([]);
+  const [recentReviews, setRecentReviews] = useState([]);
 
   const { data: adminStats } = useQuery({
     enabled: !isAuthLoading && user?.uid !== undefined,
@@ -20,6 +22,7 @@ const useAdminStats = () => {
     },
   });
 
+  // TOP SELLING CATEGORIES
   useEffect(() => {
     if (user) {
       // get categories data
@@ -39,7 +42,32 @@ const useAdminStats = () => {
     }
   }, [user]);
 
-  return { adminStats, totalCategories, topCategories, incomeStats };
+  // BEST SELLING POPULAR PRODUCTS
+  useEffect(() => {
+    if (user) {
+      axios
+        .get("http://localhost:5000/admin-dashboard/popular-products")
+        .then((res) => setPopularProducts(res.data));
+    }
+  }, [user]);
+
+  // Recent Reviews
+  useEffect(() => {
+    if (user) {
+      axios
+        .get("http://localhost:5000/admin-dashboard/recent-reviews")
+        .then((res) => setRecentReviews(res.data));
+    }
+  }, [user]);
+
+  return {
+    adminStats,
+    totalCategories,
+    topCategories,
+    incomeStats,
+    popularProducts,
+    recentReviews,
+  };
 };
 
 export default useAdminStats;

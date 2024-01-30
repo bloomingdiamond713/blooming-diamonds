@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./AdminDashboard.css";
 import {
   PiChartLineUp,
@@ -15,8 +15,19 @@ import StarRatings from "react-star-ratings";
 import useAdminStats from "../../../hooks/useAdminStats";
 
 const AdminDashboard = () => {
-  const { adminStats, topCategories, totalCategories, incomeStats } =
-    useAdminStats();
+  const {
+    adminStats,
+    topCategories,
+    totalCategories,
+    incomeStats,
+    popularProducts,
+    recentReviews,
+  } = useAdminStats();
+
+  const [showFullReview, setShowFullReview] = useState({
+    state: false,
+    id: null,
+  });
 
   return (
     <div>
@@ -276,7 +287,7 @@ const AdminDashboard = () => {
       <section className="mt-16 flex flex-col md:flex-row items-center gap-6">
         <div className="w-[35%] h-[450px] border rounded-lg pb-10 shadow">
           <h3 className=" font-semibold text-gray-600 p-4 pb-0">
-            Most Selling Category{" "}
+            Most Selling Categories{" "}
             <span className="text-xs text-gray-400">
               (out of {totalCategories})
             </span>
@@ -286,13 +297,14 @@ const AdminDashboard = () => {
 
         <div className="w-full md:w-[65%] h-[450px] border p-4 rounded-lg pb-16 shadow">
           <h3 className=" font-semibold mb-8 text-gray-600">
-            Income Statistics
+            Income Statistics{" "}
+            <span className="text-xs text-gray-400">(by month)</span>
           </h3>
           <BarChartComponent data={incomeStats} />
         </div>
       </section>
 
-      <section className="flex items-stretch justify-between gap-5 mt-16">
+      <section className="flex items-stretch justify-between gap-8 mt-16">
         <div className="border rounded-lg md:w-[55%] shadow">
           <h4 className="font-semibold text-gray-600 border-b-2 p-4">
             Popular Products
@@ -310,25 +322,30 @@ const AdminDashboard = () => {
               </thead>
               <tbody>
                 {/* row 1 */}
-                <tr>
-                  <td>
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
-                          <img
-                            src="/tailwind-css-component-profile-2@56w.png"
-                            alt="Avatar Tailwind CSS Component"
-                          />
+
+                {popularProducts?.map((product) => (
+                  <tr key={product._id}>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img
+                              src={product.img}
+                              alt={product.name}
+                              className="bg-gray-100"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <div>{product.name}</div>
                         </div>
                       </div>
-                      <div>
-                        <div className="font-bold">Hart Hagerty</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Zemlak, Daniel and Leannon</td>
-                  <td>Purple</td>
-                </tr>
+                    </td>
+                    <td>{product.category}</td>
+                    <td>${product.discountPrice || product.price}</td>
+                    <td className="font-bold">{product.sold}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -338,29 +355,65 @@ const AdminDashboard = () => {
           <h4 className="font-semibold text-gray-600 border-b-2 p-4">
             Recent Reviews
           </h4>
-          <div className="space-y-5 border-b my-4 pb-4">
-            <div className="flex justify-between items-center px-4">
-              <div className="flex items-center gap-3">
-                <img
-                  src="	https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/products/product-1-40x40.jpg"
-                  alt=""
-                />
-                <div>
-                  <h4 className="font-medium">Something Something</h4>
-                  <p className="text-sm text-gray-500">Reviewed by Someone</p>
+          <div className="space-y-5 mt-5">
+            {recentReviews?.map((reviewObj, idx) => (
+              <div
+                key={reviewObj._id}
+                className={`${
+                  idx !== recentReviews.length - 1 && "border-b"
+                } pb-5`}
+              >
+                <div className="flex justify-between items-center px-4 mb-4">
+                  <div className="flex items-center gap-3 w-[50%]">
+                    <img
+                      src={reviewObj.img}
+                      alt={reviewObj.name}
+                      className="w-[25%] rounded-full"
+                    />
+                    <div className="flex-grow">
+                      <h4 className="font-medium">{reviewObj.name}</h4>
+                      <p className="text-sm text-gray-500">
+                        {reviewObj.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <StarRatings
+                      rating={reviewObj.rating}
+                      starDimension="20px"
+                      starSpacing="4px"
+                      starRatedColor="#d4647c"
+                      starEmptyColor="#c7c7c7"
+                      svgIconPath="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1"
+                      svgIconViewBox="0 0 24 24"
+                    />
+                  </div>
+                </div>
+
+                <div className="px-4">
+                  <p className="text-sm text-ellipsis space-x-2">
+                    <span>
+                      {showFullReview?.state &&
+                      showFullReview?.id === reviewObj._id
+                        ? reviewObj.review
+                        : reviewObj.review.slice(0, 200) + "..."}
+                    </span>
+                    <button
+                      className="text-xs underline text-blue-700"
+                      onClick={() =>
+                        setShowFullReview({
+                          state: !showFullReview?.state,
+                          id: reviewObj._id,
+                        })
+                      }
+                    >
+                      {showFullReview?.state ? "Show Less" : "Show All"}
+                    </button>
+                  </p>
                 </div>
               </div>
-
-              <StarRatings
-                rating={4}
-                starDimension="20px"
-                starSpacing="4px"
-                starRatedColor="#d4647c"
-                starEmptyColor="#c7c7c7"
-                svgIconPath="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1"
-                svgIconViewBox="0 0 24 24"
-              />
-            </div>
+            ))}
           </div>
         </div>
       </section>

@@ -74,6 +74,7 @@ const BarChartComponent = ({ data }) => {
         <Tooltip cursor={{ fill: "transparent" }} />
         <Bar
           dataKey="totalSales"
+          name="Total Sales"
           fill="#eebfab"
           activeBar={<Rectangle fill="#95523d" />}
         />

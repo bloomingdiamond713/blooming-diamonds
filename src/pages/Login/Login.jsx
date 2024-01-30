@@ -140,7 +140,7 @@ const Login = () => {
         <div className="mt-16 flex items-center gap-3">
           <button
             type="submit"
-            className="uppercase text-sm text-white bg-black px-8 py-3 hover:rounded-xl transition-all duration-300"
+            className="uppercase text-sm text-white bg-black w-32 h-11 hover:rounded-xl transition-all duration-300"
             disabled={loginLoading}
           >
             {loginLoading ? (

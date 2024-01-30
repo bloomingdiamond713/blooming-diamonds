@@ -418,12 +418,6 @@ const Header = () => {
                         <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </Link>
 
-                      {!user && (
-                        <Link to="/login">
-                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                        </Link>
-                      )}
-
                       <div
                         className="indicator"
                         onClick={() => setShowRightDrawer(true)}
@@ -433,6 +427,12 @@ const Header = () => {
                         </span>
                         <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </div>
+
+                      {!user && (
+                        <Link to="/login">
+                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        </Link>
+                      )}
 
                       {isAuthLoading ? (
                         <span className="loading loading-spinner loading-sm"></span>
@@ -452,6 +452,7 @@ const Header = () => {
                                         ? user.photoURL
                                         : placeholderUserImg
                                     }
+                                    referrerPolicy="no-referrer"
                                   />
                                 </div>
                               </summary>
@@ -584,11 +585,7 @@ const Header = () => {
                       <Link to="/wishlist" className="hidden md:inline">
                         <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </Link>
-                      {!user && (
-                        <Link to="/login">
-                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
-                        </Link>
-                      )}
+
                       <div
                         className="indicator"
                         onClick={() => setShowRightDrawer(true)}
@@ -598,6 +595,12 @@ const Header = () => {
                         </span>
                         <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </div>
+
+                      {!user && (
+                        <Link to="/login">
+                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        </Link>
+                      )}
 
                       <div>
                         {isAuthLoading ? (

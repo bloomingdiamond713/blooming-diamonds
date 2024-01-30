@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import StarRatings from "react-star-ratings";
 import useAuthContext from "../../../hooks/useAuthContext";
 import useUserInfo from "../../../hooks/useUserInfo";
@@ -7,9 +7,10 @@ import toast from "react-hot-toast";
 import { FaTrashAlt } from "react-icons/fa";
 import { HashLink } from "react-router-hash-link";
 import Swal from "sweetalert2";
+import { useQuery } from "react-query";
 
 const AddReview = () => {
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
   const [userFromDB] = useUserInfo();
   const [productReviewError, setProductReviewError] = useState("");
   const [starRating, setStarRating] = useState(0);
@@ -19,15 +20,17 @@ const AddReview = () => {
   const [userReview, setUserReview] = useState(null);
 
   // FETCH ALL THE REVIEWS
-  useEffect(() => {
-    if (user) {
-      axios.get("http://localhost:5000/reviews").then((res) => {
-        const reviews = res.data;
-        const review = reviews?.find((r) => r.email === user.email);
-        setUserReview(review);
-      });
-    }
-  }, [user]);
+  const { refetch } = useQuery({
+    queryKey: ["reviews"],
+    enabled: !isAuthLoading && user?.uid !== undefined,
+    queryFn: async () => {
+      const reviews = await axios.get("http://localhost:5000/reviews");
+      const reviewByUser = reviews.data?.find((r) => r.email === user.email);
+      setUserReview(reviewByUser);
+    },
+  });
+
+  console.log(userReview);
 
   // POST REVIEW TO DB
   const handleSubmitProductReview = (e) => {
@@ -55,7 +58,9 @@ const AddReview = () => {
       })
       .then((res) => {
         if (res.data.insertedId) {
+          refetch();
           toast.success("Your feedback has successfully submitted ❣️");
+          form.reset();
         }
       })
       .catch((error) => console.error(error));
@@ -76,15 +81,16 @@ const AddReview = () => {
         axios
           .delete(`http://localhost:5000/delete-review/${user?.email}`)
           .then((res) => {
-            console.log(res.data);
+            if (res.data.deletedCount > 0) {
+              refetch();
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your review has been deleted.",
+                icon: "success",
+              });
 
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your review has been deleted.",
-              icon: "success",
-            });
-
-            setUserReview(null);
+              setStarRating(0);
+            }
           })
           .catch((error) => console.error(error));
       }
@@ -163,7 +169,7 @@ const AddReview = () => {
               <tr>
                 <td>{userReview?.name}</td>
                 <td>{userReview?.rating}</td>
-                <td>{userReview?.review}</td>
+                <td className="w-[40%] text-wrap">{userReview?.review}</td>
                 <td>
                   <FaTrashAlt
                     className="hover:text-error cursor-pointer"
