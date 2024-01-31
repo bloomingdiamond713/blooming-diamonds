@@ -11,6 +11,7 @@ import useAuthContext from "../../../hooks/useAuthContext";
 import axios from "axios";
 import useUserInfo from "../../../hooks/useUserInfo";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
 
 const ProductReviews = () => {
   const { id } = useParams();
@@ -18,12 +19,13 @@ const ProductReviews = () => {
   const [userFromDB] = useUserInfo();
   const [products, , refetch] = useProducts();
   const [dynamicProduct, setDynamicProduct] = useState(null);
-  const { averageRating } = useDynamicRating(dynamicProduct?.review);
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [reviewsLength, setReviewsLength] = useState(1); // for showing limited reviews in the page
   const location = useLocation();
   const [productReviewError, setProductReviewError] = useState("");
   const [hasUserReviewed, setHasUserReviewed] = useState(false);
+  const { averageRating } = useDynamicRating(dynamicProduct?.review);
+  // const [averageRating, setAverageRating] = useState(0);
 
   // fetch dynamic product data
   useEffect(() => {
@@ -78,34 +80,41 @@ const ProductReviews = () => {
     const form = e.target;
     const reviewTitle = form.reviewTitle.value;
     const reviewDesc = form.reviewDesc.value;
+    const _id = uuidv4();
 
     // post review to specific product reviews data
-    axios
-      .post(`http://localhost:5000/products/add-review/${dynamicProduct._id}`, {
-        reviewerName: userFromDB?.name,
-        reviewerEmail: user?.email,
-        reviewerImg: user?.photoURL,
-        rating: parseFloat(starRating),
-        title: reviewTitle,
-        desc: reviewDesc,
-      })
-      .then((res) => {
-        if (res.data.modifiedCount > 0) {
-          toast.success("Your review was added successfully");
-          form.reset();
-          setStarRating(0);
-          setProductReviewError("");
-        }
-        refetch();
-      })
-      .catch((e) => setProductReviewError(e));
+    if (_id) {
+      axios
+        .post(
+          `http://localhost:5000/products/add-review/${dynamicProduct?._id}`,
+          {
+            _id,
+            reviewerName: userFromDB?.name,
+            reviewerEmail: user?.email,
+            reviewerImg: user?.photoURL,
+            rating: parseFloat(starRating),
+            title: reviewTitle,
+            desc: reviewDesc,
+          }
+        )
+        .then((res) => {
+          if (res.data.modifiedCount > 0) {
+            toast.success("Your review was added successfully");
+            form.reset();
+            setStarRating(0);
+            setProductReviewError("");
+          }
+          refetch();
+        })
+        .catch((e) => setProductReviewError(e));
+    }
   };
 
   // delete/update specific product review
   const deleteProductReview = () => {
     axios
       .delete(
-        `http://localhost:5000/products/delete-review/${dynamicProduct._id}/reviewer-email/${user?.email}`
+        `http://localhost:5000/products/delete-review/${dynamicProduct?._id}/reviewer-email/${user?.email}`
       )
       .then((res) => {
         console.log(res.data);
@@ -114,12 +123,26 @@ const ProductReviews = () => {
       .catch((e) => console.error(e));
   };
 
-  // UPDATE PRODUCT LIKE STATUS
+  // CALCULATE AVERAGE RATING OF THE PRODUCT
+  // useEffect(() => {
+  //   if (dynamicProduct?.review?.length) {
+  //     const totalRating = dynamicProduct?.review?.reduce(
+  //       (sum, reviewObj) => sum + reviewObj?.rating,
+  //       0
+  //     );
+  //     setAverageRating(
+  //       parseFloat((totalRating / dynamicProduct?.review?.length).toFixed(2))
+  //     );
+  //   } else {
+  //     setAverageRating(0);
+  //   }
+  // }, [dynamicProduct, products, dynamicProduct?.review]);
 
+  // UPDATE PRODUCT LIKE STATUS
   const handleLikeStatus = (reviewObjId) => {
     axios
       .post("http://localhost:5000/single-product-like-update", {
-        productId: dynamicProduct._id,
+        productId: id,
         reviewId: reviewObjId,
         email: user?.email,
       })
@@ -149,7 +172,7 @@ const ProductReviews = () => {
         <p className="text-gray-600 text-lg">Product Rating</p>
       </div>
 
-      {dynamicProduct?.review?.length && (
+      {dynamicProduct?.review?.length > 0 && (
         <div>
           <h4
             className="text-2xl font-bold mb-10 mt-16"
@@ -158,7 +181,7 @@ const ProductReviews = () => {
             CUSTOMERS FEEDBACK
           </h4>
 
-          <div className=" pl-10 pr-20 product-reviews-con">
+          <div className="pl-10 pr-20 product-reviews-con">
             {dynamicProduct?.review?.slice(0, reviewsLength).map((r) => (
               <div key={r._id} className="flex items-start gap-4 ">
                 <div className="w-[5%]">
@@ -206,7 +229,7 @@ const ProductReviews = () => {
                     title={!user && "Please login to give reaction"}
                   >
                     {r.likedBy?.includes(user?.email) ? (
-                      <FaThumbsUp className="text-[var(--light-brown)]" />
+                      <FaThumbsUp className="text-[var(--light-pink)]" />
                     ) : (
                       <FaRegThumbsUp />
                     )}
@@ -226,7 +249,7 @@ const ProductReviews = () => {
           <button
             onClick={handleShowReviews}
             className={`mx-auto block border-b-2 border-b-black ${
-              dynamicProduct?.review?.length === 2 && "hidden"
+              dynamicProduct?.review?.length <= 2 && "hidden"
             }`}
           >
             {showAllReviews ? "Show Less" : "View All Reviews"}

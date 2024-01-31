@@ -36,7 +36,7 @@ const Categories = () => {
         {...settings}
         className="w-[85%] mx-auto mt-12 h-[300px] items-center"
       >
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <CategoryCard key={category._id} category={category} />
         ))}
       </Slider>

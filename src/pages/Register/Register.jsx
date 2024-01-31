@@ -177,7 +177,7 @@ const Register = () => {
         <div className="w-full auth-input-con">
           <p className="text-gray-600">Full Name *</p>
           <input
-            type="name"
+            type="text"
             {...register("name", { required: true })}
             className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
           />

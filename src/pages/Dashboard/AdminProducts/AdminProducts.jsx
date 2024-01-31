@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 import { Pagination } from "react-pagination-bar";
 import useSearchedProducts from "../../../hooks/useSearchedProducts";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const AdminProducts = () => {
   const [products, isProductsLoading, refetch] = useProducts();
@@ -22,6 +24,35 @@ const AdminProducts = () => {
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
   const pageProductLimit = 10;
+
+  // handle delete products
+  const handleDeleteProduct = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This product will be deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000",
+      cancelButtonColor: "#ef4c53",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:5000/admin/delete-product/${_id}`)
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              refetch();
+              Swal.fire({
+                title: "Deleted!",
+                text: "Product has been deleted.",
+                icon: "success",
+              });
+            }
+          })
+          .catch((e) => console.error(e));
+      }
+    });
+  };
 
   return (
     <div className="px-4">
@@ -58,14 +89,27 @@ const AdminProducts = () => {
           </div>
           <Link to="/dashboard/adminAddProducts" className="w-[15%]">
             <button className="btn btn-neutral text-white border-none rounded w-full">
+              <FiPlusCircle className="text-lg" />
               Add Product
             </button>
           </Link>
         </header>
 
         {isProductsLoading || isSearchLoading ? (
-          <div className="text-center w-full my-10">
-            <span className="loading loading-lg"></span>
+          <div>
+            {searchedProducts?.length ? (
+              <>
+                {searchedProducts?.map((p) => (
+                  <div className="skeleton w-full h-16 my-4" key={p._id}></div>
+                ))}
+              </>
+            ) : (
+              <div>
+                {Array.from({ length: 10 }).map((_, idx) => (
+                  <div className="skeleton w-full h-16 my-4" key={idx}></div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto mt-8 pb-5">
@@ -125,13 +169,21 @@ const AdminProducts = () => {
                       <td>${product.discountPrice || product.price}</td>
                       <td className="space-x-2">
                         <div className="tooltip" data-tip="Edit">
-                          <button className="bg-[var(--pink-gold)] text-white rounded-lg w-[32px] h-[32px]">
-                            <FiEdit2 className="text-lg block mx-auto" />
-                          </button>
+                          <Link
+                            to={`/dashboard/adminAddProducts`}
+                            state={{ id: product._id }}
+                          >
+                            <button className="bg-[var(--pink-gold)] text-white rounded-lg w-[32px] h-[32px]">
+                              <FiEdit2 className="text-lg block mx-auto" />
+                            </button>
+                          </Link>
                         </div>
 
                         <div className="tooltip" data-tip="Delete">
-                          <button className="bg-red-400 text-white rounded-lg w-[32px] h-[32px]">
+                          <button
+                            className="bg-red-400 text-white rounded-lg w-[32px] h-[32px]"
+                            onClick={() => handleDeleteProduct(product._id)}
+                          >
                             <FiTrash2 className="text-lg block mx-auto" />
                           </button>
                         </div>

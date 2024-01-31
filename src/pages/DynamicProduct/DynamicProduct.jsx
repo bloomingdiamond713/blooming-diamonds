@@ -110,7 +110,9 @@ const DynamicProduct = () => {
               smooth
               className="text-gray-400 pt-1 underline"
             >
-              See All Reviews ({dynamicProduct?.review?.length})
+              {dynamicProduct?.review?.length && (
+                <span>See All Reviews ({dynamicProduct?.review?.length})</span>
+              )}
             </HashLink>
           </div>
           {/* ---------------------- */}

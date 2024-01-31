@@ -9,6 +9,8 @@ const useDynamicRating = (review) => {
         0
       );
       setAverageRating(parseFloat((totalRating / review?.length).toFixed(2)));
+    } else {
+      setAverageRating(0);
     }
   }, [review]);
 

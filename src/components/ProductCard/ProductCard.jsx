@@ -80,17 +80,23 @@ const ProductCard = ({ cardData, flashSale }) => {
           } bg-[#ebebed] rounded-lg product-img`}
         />
 
-        {discountPercentage && (
-          <div className="badge badge-error rounded-full py-3 absolute top-3 left-3">
-            <h6 className="text-white text-xs">-{discountPercentage}%</h6>
-          </div>
-        )}
+        <div>
+          {discountPercentage && (
+            <div className="badge badge-error rounded-full py-3 absolute top-3 left-3">
+              <h6 className="text-white text-xs">-{discountPercentage}%</h6>
+            </div>
+          )}
 
-        {badge && (
-          <div className="badge bg-[red] rounded-full py-3 absolute top-3 left-3 font-bold">
-            <h6 className="text-white text-xs uppercase">{badge}</h6>
-          </div>
-        )}
+          {badge && (
+            <div
+              className={`badge bg-[red] rounded-full py-3 absolute ${
+                discountPercentage ? "top-10" : "top-3"
+              } left-3 font-bold`}
+            >
+              <h6 className="text-white text-xs uppercase">{badge}</h6>
+            </div>
+          )}
+        </div>
 
         {/* icons */}
         <div className="absolute top-3 right-3 space-y-3">
@@ -161,7 +167,7 @@ const ProductCard = ({ cardData, flashSale }) => {
             svgIconViewBox="0 0 24 24"
           />
           <p className="text-gray-500">
-            {review.length && `(${review.length} reviews)`}
+            {review?.length && `(${review?.length} reviews)`}
           </p>
         </div>
       </div>
