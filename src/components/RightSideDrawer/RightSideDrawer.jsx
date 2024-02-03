@@ -6,29 +6,46 @@ import { Link } from "react-router-dom";
 import useCart from "../../hooks/useCart";
 import { FaMinus, FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import axios from "axios";
+import useProducts from "../../hooks/useProducts";
+import toast from "react-hot-toast";
 
 const RightSideDrawer = ({ setShowRightDrawer }) => {
   // Reminder: Right side drawer is called from the Header.jsx file
 
   const { user } = useAuthContext();
   const { cartData, isCartLoading, refetch } = useCart();
+  const [products] = useProducts();
   const [subtotal, setSubTotal] = useState(0);
+  const [quantityLoading, setQuantityLoading] = useState(false);
 
   // update product quantity
-  const handleUpdateQuantity = (_id, operation, quantity) => {
-    axios
-      .patch(`http://localhost:5000/cart/${_id}`, {
-        quantity: quantity,
-        operation,
-      })
-      .then((res) => {
-        if (res.data.modifiedCount > 0) {
-          refetch();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleUpdateQuantity = (_id, operation, quantity, productId) => {
+    // find product stock
+    const product = products?.find((p) => p._id === productId);
+    if (
+      parseInt(product?.stock) - parseInt(quantity) > 0 ||
+      operation === "minus"
+    ) {
+      setQuantityLoading({ status: true, _id });
+      axios
+        .patch(`http://localhost:5000/cart/${_id}`, {
+          quantity: quantity,
+          operation,
+        })
+        .then((res) => {
+          if (res.data.modifiedCount > 0) {
+            refetch();
+            setQuantityLoading({ status: false });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setQuantityLoading({ status: false });
+        });
+    } else {
+      toast.error("Out of Stock", { position: "bottom-right" });
+      setQuantityLoading({ status: false });
+    }
   };
 
   // delete from cart
@@ -129,7 +146,8 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
                               handleUpdateQuantity(
                                 product._id,
                                 "minus",
-                                product.quantity
+                                product.quantity,
+                                product.productId
                               )
                             }
                             className={`${
@@ -139,14 +157,20 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
                             <FaMinus />
                           </button>
                           <span className="font-bold text-lg">
-                            {product.quantity}
+                            {product._id === quantityLoading._id &&
+                            quantityLoading.status ? (
+                              <span className="loading loading-ring loading-sm"></span>
+                            ) : (
+                              product.quantity
+                            )}
                           </span>
                           <button
                             onClick={() =>
                               handleUpdateQuantity(
                                 product._id,
                                 "plus",
-                                product.quantity
+                                product.quantity,
+                                product.productId
                               )
                             }
                           >

@@ -14,6 +14,7 @@ import useProducts from "../../hooks/useProducts";
 import useCart from "../../hooks/useCart";
 import useAuthContext from "../../hooks/useAuthContext";
 import useWishlist from "../../hooks/useWishlist";
+import toast from "react-hot-toast";
 
 const DynamicProduct = () => {
   const { id } = useParams();
@@ -134,7 +135,15 @@ const DynamicProduct = () => {
                     <FaMinus />
                   </button>
                   <span className="font-bold text-lg">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)}>
+                  <button
+                    onClick={() => {
+                      dynamicProduct?.stock - quantity > 0
+                        ? setQuantity(quantity + 1)
+                        : toast.error("Out of Stock", {
+                            position: "bottom-right",
+                          });
+                    }}
+                  >
                     <FaPlus />
                   </button>
                 </div>

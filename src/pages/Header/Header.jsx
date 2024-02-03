@@ -147,6 +147,18 @@ const Header = () => {
       <li>
         <Link to="/dashboard/adminDashboard">Dashboard</Link>
       </li>
+      <li>
+        <Link to="/dashboard/adminCategories">Manage Categories</Link>
+      </li>
+      <li>
+        <Link to="/dashboard/adminProducts">Manage Products</Link>
+      </li>
+      <li>
+        <Link to="/dashboard/adminOrders">Manage Orders</Link>
+      </li>
+      <li>
+        <Link to="/dashboard/adminUsers">Manage Users</Link>
+      </li>
     </>
   );
 

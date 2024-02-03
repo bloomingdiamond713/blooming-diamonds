@@ -9,6 +9,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 import useCart from "../../hooks/useCart";
 import useWishlist from "../../hooks/useWishlist";
 import useUserInfo from "../../hooks/useUserInfo";
+import { TfiClose } from "react-icons/tfi";
 
 const ProductCard = ({ cardData, flashSale }) => {
   const { user } = useAuthContext();
@@ -18,7 +19,7 @@ const ProductCard = ({ cardData, flashSale }) => {
   const [presentInCart, setPresentInCart] = useState(false);
   const [presentInWishlist, setPresentInWishlist] = useState(false);
 
-  // check if item added to cart and wishlist
+  // check if item already exist in cart and wishlist
   useEffect(() => {
     if (user?.uid) {
       const itemInCart = cartData?.find((p) => p.productId === cardData._id);
@@ -41,6 +42,7 @@ const ProductCard = ({ cardData, flashSale }) => {
     discountPrice,
     discountPercentage,
     badge,
+    stock,
   } = cardData;
 
   const { averageRating } = useDynamicRating(review);
@@ -145,13 +147,22 @@ const ProductCard = ({ cardData, flashSale }) => {
         <button
           className="add-to-cart-con absolute bottom-0 left-0 right-0 w-full bg-black text-white flex justify-center gap-2 py-2 rounded-b-lg"
           onClick={() => handleAddToCartWishlist("cart")}
-          disabled={presentInCart}
+          disabled={presentInCart || stock === 0}
         >
-          {presentInCart ? <FaCheckDouble /> : <FaShoppingCart />}
+          {stock ? (
+            <>
+              {presentInCart ? <FaCheckDouble /> : <FaShoppingCart />}
 
-          <p className="text-sm">
-            {presentInCart ? "Added to Cart" : "Add to Cart"}
-          </p>
+              <p className="text-sm">
+                {presentInCart ? "Added to Cart" : "Add to Cart"}
+              </p>
+            </>
+          ) : (
+            <>
+              <TfiClose />
+              <p className="text-sm">Out of Stock</p>
+            </>
+          )}
         </button>
       </div>
       <div className="mt-2">

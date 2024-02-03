@@ -24,7 +24,6 @@ const useCart = () => {
   });
 
   // fetch subtotal amount of cart
-
   useEffect(() => {
     if (user) {
       axios
@@ -50,7 +49,7 @@ const useCart = () => {
 
     axios.post("http://localhost:5000/cart", cartProductData).then((res) => {
       if (res.data?.insertedId) {
-        toast.success("Item added to cart successfully!", {
+        toast.success("Cart Updated", {
           position: "bottom-right",
         });
         refetch();
