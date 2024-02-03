@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import easyinvoice from "easyinvoice";
 import emptyBox from "../../assets/emptybox.jpg";
 import toast from "react-hot-toast";
+import useUserInfo from "../../hooks/useUserInfo";
+import axios from "axios";
 
 const OrderSuccess = () => {
   const location = useLocation();
@@ -15,16 +17,33 @@ const OrderSuccess = () => {
   const [orderObj, setOrderObj] = useState({});
   const [orderDate, setOrderDate] = useState(null);
   const [invoiceLoading, setInvoiceLoading] = useState(false);
+  const [allOrders, setAllOrders] = useState([]);
+  const [userFromDB] = useUserInfo();
 
-  console.log(location);
+  // get all orders for admin users
+  useEffect(() => {
+    if (userFromDB?.admin) {
+      axios
+        .get("http://localhost:5000/admin/orders")
+        .then((res) => setAllOrders(res.data))
+        .catch((e) => console.error(e));
+    }
+  }, [userFromDB]);
 
   // get specific order by orderId & email for orderSuccess page
   useEffect(() => {
-    const findOrderById = orders?.find(
-      (order) => order.orderId == location?.state?.orderId
-    );
-    setOrderObj(findOrderById);
-  }, [location?.state, orders]);
+    if (!userFromDB?.admin) {
+      const findOrderById = orders?.find(
+        (order) => order._id == location?.state?.orderId
+      );
+      setOrderObj(findOrderById);
+    } else {
+      const findOrderById = allOrders?.find(
+        (order) => order._id == location?.state?.orderId
+      );
+      setOrderObj(findOrderById);
+    }
+  }, [location?.state, orders, allOrders, userFromDB]);
 
   useEffect(() => {
     const today = new Date(orderObj?.date);
@@ -92,6 +111,8 @@ const OrderSuccess = () => {
     navigate("/", { state: {}, replace: true });
   };
 
+  console.log(orderObj);
+
   return (
     <div style={{ fontFamily: "var(--poppins)" }}>
       {location?.state?.orderId ? (
@@ -123,7 +144,7 @@ const OrderSuccess = () => {
                 <div className="space-y-1 shadow">
                   <p className="font-medium text-lg">
                     OrderId:{" "}
-                    <span className="font-extrabold">#{orderObj?.orderId}</span>
+                    <span className="font-extrabold">#{orderObj?._id}</span>
                   </p>
                   <p className="font-medium text-lg">
                     Date:{" "}
@@ -161,6 +182,14 @@ const OrderSuccess = () => {
                       {orderObj?.paymentStatus?.toUpperCase()}
                     </span>
                   </p>
+                  {orderObj?.transactionId && (
+                    <p className="font-bold text-lg text-success">
+                      Transaction ID:{" "}
+                      <span className="font-extrabold">
+                        {orderObj?.transactionId}
+                      </span>
+                    </p>
+                  )}
                 </div>
               </div>
 

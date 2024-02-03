@@ -167,7 +167,6 @@ const AdminAddProduct = () => {
 
     // edit a product
     else {
-      let imgFlag = 0;
       Swal.fire({
         title: "Are you sure?",
         text: "Did you make sure all data provided are correct?",
@@ -228,25 +227,6 @@ const AdminAddProduct = () => {
               })
               .catch((e) => console.error(e));
           }
-
-          console.log(product, imgFlag);
-
-          // update the product data in db
-          // axios
-          //   .put(
-          //     `http://localhost:5000/products/${dynamicProduct?._id}`,
-          //     product
-          //   )
-          //   .then((res) => {
-          //     if (res.data.modifiedCount > 0) {
-          //       Swal.fire({
-          //         title: "Success!",
-          //         text: "Product has been updated successfully",
-          //         icon: "success",
-          //       });
-          //     }
-          //   })
-          //   .catch((e) => console.error(e));
         }
       });
     }
@@ -406,7 +386,7 @@ const AdminAddProduct = () => {
                   Upload Image
                 </h4>
                 <div>
-                  {dynamicProduct ? (
+                  {dynamicProduct?.img ? (
                     <figure>
                       <img
                         src={dynamicProduct?.img}

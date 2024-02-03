@@ -196,49 +196,17 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
             </li>
             {/* ------------ ORDERS ------------ */}
             <li className="text-white">
-              <button
-                onClick={function () {
-                  setOrderSubmenuCollapsed(!orderSubmenuCollapsed);
-                  setSidebarCollapsed(false);
-                }}
-                className={`product-collapse-link ${
-                  !orderSubmenuCollapsed && "active"
-                }`}
+              <NavLink
+                to="/dashboard/adminOrders"
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? `active` : ""
+                }
               >
                 <div className="px-4">
                   <FaDropbox className="text-xl block" />
                 </div>
                 <p className={`whitespace-nowrap pt-1 pl-1`}>Orders</p>
-                <div
-                  className={`ml-auto transition-all duration-200 ease-in-out ${
-                    !orderSubmenuCollapsed ? "-rotate-90 mr-2" : "mr-2 mt-1"
-                  }`}
-                >
-                  <FaAngleRight />
-                </div>
-              </button>
-              <div
-                className={`submenu ${
-                  orderSubmenuCollapsed ? "hidden" : "flex"
-                } flex-col w-full space-y-3`}
-              >
-                <NavLink
-                  to="/dashboard/adminProducts"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? `active` : ""
-                  }
-                >
-                  Manage Orders
-                </NavLink>
-                <NavLink
-                  to="/dashboard/adminAddProducts"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? `active` : ""
-                  }
-                >
-                  Transactions
-                </NavLink>
-              </div>
+              </NavLink>
             </li>
             {/* ------------ USERS ------------ */}
             <li className="text-white">

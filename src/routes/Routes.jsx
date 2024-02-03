@@ -24,6 +24,7 @@ import AdminProducts from "../pages/Dashboard/AdminProducts/AdminProducts";
 import AdminAddProduct from "../pages/Dashboard/AdminAddProduct/AdminAddProduct";
 import AdminManageUsers from "../pages/AdminManageUsers/AdminManageUsers";
 import AdminCategories from "../pages/AdminCategories/AdminCategories";
+import AdminOrders from "../pages/Dashboard/AdminOrders/AdminOrders";
 
 const router = createBrowserRouter([
   {
@@ -133,6 +134,14 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <AdminManageUsers />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "adminOrders",
+            element: (
+              <AdminRoute>
+                <AdminOrders />
               </AdminRoute>
             ),
           },
