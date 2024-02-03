@@ -16,6 +16,10 @@ const NewProducts = () => {
       (product) => product.newArrival === true
     );
 
+    filteredNewProducts?.sort(
+      (a, b) => new Date(b.addedAt) - new Date(a.addedAt)
+    );
+
     setNewProducts(filteredNewProducts?.slice(0, 6));
   }, [products]);
 

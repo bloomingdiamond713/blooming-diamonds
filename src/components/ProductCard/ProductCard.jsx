@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./ProductCard.css";
 import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
-import { FaRegHeart, FaRegEye, FaHeart } from "react-icons/fa6";
+import { FaRegHeart, FaRegEye, FaHeart, FaPen } from "react-icons/fa6";
 import { FaShoppingCart, FaCheckDouble } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import useCart from "../../hooks/useCart";
 import useWishlist from "../../hooks/useWishlist";
+import useUserInfo from "../../hooks/useUserInfo";
 
 const ProductCard = ({ cardData, flashSale }) => {
   const { user } = useAuthContext();
+  const [userFromDB] = useUserInfo();
   const { cartData, isCartLoading, addToCart } = useCart();
   const [wishlistData, , , addToWishlist] = useWishlist();
   const [presentInCart, setPresentInCart] = useState(false);
@@ -125,6 +127,19 @@ const ProductCard = ({ cardData, flashSale }) => {
           >
             <FaRegEye className="text-xl text-gray-600" />
           </Link>
+
+          {userFromDB?.admin && (
+            <Link
+              to={{
+                pathname: `/dashboard/adminAddProducts`,
+              }}
+              className="edit-icon-con tooltip tooltip-left block"
+              data-tip="Edit Product"
+              state={{ from: "/", id: _id }}
+            >
+              <FaPen className="text-xl text-gray-600" />
+            </Link>
+          )}
         </div>
 
         <button
@@ -149,11 +164,9 @@ const ProductCard = ({ cardData, flashSale }) => {
         </Link>
         <p className="text-gray-600 mt-1 mb-3">{category}</p>
         <div className="flex items-baseline justify-start gap-3">
-          <h4 className="text-lg font-bold mb-2">${price}</h4>
+          <h4 className="text-lg font-bold mb-2">${discountPrice || price}</h4>
           {discountPrice && (
-            <h5 className="text-base text-gray-400 line-through">
-              -{discountPrice}
-            </h5>
+            <h5 className="text-base text-gray-400 line-through">{price}</h5>
           )}
         </div>
         <div className="flex items-center gap-4">

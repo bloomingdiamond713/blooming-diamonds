@@ -7,21 +7,26 @@ import axios from "axios";
 import useAuthContext from "../../../hooks/useAuthContext";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import useProducts from "../../../hooks/useProducts";
 
 const AdminAddProduct = () => {
   const { user } = useAuthContext();
   const [productError, setProductError] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [defaultBadges, setDefaultBadges] = useState([]);
 
+  // find product to edit the product
   const location = useLocation();
   const productId = location.state?.id;
+  const [dynamicProduct, setDynamicProduct] = useState({});
+  const [products] = useProducts();
 
-  // default tag options
-  const tagOptions = [
-    { value: "hot", label: "Hot Deal" },
-    { value: "flashSale", label: "Flash Sale" },
-    { value: "newArrival", label: "New Arrival" },
-  ];
+  useEffect(() => {
+    if (products && productId) {
+      const product = products.find((p) => p._id === productId);
+      setDynamicProduct(product);
+    }
+  }, [productId, products]);
 
   // fetch categories
   useEffect(() => {
@@ -42,75 +47,209 @@ const AdminAddProduct = () => {
     formState: { errors },
   } = useForm();
 
+  // default tag options for badges list
+  const [tagOptions] = useState([
+    { value: "hot", label: "Hot Deal" },
+    { value: "flashSale", label: "Flash Sale" },
+    { value: "newArrival", label: "New Arrival" },
+  ]);
+
+  // SET PRODUCT BADGE DEFAULT VALUES
+  useEffect(() => {
+    if (dynamicProduct) {
+      setDefaultBadges([
+        dynamicProduct?.newArrival ? tagOptions[2] : null,
+        dynamicProduct?.badge === "HOT" ? tagOptions[0] : null,
+
+        dynamicProduct?.flashSale ? tagOptions[1] : null,
+      ]);
+    }
+  }, [tagOptions, dynamicProduct]);
+
+  // set default values for the form when edit the product
+  useEffect(() => {
+    if (dynamicProduct) {
+      let defaultValues = {};
+
+      defaultValues.name = dynamicProduct.name;
+      defaultValues.description = dynamicProduct.details?.description;
+      defaultValues.advantages = dynamicProduct.details?.advantages.join(", ");
+      defaultValues.price = dynamicProduct.price;
+      defaultValues.discountPrice = dynamicProduct.discountPrice || null;
+      defaultValues.category = dynamicProduct.category;
+      defaultValues.selectedBadges = defaultBadges;
+      defaultValues.stock = dynamicProduct.stock;
+      defaultValues.size = dynamicProduct.size;
+      defaultValues.carate = dynamicProduct.carate;
+
+      reset({ ...defaultValues });
+    }
+  }, [reset, dynamicProduct, defaultBadges]);
+
   const onSubmit = (data) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Did you make sure all the data provided is correct?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#000",
-      cancelButtonColor: "#ef4c53",
-      confirmButtonText: "Yes, Publish it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const imgFile = data.productImg[0];
-        if (imgFile?.size > 2097152) {
-          Swal.fire({
-            title: "Image Size Exceeded!",
-            text: "Your product image size is more than 2MB.",
-            icon: "error",
-          });
-          return;
+    const badges = data?.selectedBadges?.map((b) => b?.value);
+    const product = {
+      name: data.name,
+      category: data.category,
+      details: {
+        description: data.description,
+        advantages: data.advantages.split(","),
+      },
+      price: parseFloat(data.price),
+      discountPrice: parseFloat(data.discountPrice) || null,
+      discountPercentage: data.discountPrice
+        ? (((data.price - data.discountPrice) / data.price) * 100).toFixed(2)
+        : null,
+      size: data.size,
+      stock: parseInt(data.stock),
+      carate: parseInt(data.carate),
+      newArrival: badges?.indexOf("newArrival") !== -1 ? true : false,
+      badge: badges?.indexOf("hot") !== -1 ? "HOT" : false,
+      flashSale: badges?.indexOf("flashSale") !== -1 ? true : false,
+      addedAt: new Date(),
+    };
+
+    // add new product
+    if (!dynamicProduct) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Did you make sure all data provided are correct?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#000",
+        cancelButtonColor: "#ef4c53",
+        confirmButtonText: "Yes, Publish it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const imgFile = data.productImg[0];
+          if (imgFile?.size > 2097152) {
+            Swal.fire({
+              title: "Image Size Exceeded!",
+              text: "Your product image size is more than 2MB.",
+              icon: "error",
+            });
+            return;
+          }
+
+          // upload product image to imgbb
+          const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
+            import.meta.env.VITE_IMGHOSTINGKEY
+          }`;
+
+          const formData = new FormData();
+          formData.append("image", data.productImg[0]);
+
+          axios
+            .post(imgHostingUrl, formData)
+            .then((res) => {
+              if (res.data.success) {
+                // add image link to product
+                product.img = res.data.display_url;
+
+                axios
+                  .post("http://localhost:5000/products", product)
+                  .then((res) => {
+                    if (res.data.insertedId) {
+                      Swal.fire({
+                        title: "Success!",
+                        text: "Product has been added successfully",
+                        icon: "success",
+                      });
+                    }
+                  })
+                  .catch((error) => console.error(error));
+              }
+            })
+            .catch((imgHostingError) => console.error(imgHostingError));
         }
+      });
+    }
 
-        // upload product image to imgbb
-        const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGHOSTINGKEY
-        }`;
+    // edit a product
+    else {
+      let imgFlag = 0;
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Did you make sure all data provided are correct?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#000",
+        cancelButtonColor: "#ef4c53",
+        confirmButtonText: "Yes, Publish it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (data.productImg.length > 0) {
+            // upload product image to imgbb
+            const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
+              import.meta.env.VITE_IMGHOSTINGKEY
+            }`;
 
-        const formData = new FormData();
-        formData.append("image", data.productImg[0]);
+            const formData = new FormData();
+            formData.append("image", data.productImg[0]);
 
-        const badges = data.selectedBadges?.map((b) => b.value);
+            axios
+              .post(imgHostingUrl, formData)
+              .then((res) => {
+                if (res.data.success) {
+                  product.img = res.data.data.display_url;
+                  axios
+                    .put(
+                      `http://localhost:5000/products/${dynamicProduct?._id}`,
+                      product
+                    )
+                    .then((res) => {
+                      if (res.data.modifiedCount > 0) {
+                        Swal.fire({
+                          title: "Success!",
+                          text: "Product has been updated successfully",
+                          icon: "success",
+                        });
+                      }
+                    })
+                    .catch((e) => console.error(e));
+                }
+              })
+              .catch((e) => console.error(e));
+          } else {
+            product.img = dynamicProduct.img;
+            axios
+              .put(
+                `http://localhost:5000/products/${dynamicProduct?._id}`,
+                product
+              )
+              .then((res) => {
+                if (res.data.modifiedCount > 0) {
+                  Swal.fire({
+                    title: "Success!",
+                    text: "Product has been updated successfully",
+                    icon: "success",
+                  });
+                }
+              })
+              .catch((e) => console.error(e));
+          }
 
-        axios
-          .post(imgHostingUrl, formData)
-          .then((res) => {
-            if (res.data.success) {
-              axios
-                .post("http://localhost:5000/products", {
-                  name: data.name,
-                  img: res.data.data.display_url,
-                  category: data.category,
-                  details: {
-                    description: data.description,
-                    advantages: data.advantages.split(","),
-                  },
-                  price: parseFloat(data.price),
-                  discountPrice: parseFloat(data.discountPrice) || null,
-                  discountPercentage: data.discountPrice
-                    ? (
-                        ((data.price - data.discountPrice) / data.price) *
-                        100
-                      ).toFixed(2)
-                    : null,
-                  size: data.size,
-                  stock: parseInt(data.stock),
-                  carate: parseInt(data.carate),
-                  newArrival:
-                    badges?.indexOf("newArrival") !== -1 ? true : false,
-                  badge: badges?.indexOf("hot") !== -1 ? "HOT" : false,
-                  flashSale: badges?.indexOf("flashSale") !== -1 ? true : false,
-                })
-                .then((res) => {
-                  console.log(res);
-                })
-                .catch((error) => console.error(error));
-            }
-          })
-          .catch((imgHostingError) => console.error(imgHostingError));
-      }
-    });
+          console.log(product, imgFlag);
+
+          // update the product data in db
+          // axios
+          //   .put(
+          //     `http://localhost:5000/products/${dynamicProduct?._id}`,
+          //     product
+          //   )
+          //   .then((res) => {
+          //     if (res.data.modifiedCount > 0) {
+          //       Swal.fire({
+          //         title: "Success!",
+          //         text: "Product has been updated successfully",
+          //         icon: "success",
+          //       });
+          //     }
+          //   })
+          //   .catch((e) => console.error(e));
+        }
+      });
+    }
   };
 
   return (
@@ -234,6 +373,7 @@ const AdminAddProduct = () => {
                   <p className="text-gray-600">Price *</p>
                   <input
                     type="number"
+                    step="0.01"
                     {...register("price", { required: true })}
                     className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
                   />
@@ -250,6 +390,7 @@ const AdminAddProduct = () => {
                     <p className="text-gray-600">Discount Price</p>
                     <input
                       type="number"
+                      step="0.01"
                       {...register("discountPrice")}
                       className="text-xl border-0 outline-none border-b-2 border-gray-400 w-full mt-3 pb-2"
                       placeholder="if available"
@@ -265,16 +406,38 @@ const AdminAddProduct = () => {
                   Upload Image
                 </h4>
                 <div>
-                  <img src={uploadIcon} alt="" className="block mx-auto mb-1" />
-                  <p className="text-center text-xs font-light">
-                    Image size must not be more than 2Mb
-                  </p>
+                  {dynamicProduct ? (
+                    <figure>
+                      <img
+                        src={dynamicProduct?.img}
+                        alt=""
+                        className="block mx-auto mb-2 w-[50%] bg-slate-100 p-3 rounded-lg"
+                      />
+                      <figcaption className="text-center text-sm">
+                        Current Image
+                      </figcaption>
+                    </figure>
+                  ) : (
+                    <>
+                      <img
+                        src={uploadIcon}
+                        alt=""
+                        className="block mx-auto mb-1"
+                      />
+                      <p className="text-center text-xs font-light">
+                        Image size must not be more than 2Mb
+                      </p>
+                    </>
+                  )}
+
                   <input
                     type="file"
                     className="file-input file-input-bordered w-full max-w-xs mt-4 mx-auto block"
                     accept=".jpg, .jpeg, .png"
                     name="productImg"
-                    {...register("productImg", { required: true })}
+                    {...register("productImg", {
+                      required: !dynamicProduct && true,
+                    })}
                   />
 
                   {errors.productImg && (
@@ -425,12 +588,21 @@ const AdminAddProduct = () => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="btn absolute -top-20 right-0 bg-[var(--pink-gold)] text-white font-bold border-0 rounded-none w-[180px] hover:bg-black transition-all duration-300 ease-in-out"
-            >
-              Publish
-            </button>
+            {dynamicProduct ? (
+              <button
+                type="submit"
+                className="btn absolute -top-20 right-0 bg-black text-white font-bold border-0 rounded-none w-[180px] hover:bg-[var(--pink-gold)] transition-all duration-300 ease-in-out"
+              >
+                Publish Edit
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn absolute -top-20 right-0 bg-black text-white font-bold border-0 rounded-none w-[180px] hover:bg-[var(--pink-gold)] transition-all duration-300 ease-in-out"
+              >
+                Publish
+              </button>
+            )}
           </form>
         </div>
       </div>

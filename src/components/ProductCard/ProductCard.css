@@ -18,7 +18,8 @@
 }
 
 .heart-icon-con,
-.eye-icon-con {
+.eye-icon-con,
+.edit-icon-con {
   padding: 8px;
   border-radius: 10px;
 }
@@ -27,7 +28,8 @@
   transition: all 0.4s;
 }
 
-.eye-icon-con {
+.eye-icon-con,
+.edit-icon-con {
   transform: translateX(123%);
   opacity: 0;
   visibility: hidden;
@@ -38,6 +40,15 @@
   visibility: visible;
   background-color: white;
   transition: all 0.4s;
+}
+
+.product-card:hover .edit-icon-con {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  background-color: white;
+  transition: all 0.4s 0.1s;
+  /* transition-delay: 0.2s; */
 }
 
 .add-to-cart-con {
