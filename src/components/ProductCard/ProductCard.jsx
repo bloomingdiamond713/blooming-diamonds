@@ -12,7 +12,7 @@ import useUserInfo from "../../hooks/useUserInfo";
 import { TfiClose } from "react-icons/tfi";
 
 const ProductCard = ({ cardData, flashSale }) => {
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
   const [userFromDB] = useUserInfo();
   const { cartData, isCartLoading, addToCart } = useCart();
   const [wishlistData, , , addToWishlist] = useWishlist();
@@ -21,7 +21,7 @@ const ProductCard = ({ cardData, flashSale }) => {
 
   // check if item already exist in cart and wishlist
   useEffect(() => {
-    if (user?.uid) {
+    if (!isAuthLoading && user?.uid) {
       const itemInCart = cartData?.find((p) => p.productId === cardData._id);
       const itemInWishlist = wishlistData?.find(
         (p) => p.productId === cardData._id
@@ -29,8 +29,18 @@ const ProductCard = ({ cardData, flashSale }) => {
 
       itemInCart ? setPresentInCart(true) : setPresentInCart(false);
       itemInWishlist ? setPresentInWishlist(true) : setPresentInWishlist(false);
+    } else {
+      setPresentInCart(false);
+      setPresentInWishlist(false);
     }
-  }, [cartData, isCartLoading, cardData._id, wishlistData, user]);
+  }, [
+    cartData,
+    isCartLoading,
+    cardData._id,
+    wishlistData,
+    user,
+    isAuthLoading,
+  ]);
 
   const {
     _id,
@@ -65,10 +75,10 @@ const ProductCard = ({ cardData, flashSale }) => {
     <div
       className={`${
         flashSale ? "w-[270px]" : " w-[330px]"
-      } product-card mx-auto`}
+      } product-card mx-auto rounded-lg`}
       style={{ fontFamily: "var(--poppins)" }}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-lg">
         <Link to={`/products/${_id}/description`} state={{ from: "/" }}>
           <div
             className={`product-img-overlay ${
