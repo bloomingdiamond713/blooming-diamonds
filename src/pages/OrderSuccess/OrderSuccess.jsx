@@ -34,7 +34,7 @@ const OrderSuccess = () => {
   useEffect(() => {
     if (!userFromDB?.admin) {
       const findOrderById = orders?.find(
-        (order) => order._id == location?.state?.orderId
+        (order) => order.orderId == location?.state?.orderId
       );
       setOrderObj(findOrderById);
     } else {
@@ -111,6 +111,7 @@ const OrderSuccess = () => {
     navigate("/", { state: {}, replace: true });
   };
 
+  console.log(location);
   console.log(orderObj);
 
   return (

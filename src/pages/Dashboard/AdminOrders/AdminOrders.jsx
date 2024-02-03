@@ -6,6 +6,8 @@ import axios from "axios";
 import Select from "react-select";
 import toast from "react-hot-toast";
 import { Pagination } from "react-pagination-bar";
+import LineChartComponent from "../../../components/LineChartComponent/LineChartComponent";
+import useAdminStats from "../../../hooks/useAdminStats";
 
 const AdminOrders = () => {
   const location = useLocation();
@@ -22,6 +24,9 @@ const AdminOrders = () => {
       return result.data;
     },
   });
+
+  // Order chart data
+  const { incomeStats } = useAdminStats();
 
   // update order status
   const handleStatusChange = (selectedOption) => {
@@ -43,7 +48,7 @@ const AdminOrders = () => {
 
   // pagination settings
   const [currentPage, setCurrentPage] = useState(1);
-  const pageProductLimit = 10;
+  const pageProductLimit = 6;
 
   return (
     <div className="px-4">
@@ -67,10 +72,14 @@ const AdminOrders = () => {
         </h2>
       </div>
 
-      <div className="overflow-x-auto mt-8 pb-5">
+      <div className="w-full mx-auto mt-8 mb-10 h-[300px] p-4 pt-6 rounded border shadow">
+        <LineChartComponent data={incomeStats} />
+      </div>
+
+      <div className="overflow-x-auto mt-8 border shadow p-4 rounded">
         {isOrdersLoading ? (
           <div>
-            {Array.from({ length: 10 }).map((_, idx) => (
+            {Array.from({ length: 6 }).map((_, idx) => (
               <div
                 className="skeleton w-full h-16 my-4 rounded-none"
                 key={idx}
@@ -78,7 +87,7 @@ const AdminOrders = () => {
             ))}
           </div>
         ) : (
-          <table className="table table-zebra border-t">
+          <table className="table table-zebra">
             {/* head */}
             <thead>
               <tr className="text-black font-bold">
@@ -99,7 +108,7 @@ const AdminOrders = () => {
                   (currentPage - 1) * pageProductLimit,
                   currentPage * pageProductLimit
                 )
-                .map((order, idx) => (
+                .map((order) => (
                   <tr key={order._id}>
                     <td>{order.orderId}</td>
                     <td>{order.date.slice(0, 10)}</td>

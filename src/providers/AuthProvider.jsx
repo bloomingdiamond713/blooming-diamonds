@@ -61,6 +61,7 @@ const AuthProvider = ({ children }) => {
         axios.post("http://localhost:5000/users", {
           name: currentUser.displayName,
           email: currentUser.email,
+          img: currentUser.photoURL,
         });
       }
     });

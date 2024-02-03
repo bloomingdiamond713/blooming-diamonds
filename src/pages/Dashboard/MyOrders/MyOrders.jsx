@@ -87,7 +87,7 @@ const MyOrders = () => {
           <table className="table table-zebra">
             {/* head */}
             <thead>
-              <tr>
+              <tr className="text-black font-bold border-b-2 border-b-black">
                 <th>#</th>
                 <th>Date</th>
                 <th>Product(s)</th>

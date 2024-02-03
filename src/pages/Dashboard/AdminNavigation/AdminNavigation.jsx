@@ -20,7 +20,6 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
   const { user, logOut } = useAuthContext();
   const [userFromDB] = useUserInfo();
   const [productSubmenuCollapsed, setProductSubmenuCollapsed] = useState(true);
-  const [orderSubmenuCollapsed, setOrderSubmenuCollapsed] = useState(true);
 
   const collapseSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -65,19 +64,19 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
             </button>
           </div>
 
-          <details className="dropdown dropdown-end w-fit bg-white shadow-none h-16 m-0  border-none mr-5">
-            <summary className="btn p-0 ml-auto flex gap-x-3 justify-center items-center w-full bg-white shadow-none rounded-none h-16 border-none hover:bg-base-200">
+          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[19%] mr-5 border-none">
+            <summary className="btn p-0 ml-auto flex flex-row gap-x-3 justify-center items-center w-full bg-white shadow-none rounded-none h-full hover:bg-base-200 border-none px-2">
               <img
                 src={user?.photoURL}
                 alt={userFromDB?.name}
-                className="w-[20%] h-11 border rounded-full"
+                className="w-[18%] h-11 rounded-full border-2"
               />
-              <div className="text-left space-y-1">
+              <div className="text-left space-y-1 flex-grow">
                 <h5 className="font-extrabold">{userFromDB?.name}</h5>
                 <p className="text-sm font-light">{user?.email}</p>
               </div>
             </summary>
-            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-full rounded-none">
+            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-full rounded-none border">
               <li>
                 <Link to={"/"}>Home</Link>
               </li>
@@ -211,7 +210,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
             {/* ------------ USERS ------------ */}
             <li className="text-white">
               <NavLink
-                to="/dashboard/adminManageUsers"
+                to="/dashboard/adminUsers"
                 className={({ isActive, isPending }) =>
                   isPending ? "pending" : isActive ? `active` : ""
                 }

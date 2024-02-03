@@ -147,7 +147,7 @@ const AdminCategories = () => {
           <table className="table table-zebra">
             {/* head */}
             <thead>
-              <tr className="text-black">
+              <tr className="text-black font-bold border-b-2 border-black">
                 <th>Categories</th>
                 <th>Items Count</th>
                 <th>Action</th>
