@@ -147,7 +147,7 @@ const AdminCategories = () => {
           <table className="table table-zebra">
             {/* head */}
             <thead>
-              <tr className="text-black font-bold border-b-2 border-black">
+              <tr className="text-black font-bold border-b-2 border-black text-lg">
                 <th>Categories</th>
                 <th>Items Count</th>
                 <th>Action</th>
@@ -163,7 +163,7 @@ const AdminCategories = () => {
             ) : (
               <tbody>
                 {categories?.map((category) => (
-                  <tr key={category.categoryName}>
+                  <tr key={category.categoryName} className="text-base">
                     <td>
                       <div className="flex items-center gap-3">
                         <div className="avatar">

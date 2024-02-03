@@ -5,14 +5,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const useWishlist = () => {
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
 
   const {
     data: wishlistData,
     isLoading: isWishlistLoading,
     refetch,
   } = useQuery({
-    enabled: user?.uid !== undefined,
+    enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["wishlist"],
     queryFn: async () => {
       const res = await axios.get(

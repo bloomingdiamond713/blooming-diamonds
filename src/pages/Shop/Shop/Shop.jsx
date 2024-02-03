@@ -30,12 +30,10 @@ const Shop = () => {
 
   // find max and min prices of the products
   useEffect(() => {
-    console.log(products);
     const prices = products?.map((p) => parseFloat(p.price));
     if (prices) {
       const minPrice = Math.min(...prices);
       const maxPrice = Math.max(...prices);
-      // console.log(minPrice, maxPrice);
       setMinimumPrice(parseFloat(minPrice));
       setMaximumPrice(parseFloat(maxPrice));
     }
