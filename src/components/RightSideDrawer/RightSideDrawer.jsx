@@ -5,14 +5,15 @@ import useAuthContext from "../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import useCart from "../../hooks/useCart";
 import { FaMinus, FaPlus, FaRegTrashCan } from "react-icons/fa6";
-import axios from "axios";
 import useProducts from "../../hooks/useProducts";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const RightSideDrawer = ({ setShowRightDrawer }) => {
   // Reminder: Right side drawer is called from the Header.jsx file
 
   const { user } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
   const { cartData, isCartLoading, refetch } = useCart();
   const [products] = useProducts();
   const [subtotal, setSubTotal] = useState(0);
@@ -27,7 +28,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
       operation === "minus"
     ) {
       setQuantityLoading({ status: true, _id });
-      axios
+      axiosSecure
         .patch(`http://localhost:5000/cart/${_id}`, {
           quantity: quantity,
           operation,
@@ -50,7 +51,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
 
   // delete from cart
   const handleRemoveFromCart = (_id) => {
-    axios
+    axiosSecure
       .delete(`http://localhost:5000/cart/${_id}`)
       .then((res) => {
         if (res.data.deletedCount > 0) {
@@ -64,7 +65,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
 
   // get subtotal amount of the cart
   useEffect(() => {
-    axios
+    axiosSecure
       .get(`http://localhost:5000/cart/subtotal?email=${user?.email}`)
       .then((res) => {
         setSubTotal(res.data.subtotal);

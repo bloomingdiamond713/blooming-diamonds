@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import useAuthContext from "./useAuthContext";
-import axios from "axios";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useAdminStats = () => {
   const { user, isAuthLoading } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
   const [totalCategories, setTotalCategories] = useState(0);
   const [topCategories, setTopCategories] = useState([]);
   const [incomeStats, setIncomeStats] = useState([]);
@@ -15,7 +16,7 @@ const useAdminStats = () => {
     enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const res = await axios.get(
+      const res = await axiosSecure.get(
         "http://localhost:5000/admin-dashboard/stats"
       );
       return res.data;
@@ -26,7 +27,7 @@ const useAdminStats = () => {
   useEffect(() => {
     if (user) {
       // get categories data
-      axios
+      axiosSecure
         .get("http://localhost:5000/admin-dashboard/top-selling-categories")
         .then((res) => {
           setTotalCategories(res.data.totalCategories);
@@ -34,7 +35,7 @@ const useAdminStats = () => {
         });
 
       // get income stats for last 5 and current month
-      axios
+      axiosSecure
         .get("http://localhost:5000/admin-dashboard/income-stats")
         .then((res) => {
           setIncomeStats(res.data);
@@ -45,7 +46,7 @@ const useAdminStats = () => {
   // BEST SELLING POPULAR PRODUCTS
   useEffect(() => {
     if (user) {
-      axios
+      axiosSecure
         .get("http://localhost:5000/admin-dashboard/popular-products")
         .then((res) => setPopularProducts(res.data));
     }
@@ -54,7 +55,7 @@ const useAdminStats = () => {
   // Recent Reviews
   useEffect(() => {
     if (user) {
-      axios
+      axiosSecure
         .get("http://localhost:5000/admin-dashboard/recent-reviews")
         .then((res) => setRecentReviews(res.data));
     }

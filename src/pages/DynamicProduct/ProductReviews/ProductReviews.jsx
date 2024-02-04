@@ -12,11 +12,13 @@ import axios from "axios";
 import useUserInfo from "../../../hooks/useUserInfo";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ProductReviews = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
   const [userFromDB] = useUserInfo();
+  const [axiosSecure] = useAxiosSecure();
   const [products, , refetch] = useProducts();
   const [dynamicProduct, setDynamicProduct] = useState(null);
   const [showAllReviews, setShowAllReviews] = useState(false);
@@ -25,7 +27,6 @@ const ProductReviews = () => {
   const [productReviewError, setProductReviewError] = useState("");
   const [hasUserReviewed, setHasUserReviewed] = useState(false);
   const { averageRating } = useDynamicRating(dynamicProduct?.review);
-  // const [averageRating, setAverageRating] = useState(0);
 
   // fetch dynamic product data
   useEffect(() => {
@@ -84,7 +85,7 @@ const ProductReviews = () => {
 
     // post review to specific product reviews data
     if (_id) {
-      axios
+      axiosSecure
         .post(
           `http://localhost:5000/products/add-review/${dynamicProduct?._id}`,
           {
@@ -112,7 +113,7 @@ const ProductReviews = () => {
 
   // delete/update specific product review
   const deleteProductReview = () => {
-    axios
+    axiosSecure
       .delete(
         `http://localhost:5000/products/delete-review/${dynamicProduct?._id}/reviewer-email/${user?.email}`
       )
@@ -123,24 +124,9 @@ const ProductReviews = () => {
       .catch((e) => console.error(e));
   };
 
-  // CALCULATE AVERAGE RATING OF THE PRODUCT
-  // useEffect(() => {
-  //   if (dynamicProduct?.review?.length) {
-  //     const totalRating = dynamicProduct?.review?.reduce(
-  //       (sum, reviewObj) => sum + reviewObj?.rating,
-  //       0
-  //     );
-  //     setAverageRating(
-  //       parseFloat((totalRating / dynamicProduct?.review?.length).toFixed(2))
-  //     );
-  //   } else {
-  //     setAverageRating(0);
-  //   }
-  // }, [dynamicProduct, products, dynamicProduct?.review]);
-
   // UPDATE PRODUCT LIKE STATUS
   const handleLikeStatus = (reviewObjId) => {
-    axios
+    axiosSecure
       .post("http://localhost:5000/single-product-like-update", {
         productId: id,
         reviewId: reviewObjId,

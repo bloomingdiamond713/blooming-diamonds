@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import useAuthContext from "./useAuthContext";
 import { useQuery } from "react-query";
-import axios from "axios";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useUserInfo = () => {
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
   const [totalSpentArray, setTotalSpentArray] = useState([]);
 
   const {
@@ -12,12 +13,10 @@ const useUserInfo = () => {
     isLoading: isUserLoading,
     refetch,
   } = useQuery({
-    enabled: user?.uid !== undefined,
+    enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["user"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://localhost:5000/user?email=${user?.email}`
-      );
+      const res = await axiosSecure.get(`/user?email=${user?.email}`);
       return res.data;
     },
   });
@@ -25,7 +24,7 @@ const useUserInfo = () => {
   // fetch total spent amount by users
   useEffect(() => {
     if (userFromDB?.admin) {
-      axios.get("http://localhost:5000/admin/total-spent").then((res) => {
+      axiosSecure.get("/admin/total-spent").then((res) => {
         setTotalSpentArray(res.data);
       });
     }

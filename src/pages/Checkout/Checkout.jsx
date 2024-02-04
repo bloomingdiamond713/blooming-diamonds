@@ -4,13 +4,14 @@ import useUserInfo from "../../hooks/useUserInfo";
 import Payment from "../Payment/Payment";
 import useCart from "../../hooks/useCart";
 import { FaPencil } from "react-icons/fa6";
-import axios from "axios";
 import useAuthContext from "../../hooks/useAuthContext";
 import { v4 as uuidv4 } from "uuid";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Checkout = () => {
   const { user } = useAuthContext();
   const [userFromDB] = useUserInfo();
+  const [axiosSecure] = useAxiosSecure();
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [paymentInfo, setPaymentInfo] = useState(null);
@@ -23,7 +24,7 @@ const Checkout = () => {
     const orderId = uuidv4();
 
     if (orderId) {
-      axios
+      axiosSecure
         .post("http://localhost:5000/orders", {
           orderId: orderId,
           name: user?.displayName,
@@ -39,7 +40,7 @@ const Checkout = () => {
         })
         .then((res) => {
           if (res.data.insertedId) {
-            axios
+            axiosSecure
               .delete(
                 `http://localhost:5000/delete-cart-items?email=${user?.email}`
               )

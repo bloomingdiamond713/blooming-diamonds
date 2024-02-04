@@ -4,11 +4,12 @@ import useUserInfo from "../../../hooks/useUserInfo";
 import useAuthContext from "../../../hooks/useAuthContext";
 import { FaPencil } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyDashboard = () => {
   const [userFromDB, , refetch] = useUserInfo();
   const { user } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
   const [updateUserDetails, setUpdateUserDetails] = useState(false);
 
   const {
@@ -22,7 +23,7 @@ const MyDashboard = () => {
     const { fullName, mobileNumber, gender, dob, location } = data;
 
     // update user data
-    axios
+    axiosSecure
       .patch(`http://localhost:5000/update-user?email=${userFromDB?.email}`, {
         fullName,
         mobileNumber: mobileNumber || undefined,

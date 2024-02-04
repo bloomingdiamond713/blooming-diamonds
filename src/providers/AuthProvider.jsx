@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setIsAuthLoading(false);
+
       if (currentUser) {
         // add user to users collection in db
         axios.post("http://localhost:5000/users", {
@@ -63,6 +63,26 @@ const AuthProvider = ({ children }) => {
           email: currentUser.email,
           img: currentUser.photoURL,
         });
+
+        // set jwt token upon user login
+        axios
+          .post("http://localhost:5000/jwt", { email: currentUser.email })
+          .then((res) => {
+            if (res.data.token) {
+              const tokenExists = localStorage.getItem(
+                "ub-jewellers-jwt-token"
+              );
+              if (!tokenExists) {
+                localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
+              }
+            }
+          })
+          .catch((error) => console.error(error));
+
+        setIsAuthLoading(false);
+      } else {
+        localStorage.removeItem("ub-jewellers-jwt-token");
+        setIsAuthLoading(false);
       }
     });
 

@@ -369,6 +369,7 @@ const AdminDashboard = () => {
                       src={reviewObj.img}
                       alt={reviewObj.name}
                       className="w-[25%] rounded-full"
+                      referrerPolicy="no-referrer"
                     />
                     <div className="flex-grow">
                       <h4 className="font-medium">{reviewObj.name}</h4>

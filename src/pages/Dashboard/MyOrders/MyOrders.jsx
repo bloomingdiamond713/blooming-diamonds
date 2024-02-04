@@ -4,10 +4,11 @@ import useOrders from "../../../hooks/useOrders";
 import { Link } from "react-router-dom";
 import { TfiTrash } from "react-icons/tfi";
 import Swal from "sweetalert2";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyOrders = () => {
   const { orders, totalSpent, refetch } = useOrders();
+  const [axiosSecure] = useAxiosSecure();
 
   const handleDeleteOrder = (order) => {
     // date count: no order can be deleted after 7 days of ordering
@@ -35,7 +36,7 @@ const MyOrders = () => {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios
+          axiosSecure
             .delete(`http://localhost:5000/delete-order/${order._id}`)
             .then((res) => {
               if (res.data.deletedCount > 0) {

@@ -2,25 +2,31 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import useUserInfo from "../../../hooks/useUserInfo";
-import axios from "axios";
 import Select from "react-select";
 import toast from "react-hot-toast";
 import { Pagination } from "react-pagination-bar";
 import LineChartComponent from "../../../components/LineChartComponent/LineChartComponent";
 import useAdminStats from "../../../hooks/useAdminStats";
+import useAuthContext from "../../../hooks/useAuthContext";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AdminOrders = () => {
   const location = useLocation();
   const [userFromDB] = useUserInfo();
+  const [axiosSecure] = useAxiosSecure();
+  const { user, isAuthLoading } = useAuthContext();
   const {
     data: allOrders,
     isLoading: isOrdersLoading,
     refetch,
   } = useQuery({
-    enabled: userFromDB?.admin === true,
-    queryKey: ["all-allOr"],
+    enabled:
+      !isAuthLoading && user?.uid !== undefined && userFromDB?.admin === true,
+    queryKey: ["all-orders"],
     queryFn: async () => {
-      const result = await axios.get("http://localhost:5000/admin/orders");
+      const result = await axiosSecure.get(
+        "http://localhost:5000/admin/orders"
+      );
       return result.data;
     },
   });
@@ -30,7 +36,7 @@ const AdminOrders = () => {
 
   // update order status
   const handleStatusChange = (selectedOption) => {
-    axios
+    axiosSecure
       .patch(
         `http://localhost:5000/admin/update-order/${selectedOption.orderId}`,
         {

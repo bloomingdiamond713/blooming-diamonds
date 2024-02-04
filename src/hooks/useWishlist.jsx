@@ -1,11 +1,12 @@
 import React from "react";
 import useAuthContext from "./useAuthContext";
 import { useQuery } from "react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useWishlist = () => {
   const { user, isAuthLoading } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
 
   const {
     data: wishlistData,
@@ -15,35 +16,35 @@ const useWishlist = () => {
     enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["wishlist"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://localhost:5000/wishlist?email=${user?.email}`
-      );
+      const res = await axiosSecure.get(`/wishlist?email=${user?.email}`);
       return res.data;
     },
   });
 
   const addToWishlist = (productData) => {
-    const { ["_id"]: excludedKey, ...otherProps } = productData;
-    const wishlistData = {
-      productId: excludedKey,
-      email: user?.email,
-      ...otherProps,
-    };
+    if (!isAuthLoading && user?.uid !== undefined) {
+      const { ["_id"]: excludedKey, ...otherProps } = productData;
+      const wishlistData = {
+        productId: excludedKey,
+        email: user?.email,
+        ...otherProps,
+      };
 
-    // post data to wishlist db
-    axios
-      .post(`http://localhost:5000/wishlist?email=${user?.email}`, wishlistData)
-      .then((res) => {
-        if (res.data?.insertedId) {
-          toast.success("Item added to your wishlist!", {
-            position: "bottom-right",
-          });
-          refetch();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      // post data to wishlist db
+      axiosSecure
+        .post(`/wishlist?email=${user?.email}`, wishlistData)
+        .then((res) => {
+          if (res.data?.insertedId) {
+            toast.success("Item added to your wishlist!", {
+              position: "bottom-right",
+            });
+            refetch();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   return [wishlistData, isWishlistLoading, refetch, addToWishlist];

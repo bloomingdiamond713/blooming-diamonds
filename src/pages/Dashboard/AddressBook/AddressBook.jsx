@@ -3,9 +3,9 @@ import "./AddressBook.css";
 import useUserInfo from "../../../hooks/useUserInfo";
 import { useForm } from "react-hook-form";
 import { City, Country, State } from "country-state-city";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { FaPencil } from "react-icons/fa6";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddressBook = () => {
   // react hook form props
@@ -17,6 +17,7 @@ const AddressBook = () => {
   } = useForm();
   const [userFromDB, , refetch] = useUserInfo();
   const [shippingAdd, setShippingAdd] = useState(null);
+  const [axiosSecure] = useAxiosSecure();
 
   // check if user's db contains shipping add
   useEffect(() => {
@@ -75,7 +76,7 @@ const AddressBook = () => {
     data.country = Country.getCountryByCode(data.country).name;
 
     // post the data to user db
-    axios
+    axiosSecure
       .patch(
         `http://localhost:5000/users/shipping-address?email=${data.email}`,
         data
@@ -93,7 +94,7 @@ const AddressBook = () => {
 
   // delete address
   const handleDeleteAddress = () => {
-    axios
+    axiosSecure
       .patch(
         `http://localhost:5000/users/delete-address?email=${userFromDB?.email}`
       )

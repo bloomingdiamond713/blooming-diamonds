@@ -8,10 +8,12 @@ import { FaTrashAlt } from "react-icons/fa";
 import { HashLink } from "react-router-hash-link";
 import Swal from "sweetalert2";
 import { useQuery } from "react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddReview = () => {
   const { user, isAuthLoading } = useAuthContext();
   const [userFromDB] = useUserInfo();
+  const [axiosSecure] = useAxiosSecure();
   const [productReviewError, setProductReviewError] = useState("");
   const [starRating, setStarRating] = useState(0);
   const handleRatingChange = (newRating) => {
@@ -24,13 +26,11 @@ const AddReview = () => {
     queryKey: ["reviews"],
     enabled: !isAuthLoading && user?.uid !== undefined,
     queryFn: async () => {
-      const reviews = await axios.get("http://localhost:5000/reviews");
+      const reviews = await axios.get("/reviews");
       const reviewByUser = reviews.data?.find((r) => r.email === user.email);
       setUserReview(reviewByUser);
     },
   });
-
-  console.log(userReview);
 
   // POST REVIEW TO DB
   const handleSubmitProductReview = (e) => {
@@ -46,7 +46,7 @@ const AddReview = () => {
     const review = form.review.value;
     const location = form.location.value;
 
-    axios
+    axiosSecure
       .post("http://localhost:5000/add-review", {
         img: user?.photoURL,
         name: userFromDB?.name,
@@ -78,7 +78,7 @@ const AddReview = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
+        axiosSecure
           .delete(`http://localhost:5000/delete-review/${user?.email}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {

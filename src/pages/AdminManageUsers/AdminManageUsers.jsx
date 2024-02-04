@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import useUserInfo from "../../hooks/useUserInfo";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { GrUserAdmin, GrTrash } from "react-icons/gr";
 import { Pagination } from "react-pagination-bar";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import useAuthContext from "../../hooks/useAuthContext";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AdminManageUsers = () => {
   const [userFromDB, , , totalSpentArray] = useUserInfo();
+  const { user, isAuthLoading } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
 
   // fetch all users data
   const {
@@ -17,17 +20,18 @@ const AdminManageUsers = () => {
     isLoading: isUsersLoading,
     refetch,
   } = useQuery({
-    enabled: userFromDB?.admin === true,
+    enabled:
+      !isAuthLoading && user?.uid !== undefined && userFromDB?.admin === true,
     queryKey: ["all-users"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/admin/users");
+      const res = await axiosSecure.get("http://localhost:5000/admin/users");
       return res.data;
     },
   });
 
   // Handle Make Admin User
   const handleMakeAdmin = (email) => {
-    axios
+    axiosSecure
       .patch(`http://localhost:5000/admin/users/make-admin/${email}`, {
         admin: true,
       })
@@ -52,7 +56,7 @@ const AdminManageUsers = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
+        axiosSecure
           .delete(`http://localhost:5000/admin/delete-user/${email}`)
           .then((res) => {
             if (res.data.success) {
@@ -129,7 +133,11 @@ const AdminManageUsers = () => {
                       <div className="flex items-center gap-3">
                         <div className="avatar">
                           <div className="mask mask-squircle w-12 h-12">
-                            <img src={user.img} alt={user.name} />
+                            <img
+                              src={user.img}
+                              alt={user.name}
+                              referrerPolicy="no-referrer"
+                            />
                           </div>
                         </div>
                         <div>

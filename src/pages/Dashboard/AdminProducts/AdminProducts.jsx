@@ -5,13 +5,14 @@ import { FiEdit2, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 import { Pagination } from "react-pagination-bar";
 import useSearchedProducts from "../../../hooks/useSearchedProducts";
 import Swal from "sweetalert2";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AdminProducts = () => {
   const [products, isProductsLoading, refetch] = useProducts();
   const [displayedProducts, setDisplayedProducts] = useState(products || []);
   const [searchText, setSearchText] = useState("");
   const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
+  const [axiosSecure] = useAxiosSecure();
 
   useEffect(() => {
     if (searchedProducts.length) {
@@ -37,8 +38,8 @@ const AdminProducts = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:5000/admin/delete-product/${_id}`)
+        axiosSecure
+          .delete(`/admin/delete-product/${_id}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {
               refetch();

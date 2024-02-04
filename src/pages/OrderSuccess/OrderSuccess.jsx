@@ -8,7 +8,7 @@ import easyinvoice from "easyinvoice";
 import emptyBox from "../../assets/emptybox.jpg";
 import toast from "react-hot-toast";
 import useUserInfo from "../../hooks/useUserInfo";
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const OrderSuccess = () => {
   const location = useLocation();
@@ -19,11 +19,12 @@ const OrderSuccess = () => {
   const [invoiceLoading, setInvoiceLoading] = useState(false);
   const [allOrders, setAllOrders] = useState([]);
   const [userFromDB] = useUserInfo();
+  const [axiosSecure] = useAxiosSecure();
 
   // get all orders for admin users
   useEffect(() => {
     if (userFromDB?.admin) {
-      axios
+      axiosSecure
         .get("http://localhost:5000/admin/orders")
         .then((res) => setAllOrders(res.data))
         .catch((e) => console.error(e));
@@ -110,9 +111,6 @@ const OrderSuccess = () => {
     setInvoiceLoading(false);
     navigate("/", { state: {}, replace: true });
   };
-
-  console.log(location);
-  console.log(orderObj);
 
   return (
     <div style={{ fontFamily: "var(--poppins)" }}>

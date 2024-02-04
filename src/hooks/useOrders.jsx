@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import useAuthContext from "./useAuthContext";
-import axios from "axios";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useOrders = () => {
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
 
   // get all orders by email
   const {
@@ -12,12 +13,10 @@ const useOrders = () => {
     isLoading: isOrdersLoading,
     refetch,
   } = useQuery({
-    enabled: user?.uid !== undefined,
+    enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["orders"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://localhost:5000/orders?email=${user?.email}`
-      );
+      const res = await axiosSecure.get(`/orders?email=${user?.email}`);
       return res.data;
     },
   });
@@ -25,14 +24,14 @@ const useOrders = () => {
   // get total amount spent on the orders
   const [totalSpent, setTotalSpent] = useState(0);
   useEffect(() => {
-    if (orders) {
+    if (orders && user?.uid !== undefined) {
       const sum = orders.reduce((totalAmount, item) => {
         return totalAmount + parseFloat(item.total);
       }, 0);
 
       setTotalSpent(sum.toFixed(2));
     }
-  }, [orders]);
+  }, [orders, user]);
 
   return { orders, isOrdersLoading, refetch, totalSpent };
 };

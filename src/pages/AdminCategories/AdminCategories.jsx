@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import useAuthContext from "../../hooks/useAuthContext";
-import axios from "axios";
 import { FiEdit2, FiPlusCircle } from "react-icons/fi";
 import { CgCloseO } from "react-icons/cg";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AdminCategories = () => {
   const { user, isAuthLoading } = useAuthContext();
@@ -13,6 +13,7 @@ const AdminCategories = () => {
   const [categoryUpdateError, setCategoryUpdateError] = useState(false);
   const [totalCount, setTotalCount] = useState({});
   const [selectedCategory, setSelectedCategory] = useState({});
+  const [axiosSecure] = useAxiosSecure();
 
   const {
     data: categories,
@@ -22,7 +23,7 @@ const AdminCategories = () => {
     enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["admin-categories"],
     queryFn: async () => {
-      const result = await axios.get("http://localhost:5000/admin/categories");
+      const result = await axiosSecure.get("/admin/categories");
       return result.data;
     },
   });
@@ -61,8 +62,8 @@ const AdminCategories = () => {
       return;
     }
 
-    axios
-      .post("http://localhost:5000/categories", { categoryName, categoryPic })
+    axiosSecure
+      .post("/categories", { categoryName, categoryPic })
       .then((res) => {
         if (res.data.insertedId) {
           form.reset();
@@ -98,14 +99,11 @@ const AdminCategories = () => {
       return;
     }
 
-    axios
-      .patch(
-        `http://localhost:5000/categories/${selectedCategory?.categoryId}`,
-        {
-          categoryName: categoryName || selectedCategory?.categoryName,
-          categoryPic: categoryPic || selectedCategory?.categoryPic,
-        }
-      )
+    axiosSecure
+      .patch(`/categories/${selectedCategory?.categoryId}`, {
+        categoryName: categoryName || selectedCategory?.categoryName,
+        categoryPic: categoryPic || selectedCategory?.categoryPic,
+      })
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           refetch();

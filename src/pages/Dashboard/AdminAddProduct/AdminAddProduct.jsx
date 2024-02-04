@@ -8,9 +8,11 @@ import useAuthContext from "../../../hooks/useAuthContext";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import useProducts from "../../../hooks/useProducts";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AdminAddProduct = () => {
   const { user } = useAuthContext();
+  const [axiosSecure] = useAxiosSecure();
   const [productError, setProductError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [defaultBadges, setDefaultBadges] = useState([]);
@@ -146,7 +148,7 @@ const AdminAddProduct = () => {
                 // add image link to product
                 product.img = res.data.display_url;
 
-                axios
+                axiosSecure
                   .post("http://localhost:5000/products", product)
                   .then((res) => {
                     if (res.data.insertedId) {
@@ -191,7 +193,7 @@ const AdminAddProduct = () => {
               .then((res) => {
                 if (res.data.success) {
                   product.img = res.data.data.display_url;
-                  axios
+                  axiosSecure
                     .put(
                       `http://localhost:5000/products/${dynamicProduct?._id}`,
                       product
@@ -211,7 +213,7 @@ const AdminAddProduct = () => {
               .catch((e) => console.error(e));
           } else {
             product.img = dynamicProduct.img;
-            axios
+            axiosSecure
               .put(
                 `http://localhost:5000/products/${dynamicProduct?._id}`,
                 product

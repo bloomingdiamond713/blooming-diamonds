@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import { RiCloseCircleLine } from "react-icons/ri";
 import useCart from "../../hooks/useCart";
 import Swal from "sweetalert2";
-import axios from "axios";
 import useProducts from "../../hooks/useProducts";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Wishlist = () => {
   const [wishlistData, isWishlistLoading, refetch] = useWishlist();
   const { cartData, addToCart, refetch: cartRefetch } = useCart();
   const [products] = useProducts();
+  const [axiosSecure] = useAxiosSecure();
 
   // Check if item exist in cart
   const handleExistInCart = (productId) => {
@@ -44,8 +45,8 @@ const Wishlist = () => {
       confirmButtonText: "Yes, remove it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:5000/wishlist/${wishlistId}`)
+        axiosSecure
+          .delete(`/wishlist/${wishlistId}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {
               Swal.fire({
