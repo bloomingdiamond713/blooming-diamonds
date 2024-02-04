@@ -196,7 +196,7 @@ const AdminManageUsers = () => {
           </table>
         )}
 
-        <div>
+        <div className="pb-5">
           <p className="text-xs mt-8">
             Showing {currentPage > 1 ? currentPage - 1 : currentPage}
             {currentPage > 1 && allUsers?.length > 10 && "1"} to{" "}

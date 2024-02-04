@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
@@ -91,8 +92,16 @@ const Register = () => {
             .then((result) => {
               // update user's profile
               if (result.user?.uid) {
-                updateUserProfile(data.name, data.profilePic)
+                updateUserProfile(data?.name, data?.profilePic)
                   .then(() => {
+                    // add user to users collection in db
+                    axios.post("http://localhost:5000/users", {
+                      name: result?.user?.displayName,
+                      email: result?.user?.email,
+                      img: result?.user?.photoURL,
+                    });
+
+                    toast.success(`Authenticated as ${result?.user?.email}`);
                     reset(); // reset the form
                     setProfilePicFile(null); // reset profile pic state
                     setRegisterLoading(false);
@@ -122,7 +131,12 @@ const Register = () => {
     setRegisterError(false);
     signInGoogle()
       .then((res) => {
-        console.log(res.user);
+        // add user to users collection in db
+        axios.post("http://localhost:5000/users", {
+          name: res?.user?.displayName,
+          email: res?.user?.email,
+          img: res?.user?.photoURL,
+        });
 
         toast.success(`Authenticated as ${res?.user?.email}`);
         navigate(from, { replace: true });

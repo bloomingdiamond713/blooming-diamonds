@@ -29,7 +29,7 @@ const useCart = () => {
         .get(`/cart/subtotal?email=${user?.email}`)
         .then((res) => setCartSubtotal(res.data.subtotal));
     }
-  }, [user]);
+  }, [user, isAuthLoading]);
 
   // post product data to cart
   const addToCart = async (productData, quantity = 1) => {

@@ -53,12 +53,12 @@ const MyDashboard = () => {
           <div className="mt-8 profile-details-con space-y-7 mb-10">
             <div>
               <h6>Profile Picture</h6>
-              <img src={user?.photoURL} alt={userFromDB?.name} />
+              <img src={user?.photoURL} alt={user?.displayName} />
             </div>
 
             <div>
               <h6>Full Name</h6>
-              <h6>{userFromDB?.name}</h6>
+              <h6>{user?.displayName}</h6>
             </div>
 
             <div>

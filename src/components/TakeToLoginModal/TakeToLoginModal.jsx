@@ -18,8 +18,8 @@ const TakeToLoginModal = () => {
         <h3 className="font-bold text-2xl">Are you not logged in?</h3>
         <p className="pt-6">
           Please <span className="font-bold">Login</span> or{" "}
-          <span className="font-bold">Sign Up</span> to add products into Cart
-          or Wishlist.
+          <span className="font-bold">Sign Up</span>{" "}
+          <span id="loginModalTextContent"></span>
         </p>
         <div className="modal-action mt-8">
           <form method="dialog">

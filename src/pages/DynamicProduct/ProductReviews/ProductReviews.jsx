@@ -16,7 +16,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ProductReviews = () => {
   const { id } = useParams();
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
   const [userFromDB] = useUserInfo();
   const [axiosSecure] = useAxiosSecure();
   const [products, , refetch] = useProducts();
@@ -123,20 +123,26 @@ const ProductReviews = () => {
 
   // UPDATE PRODUCT LIKE STATUS
   const handleLikeStatus = (reviewObjId) => {
-    axiosSecure
-      .post("/single-product-like-update", {
-        productId: id,
-        reviewId: reviewObjId,
-        email: user?.email,
-      })
-      .then((res) => {
-        if (res.data.modifiedCount > 0) {
-          refetch();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (!isAuthLoading && user?.uid !== undefined) {
+      axiosSecure
+        .post("/single-product-like-update", {
+          productId: id,
+          reviewId: reviewObjId,
+          email: user?.email,
+        })
+        .then((res) => {
+          if (res.data.modifiedCount > 0) {
+            refetch();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      document.getElementById("loginModalTextContent").innerText =
+        "to give reaction";
+      document.getElementById("takeToLoginModal").showModal();
+    }
   };
 
   return (
@@ -208,8 +214,6 @@ const ProductReviews = () => {
                   <button
                     className="flex items-baseline gap-2 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
                     onClick={() => handleLikeStatus(r._id)}
-                    disabled={!user}
-                    title={!user && "Please login to give reaction"}
                   >
                     {r.likedBy?.includes(user?.email) ? (
                       <FaThumbsUp className="text-[var(--light-pink)]" />

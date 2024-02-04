@@ -25,11 +25,13 @@ const AuthProvider = ({ children }) => {
 
   // Sign Up with email/pass
   const signUp = (email, password) => {
+    setIsAuthLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   // Update user's profile
   const updateUserProfile = (name, photoURL) => {
+    setIsAuthLoading(true);
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photoURL,
@@ -38,6 +40,7 @@ const AuthProvider = ({ children }) => {
 
   // Sign In with email/pass
   const signIn = (email, password) => {
+    setIsAuthLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -57,31 +60,27 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
 
       if (currentUser) {
-        // add user to users collection in db
-        axios.post("http://localhost:5000/users", {
-          name: currentUser.displayName,
-          email: currentUser.email,
-          img: currentUser.photoURL,
-        });
-
         // set jwt token upon user login
-        axios
-          .post("http://localhost:5000/jwt", { email: currentUser.email })
-          .then((res) => {
-            if (res.data.token) {
-              const tokenExists = localStorage.getItem(
-                "ub-jewellers-jwt-token"
-              );
-              if (!tokenExists) {
+        if (localStorage.getItem("ub-jewellers-jwt-token")) {
+          setIsAuthLoading(false);
+        } else {
+          axios
+            .post("http://localhost:5000/jwt", { email: currentUser.email })
+            .then((res) => {
+              if (res.data.token) {
                 localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
-              }
-            }
-          })
-          .catch((error) => console.error(error));
 
-        setIsAuthLoading(false);
+                setIsAuthLoading(false);
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              setIsAuthLoading(false);
+            });
+        }
       } else {
         localStorage.removeItem("ub-jewellers-jwt-token");
+        setUser(null);
         setIsAuthLoading(false);
       }
     });

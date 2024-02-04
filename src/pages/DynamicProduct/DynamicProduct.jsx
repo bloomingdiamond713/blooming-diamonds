@@ -58,6 +58,8 @@ const DynamicProduct = () => {
         : addToWishlist(dynamicProduct);
     } else {
       // show modal to login if not logged in
+      document.getElementById("loginModalTextContent").innerText =
+        "to add products into Cart or Wishlist.";
       document.getElementById("takeToLoginModal").showModal();
     }
   };
