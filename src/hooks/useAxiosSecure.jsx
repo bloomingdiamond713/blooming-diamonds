@@ -5,7 +5,7 @@ import useAuthContext from "./useAuthContext";
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
-  const { logout } = useAuthContext();
+  const { logOut } = useAuthContext();
 
   // Create an interceptor instance of Axios with a base URL
   const axiosSecure = axios.create({
@@ -41,7 +41,7 @@ const useAxiosSecure = () => {
         (error.response.status === 401 || error.response.status === 403)
       ) {
         // Unauthorized or Forbidden status received, log the user out and redirect to the login page
-        logout()
+        logOut()
           .then(() => {})
           .catch((err) => console.error(err));
         navigate("/login"); // Redirect to the login page

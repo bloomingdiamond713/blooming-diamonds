@@ -86,18 +86,15 @@ const ProductReviews = () => {
     // post review to specific product reviews data
     if (_id) {
       axiosSecure
-        .post(
-          `http://localhost:5000/products/add-review/${dynamicProduct?._id}`,
-          {
-            _id,
-            reviewerName: userFromDB?.name,
-            reviewerEmail: user?.email,
-            reviewerImg: user?.photoURL,
-            rating: parseFloat(starRating),
-            title: reviewTitle,
-            desc: reviewDesc,
-          }
-        )
+        .post(`/products/add-review/${dynamicProduct?._id}`, {
+          _id,
+          reviewerName: userFromDB?.name,
+          reviewerEmail: user?.email,
+          reviewerImg: user?.photoURL,
+          rating: parseFloat(starRating),
+          title: reviewTitle,
+          desc: reviewDesc,
+        })
         .then((res) => {
           if (res.data.modifiedCount > 0) {
             toast.success("Your review was added successfully");
@@ -115,7 +112,7 @@ const ProductReviews = () => {
   const deleteProductReview = () => {
     axiosSecure
       .delete(
-        `http://localhost:5000/products/delete-review/${dynamicProduct?._id}/reviewer-email/${user?.email}`
+        `/products/delete-review/${dynamicProduct?._id}/reviewer-email/${user?.email}`
       )
       .then((res) => {
         console.log(res.data);
@@ -127,7 +124,7 @@ const ProductReviews = () => {
   // UPDATE PRODUCT LIKE STATUS
   const handleLikeStatus = (reviewObjId) => {
     axiosSecure
-      .post("http://localhost:5000/single-product-like-update", {
+      .post("/single-product-like-update", {
         productId: id,
         reviewId: reviewObjId,
         email: user?.email,

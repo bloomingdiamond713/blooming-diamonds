@@ -24,7 +24,7 @@ const useCart = () => {
 
   // fetch subtotal amount of cart
   useEffect(() => {
-    if (user) {
+    if (!isAuthLoading && user?.uid !== undefined) {
       axiosSecure
         .get(`/cart/subtotal?email=${user?.email}`)
         .then((res) => setCartSubtotal(res.data.subtotal));
@@ -33,27 +33,29 @@ const useCart = () => {
 
   // post product data to cart
   const addToCart = async (productData, quantity = 1) => {
-    const { _id, name, img, category, price, discountPrice } = productData;
+    if (!isAuthLoading && user?.uid !== undefined) {
+      const { _id, name, img, category, price, discountPrice } = productData;
 
-    const cartProductData = {
-      productId: _id,
-      email: user?.email,
-      name,
-      img,
-      category,
-      price: discountPrice || price,
-      quantity,
-      addedAt: new Date(),
-    };
+      const cartProductData = {
+        productId: _id,
+        email: user?.email,
+        name,
+        img,
+        category,
+        price: discountPrice || price,
+        quantity,
+        addedAt: new Date(),
+      };
 
-    axiosSecure.post("/cart", cartProductData).then((res) => {
-      if (res.data?.insertedId) {
-        toast.success("Cart Updated", {
-          position: "bottom-right",
-        });
-        refetch();
-      }
-    });
+      axiosSecure.post("/cart", cartProductData).then((res) => {
+        if (res.data?.insertedId) {
+          toast.success("Cart Updated", {
+            position: "bottom-right",
+          });
+          refetch();
+        }
+      });
+    }
   };
 
   return { cartData, isCartLoading, refetch, addToCart, cartSubtotal };

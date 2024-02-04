@@ -114,10 +114,10 @@ const AdminProducts = () => {
           </div>
         ) : (
           <div className="overflow-x-auto mt-8 pb-5">
-            <table className="table table-zebra border-t">
+            <table className="table table-zebra">
               {/* head */}
               <thead>
-                <tr className="text-black font-bold">
+                <tr className="text-black font-bold border-b-2 border-b-black">
                   <th>Product</th>
                   <th>Category</th>
                   <th>Stock</th>

@@ -149,7 +149,7 @@ const AdminAddProduct = () => {
                 product.img = res.data.display_url;
 
                 axiosSecure
-                  .post("http://localhost:5000/products", product)
+                  .post("/products", product)
                   .then((res) => {
                     if (res.data.insertedId) {
                       Swal.fire({
@@ -194,10 +194,7 @@ const AdminAddProduct = () => {
                 if (res.data.success) {
                   product.img = res.data.data.display_url;
                   axiosSecure
-                    .put(
-                      `http://localhost:5000/products/${dynamicProduct?._id}`,
-                      product
-                    )
+                    .put(`/products/${dynamicProduct?._id}`, product)
                     .then((res) => {
                       if (res.data.modifiedCount > 0) {
                         Swal.fire({
@@ -214,10 +211,7 @@ const AdminAddProduct = () => {
           } else {
             product.img = dynamicProduct.img;
             axiosSecure
-              .put(
-                `http://localhost:5000/products/${dynamicProduct?._id}`,
-                product
-              )
+              .put(`/products/${dynamicProduct?._id}`, product)
               .then((res) => {
                 if (res.data.modifiedCount > 0) {
                   Swal.fire({

@@ -77,10 +77,7 @@ const AddressBook = () => {
 
     // post the data to user db
     axiosSecure
-      .patch(
-        `http://localhost:5000/users/shipping-address?email=${data.email}`,
-        data
-      )
+      .patch(`/users/shipping-address?email=${data.email}`, data)
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           toast.success("Shipping address added successfully");
@@ -95,9 +92,7 @@ const AddressBook = () => {
   // delete address
   const handleDeleteAddress = () => {
     axiosSecure
-      .patch(
-        `http://localhost:5000/users/delete-address?email=${userFromDB?.email}`
-      )
+      .patch(`/users/delete-address?email=${userFromDB?.email}`)
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           refetch();

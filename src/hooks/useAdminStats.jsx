@@ -16,9 +16,7 @@ const useAdminStats = () => {
     enabled: !isAuthLoading && user?.uid !== undefined,
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        "http://localhost:5000/admin-dashboard/stats"
-      );
+      const res = await axiosSecure.get("/admin-dashboard/stats");
       return res.data;
     },
   });
@@ -27,19 +25,15 @@ const useAdminStats = () => {
   useEffect(() => {
     if (user) {
       // get categories data
-      axiosSecure
-        .get("http://localhost:5000/admin-dashboard/top-selling-categories")
-        .then((res) => {
-          setTotalCategories(res.data.totalCategories);
-          setTopCategories(res.data.topCategories);
-        });
+      axiosSecure.get("/admin-dashboard/top-selling-categories").then((res) => {
+        setTotalCategories(res.data.totalCategories);
+        setTopCategories(res.data.topCategories);
+      });
 
       // get income stats for last 5 and current month
-      axiosSecure
-        .get("http://localhost:5000/admin-dashboard/income-stats")
-        .then((res) => {
-          setIncomeStats(res.data);
-        });
+      axiosSecure.get("/admin-dashboard/income-stats").then((res) => {
+        setIncomeStats(res.data);
+      });
     }
   }, [user]);
 
@@ -47,7 +41,7 @@ const useAdminStats = () => {
   useEffect(() => {
     if (user) {
       axiosSecure
-        .get("http://localhost:5000/admin-dashboard/popular-products")
+        .get("/admin-dashboard/popular-products")
         .then((res) => setPopularProducts(res.data));
     }
   }, [user]);
@@ -56,7 +50,7 @@ const useAdminStats = () => {
   useEffect(() => {
     if (user) {
       axiosSecure
-        .get("http://localhost:5000/admin-dashboard/recent-reviews")
+        .get("/admin-dashboard/recent-reviews")
         .then((res) => setRecentReviews(res.data));
     }
   }, [user]);

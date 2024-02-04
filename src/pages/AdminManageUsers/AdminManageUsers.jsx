@@ -24,7 +24,7 @@ const AdminManageUsers = () => {
       !isAuthLoading && user?.uid !== undefined && userFromDB?.admin === true,
     queryKey: ["all-users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("http://localhost:5000/admin/users");
+      const res = await axiosSecure.get("/admin/users");
       return res.data;
     },
   });
@@ -32,7 +32,7 @@ const AdminManageUsers = () => {
   // Handle Make Admin User
   const handleMakeAdmin = (email) => {
     axiosSecure
-      .patch(`http://localhost:5000/admin/users/make-admin/${email}`, {
+      .patch(`/admin/users/make-admin/${email}`, {
         admin: true,
       })
       .then((res) => {
@@ -57,7 +57,7 @@ const AdminManageUsers = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .delete(`http://localhost:5000/admin/delete-user/${email}`)
+          .delete(`/admin/delete-user/${email}`)
           .then((res) => {
             if (res.data.success) {
               Swal.fire({

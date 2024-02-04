@@ -37,7 +37,7 @@ const MyOrders = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           axiosSecure
-            .delete(`http://localhost:5000/delete-order/${order._id}`)
+            .delete(`/delete-order/${order._id}`)
             .then((res) => {
               if (res.data.deletedCount > 0) {
                 Swal.fire({

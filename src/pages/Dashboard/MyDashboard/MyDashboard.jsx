@@ -24,7 +24,7 @@ const MyDashboard = () => {
 
     // update user data
     axiosSecure
-      .patch(`http://localhost:5000/update-user?email=${userFromDB?.email}`, {
+      .patch(`/update-user?email=${userFromDB?.email}`, {
         fullName,
         mobileNumber: mobileNumber || undefined,
         gender: gender || undefined,

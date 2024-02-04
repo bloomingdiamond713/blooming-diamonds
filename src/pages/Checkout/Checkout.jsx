@@ -25,7 +25,7 @@ const Checkout = () => {
 
     if (orderId) {
       axiosSecure
-        .post("http://localhost:5000/orders", {
+        .post("/orders", {
           orderId: orderId,
           name: user?.displayName,
           email: user?.email,
@@ -41,9 +41,7 @@ const Checkout = () => {
         .then((res) => {
           if (res.data.insertedId) {
             axiosSecure
-              .delete(
-                `http://localhost:5000/delete-cart-items?email=${user?.email}`
-              )
+              .delete(`/delete-cart-items?email=${user?.email}`)
               .then((res) => {
                 if (res.data.deletedCount > 0) {
                   // set orderId in link state to uniquely identify the order in orderSuccess page

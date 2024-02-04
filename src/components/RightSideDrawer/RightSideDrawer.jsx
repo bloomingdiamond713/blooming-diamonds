@@ -12,7 +12,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 const RightSideDrawer = ({ setShowRightDrawer }) => {
   // Reminder: Right side drawer is called from the Header.jsx file
 
-  const { user } = useAuthContext();
+  const { user, isAuthLoading } = useAuthContext();
   const [axiosSecure] = useAxiosSecure();
   const { cartData, isCartLoading, refetch } = useCart();
   const [products] = useProducts();
@@ -29,7 +29,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
     ) {
       setQuantityLoading({ status: true, _id });
       axiosSecure
-        .patch(`http://localhost:5000/cart/${_id}`, {
+        .patch(`/cart/${_id}`, {
           quantity: quantity,
           operation,
         })
@@ -52,7 +52,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
   // delete from cart
   const handleRemoveFromCart = (_id) => {
     axiosSecure
-      .delete(`http://localhost:5000/cart/${_id}`)
+      .delete(`/cart/${_id}`)
       .then((res) => {
         if (res.data.deletedCount > 0) {
           refetch();
@@ -65,12 +65,12 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
 
   // get subtotal amount of the cart
   useEffect(() => {
-    axiosSecure
-      .get(`http://localhost:5000/cart/subtotal?email=${user?.email}`)
-      .then((res) => {
+    if (!isAuthLoading && user?.uid !== undefined) {
+      axiosSecure.get(`/cart/subtotal?email=${user?.email}`).then((res) => {
         setSubTotal(res.data.subtotal);
       });
-  }, [cartData, user]);
+    }
+  }, [cartData, user, isAuthLoading]);
 
   return (
     <div

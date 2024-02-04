@@ -24,9 +24,7 @@ const AdminOrders = () => {
       !isAuthLoading && user?.uid !== undefined && userFromDB?.admin === true,
     queryKey: ["all-orders"],
     queryFn: async () => {
-      const result = await axiosSecure.get(
-        "http://localhost:5000/admin/orders"
-      );
+      const result = await axiosSecure.get("/admin/orders");
       return result.data;
     },
   });
@@ -37,12 +35,9 @@ const AdminOrders = () => {
   // update order status
   const handleStatusChange = (selectedOption) => {
     axiosSecure
-      .patch(
-        `http://localhost:5000/admin/update-order/${selectedOption.orderId}`,
-        {
-          orderStatus: selectedOption.value,
-        }
-      )
+      .patch(`/admin/update-order/${selectedOption.orderId}`, {
+        orderStatus: selectedOption.value,
+      })
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           toast.success("Order status updated successfully");

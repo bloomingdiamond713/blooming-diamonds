@@ -47,7 +47,7 @@ const AddReview = () => {
     const location = form.location.value;
 
     axiosSecure
-      .post("http://localhost:5000/add-review", {
+      .post("/add-review", {
         img: user?.photoURL,
         name: userFromDB?.name,
         email: user?.email,
@@ -79,7 +79,7 @@ const AddReview = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .delete(`http://localhost:5000/delete-review/${user?.email}`)
+          .delete(`/delete-review/${user?.email}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {
               refetch();

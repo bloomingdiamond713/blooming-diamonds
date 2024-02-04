@@ -25,7 +25,7 @@ const OrderSuccess = () => {
   useEffect(() => {
     if (userFromDB?.admin) {
       axiosSecure
-        .get("http://localhost:5000/admin/orders")
+        .get("/admin/orders")
         .then((res) => setAllOrders(res.data))
         .catch((e) => console.error(e));
     }

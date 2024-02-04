@@ -17,9 +17,7 @@ const Shop = () => {
   const [products] = useProducts();
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [filterLoading, setFilterLoading] = useState(false);
-  const [category, setCategory] = useState(
-    location.state?.category?.toLowerCase() || "all"
-  );
+  const [category, setCategory] = useState(location.state?.category || "All");
   const [minimumPrice, setMinimumPrice] = useState(0);
   const [maximumPrice, setMaximumPrice] = useState(0);
   const [priceSortingOrder, setPriceSortingOrder] = useState("all");
@@ -27,6 +25,19 @@ const Shop = () => {
   const [carate, setCarate] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+
+  // scroll to top upon route and pagination page change
+  // pagination settings
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageProductLimit = 9;
+  useEffect(() => {
+    document.documentElement.scrollTo({
+      top: 0,
+      left: 0,
+      right: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
 
   // find max and min prices of the products
   useEffect(() => {
@@ -80,24 +91,45 @@ const Shop = () => {
     }
   }, [category, carate, size]);
 
-  // pagination settings
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageProductLimit = 9;
-
-  useEffect(() => {
-    document.documentElement.scrollTo({
-      top: 0,
-      left: 0,
-      right: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
-
-  // right side filter options
+  // left side filter options
   const { getUniqueProducts } = useFilterProducts();
   const filterCategories = getUniqueProducts("category");
   const filterSizes = getUniqueProducts("size");
   const filterCarates = getUniqueProducts("carate");
+  const [allFilteredCategories, setAllFilteredCategories] = useState([]);
+
+  // display categories on left side with 0 product as well
+  const [allCategories, setAllCategories] = useState([]);
+
+  useEffect(() => {
+    // fetch all categories
+    axios
+      .get("http://localhost:5000/categories")
+      .then((res) => {
+        setAllCategories(res.data);
+      })
+      .catch((e) => console.error(e));
+  }, []);
+
+  useEffect(() => {
+    if (filterCategories && allCategories) {
+      const allValue =
+        filterCategories.find((category) => category.All)?.All || 0;
+
+      const resultArray = allCategories.map((category) => {
+        const categoryName = category.categoryName;
+        const correspondingValue = filterCategories.find(
+          (filterCategory) => filterCategory[categoryName]
+        ) || { [categoryName]: 0 };
+
+        return { [categoryName]: correspondingValue[categoryName] };
+      });
+
+      resultArray.unshift({ All: allValue });
+
+      setAllFilteredCategories(resultArray);
+    }
+  }, [allCategories]);
 
   return (
     <div
@@ -121,7 +153,7 @@ const Shop = () => {
           <div>
             <h3>Category</h3>
             <div className="space-y-2 mt-5">
-              {filterCategories?.map((category) => (
+              {allFilteredCategories?.map((category) => (
                 <div
                   key={Object.keys(category)[0]}
                   className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
