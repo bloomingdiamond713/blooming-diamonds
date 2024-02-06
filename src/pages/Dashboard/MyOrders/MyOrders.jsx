@@ -56,17 +56,16 @@ const MyOrders = () => {
   };
 
   return (
-    <section>
-      <div className="pb-6 border-b flex justify-between items-center">
+    <section className="container">
+      <div className="pb-6 border-b flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
           <h1 className="text-4xl font-semibold">Order History</h1>
         </div>
-        <div className="stats shadow">
+        <div className="stats shadow mt-6 block md:inline-grid">
           <div className="stat place-items-center">
             <div className="stat-title">Total Orders</div>
             <div className="stat-value">{orders?.length}</div>
           </div>
-
           <div className="stat place-items-center">
             <div className="stat-title">Total Spent</div>
             <div className="stat-value text-[var(--light-brown)]">
@@ -84,7 +83,7 @@ const MyOrders = () => {
           </Link>
         </h4>
       ) : (
-        <div className="overflow-x-auto mt-10">
+        <div className="max-w-[90vw] md:max-w-full overflow-auto mt-10">
           <table className="table table-zebra">
             {/* head */}
             <thead>
@@ -114,11 +113,12 @@ const MyOrders = () => {
                   <td>${order.total}</td>
                   <td
                     className={`${
-                      order.orderStatus === "processing"
+                      order.orderStatus.toLowerCase() === "processing"
                         ? "text-primary"
-                        : order.orderStatus === "shipped"
+                        : order.orderStatus.toLowerCase() === "shipped"
                         ? "text-secondary"
-                        : "text-success"
+                        : order.orderStatus.toLowerCase() === "delivered" &&
+                          "text-success"
                     } font-medium`}
                   >
                     {order.orderStatus

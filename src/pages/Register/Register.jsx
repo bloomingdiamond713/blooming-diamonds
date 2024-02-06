@@ -153,7 +153,7 @@ const Register = () => {
 
   return (
     <div
-      className="container mt-20 mb-24"
+      className="container mt-20 mb-24 px-6 md:px-0"
       style={{ fontFamily: "var(--poppins)" }}
     >
       <h1
@@ -325,7 +325,7 @@ const Register = () => {
 
           {!profilePicFile ? (
             <button
-              className={`border border-gray-400 border-dashed h-[170px] w-[50%] flex justify-center items-center ${
+              className={`border border-gray-400 border-dashed h-[170px] w-full md:w-[50%] flex justify-center items-center ${
                 fileDragged ? "shadow-xl" : ""
               }`}
               onDrop={handleFileDrop}
@@ -375,7 +375,7 @@ const Register = () => {
           </button>
           <p>
             Already have an account?{" "}
-            <Link to={"/login"} className="underline">
+            <Link to={"/login"} className="underline block md:inline">
               Sign In
             </Link>
           </p>
@@ -383,8 +383,8 @@ const Register = () => {
       </form>
 
       <div className="flex justify-start items-center mt-7">
-        <p className="w-[15%] font-medium">Or, continue with</p>
-        <div className="w-full bg-gray-400 h-[1px]"></div>
+        <p className="w-[40%] md:w-[15%] font-medium">Or, continue with</p>
+        <div className="w-[60%] md:w-full bg-gray-400 h-[1px]"></div>
       </div>
 
       <div className="flex items-center gap-6 mt-5">

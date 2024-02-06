@@ -13,7 +13,10 @@ const useAdminStats = () => {
   const [recentReviews, setRecentReviews] = useState([]);
 
   const { data: adminStats } = useQuery({
-    enabled: !isAuthLoading && user?.uid !== undefined,
+    enabled:
+      !isAuthLoading &&
+      user?.uid !== undefined &&
+      localStorage.getItem("ub-jewellers-jwt-token") !== null,
     queryKey: ["admin-stats"],
     queryFn: async () => {
       const res = await axiosSecure.get("/admin-dashboard/stats");

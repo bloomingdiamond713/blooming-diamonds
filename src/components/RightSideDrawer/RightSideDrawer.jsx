@@ -65,7 +65,11 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
 
   // get subtotal amount of the cart
   useEffect(() => {
-    if (!isAuthLoading && user?.uid !== undefined) {
+    if (
+      !isAuthLoading &&
+      user?.uid !== undefined &&
+      localStorage.getItem("ub-jewellers-jwt-token") !== null
+    ) {
       axiosSecure.get(`/cart/subtotal?email=${user?.email}`).then((res) => {
         setSubTotal(res.data.subtotal);
       });

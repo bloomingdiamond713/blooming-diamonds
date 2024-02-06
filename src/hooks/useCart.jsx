@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import useAuthContext from "./useAuthContext";
 import toast from "react-hot-toast";
@@ -6,7 +6,6 @@ import useAxiosSecure from "./useAxiosSecure";
 
 const useCart = () => {
   const { user, isAuthLoading } = useAuthContext();
-  const [cartSubtotal, setCartSubtotal] = useState(0);
   const [axiosSecure] = useAxiosSecure();
 
   const {
@@ -14,7 +13,10 @@ const useCart = () => {
     isLoading: isCartLoading,
     refetch,
   } = useQuery({
-    enabled: !isAuthLoading && user?.uid !== undefined,
+    enabled:
+      !isAuthLoading &&
+      user?.uid !== undefined &&
+      localStorage.getItem("ub-jewellers-jwt-token") !== null,
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/cart?email=${user?.email}`);
@@ -23,13 +25,17 @@ const useCart = () => {
   });
 
   // fetch subtotal amount of cart
-  useEffect(() => {
-    if (!isAuthLoading && user?.uid !== undefined) {
-      axiosSecure
-        .get(`/cart/subtotal?email=${user?.email}`)
-        .then((res) => setCartSubtotal(res.data.subtotal));
-    }
-  }, [user, isAuthLoading]);
+  const { data: cartSubtotal } = useQuery({
+    enabled:
+      !isAuthLoading &&
+      user?.uid !== undefined &&
+      localStorage.getItem("ub-jewellers-jwt-token") !== null,
+    queryKey: ["cart-subtotal"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/cart/subtotal?email=${user?.email}`);
+      return res.data;
+    },
+  });
 
   // post product data to cart
   const addToCart = async (productData, quantity = 1) => {

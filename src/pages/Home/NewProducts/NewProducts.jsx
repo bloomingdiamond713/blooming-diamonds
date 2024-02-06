@@ -30,13 +30,13 @@ const NewProducts = () => {
       {isProductsLoading ? (
         <div className="grid grid-cols-3 gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">
           {/* iterate empty array of length 6 */}
-          {[...Array(6)].map((item, idx) => (
-            <CardSkeleton key={idx} height={"340px"} width={"330px"} />
+          {[...Array(6)].map((idx) => (
+            <CardSkeleton key={idx} height={"350px"} width={"330px"} />
           ))}
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-16 gap-y-10 md:gap-y-20 mt-14 mb-16 w-fit mx-auto">
             {newProducts?.map((product) => (
               <ProductCard key={product._id} cardData={product} />
             ))}

@@ -13,7 +13,10 @@ const useWishlist = () => {
     isLoading: isWishlistLoading,
     refetch,
   } = useQuery({
-    enabled: !isAuthLoading && user?.uid !== undefined,
+    enabled:
+      !isAuthLoading &&
+      user?.uid !== undefined &&
+      localStorage.getItem("ub-jewellers-jwt-token") !== null,
     queryKey: ["wishlist"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/wishlist?email=${user?.email}`);

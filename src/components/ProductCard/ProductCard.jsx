@@ -4,7 +4,7 @@ import useDynamicRating from "../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
 import { FaRegHeart, FaRegEye, FaHeart, FaPen } from "react-icons/fa6";
 import { FaShoppingCart, FaCheckDouble } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import useCart from "../../hooks/useCart";
 import useWishlist from "../../hooks/useWishlist";
@@ -75,11 +75,16 @@ const ProductCard = ({ cardData, flashSale }) => {
   };
 
   const isMobile = useMediaQuery({ maxWidth: 480 });
+  const shopRoute = useLocation().pathname.toLowerCase().includes("shop");
 
   return (
     <div
       className={`${
-        flashSale ? "w-[270px]" : isMobile ? "w-[200px]" : "max-w-[330px]"
+        flashSale
+          ? "w-[270px]"
+          : isMobile && shopRoute
+          ? "w-[200px]"
+          : "max-w-[330px]"
       } product-card mx-auto rounded-lg`}
       style={{ fontFamily: "var(--poppins)" }}
     >
@@ -87,7 +92,11 @@ const ProductCard = ({ cardData, flashSale }) => {
         <Link to={`/products/${_id}/description`} state={{ from: "/" }}>
           <div
             className={`product-img-overlay ${
-              flashSale ? "w-[270px]" : isMobile ? "w-[200px]" : "max-w-[330px]"
+              flashSale
+                ? "w-[270px]"
+                : isMobile && shopRoute
+                ? "w-[200px]"
+                : "max-w-[330px]"
             } rounded-lg`}
           ></div>
         </Link>
@@ -95,7 +104,11 @@ const ProductCard = ({ cardData, flashSale }) => {
           src={img}
           alt={name}
           className={`w-[100%] ${
-            flashSale ? "w-[270px]" : isMobile ? "w-[200px]" : "max-w-[330px]"
+            flashSale
+              ? "w-[270px] h-[260px]"
+              : isMobile && shopRoute
+              ? "w-[200px]"
+              : "max-w-[330px] h-[350px]"
           } bg-[#ebebed] rounded-lg product-img`}
         />
 

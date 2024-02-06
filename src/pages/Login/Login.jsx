@@ -64,7 +64,7 @@ const Login = () => {
 
   return (
     <div
-      className="container mt-20 mb-24"
+      className="container mt-20 mb-24 px-6 md:px-0"
       style={{ fontFamily: "var(--poppins)" }}
     >
       <h1
@@ -151,7 +151,7 @@ const Login = () => {
           </button>
           <p>
             Don&apos;t have an account?{" "}
-            <Link to={"/register"} className="underline">
+            <Link to={"/register"} className="underline block md:inline">
               Create One
             </Link>
           </p>
@@ -159,8 +159,8 @@ const Login = () => {
       </form>
 
       <div className="flex justify-start items-center mt-7">
-        <p className="w-[15%] font-medium">Or, continue with</p>
-        <div className="w-full bg-gray-400 h-[1px]"></div>
+        <p className="w-[40%] md:w-[15%] font-medium">Or, continue with</p>
+        <div className="w-[60%] md:w-full bg-gray-400 h-[1px]"></div>
       </div>
 
       <div className="flex items-center gap-6 mt-5">

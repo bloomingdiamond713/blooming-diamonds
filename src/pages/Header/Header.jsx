@@ -430,7 +430,7 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-5">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto">
                       <FiSearch
                         className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
@@ -787,7 +787,7 @@ const Header = () => {
 
           {/* right side drawer for cart */}
           <div
-            className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] rounded-tl-2xl rounded-bl-2xl ${
+            className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] md:rounded-tl-2xl rounded-bl-2xl ${
               showRightDrawer ? "transform-x-0" : "translate-x-full"
             } transition-all duration-300 ease-in-out  z-[9999]`}
           >

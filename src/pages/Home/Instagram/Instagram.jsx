@@ -33,7 +33,7 @@ const Instagram = () => {
         {instaImgs.map((img) => (
           <div
             key={img}
-            className="relative insta-img-con overflow-hidden rounded-xl inline-block h-[300px] w-[60%] md:block md:h-auto mr-6 md:mr-0"
+            className="relative insta-img-con overflow-hidden rounded-xl inline-block h-[300px] w-[60%] md:h-auto md:w-auto md:block mr-6 md:mr-0"
           >
             <img src={img} alt="" className="w-full h-full rounded-xl" />
             <div className="insta-img-overlay w-full h-full bg-[#00000066] absolute top-0 left-0 right-0 rounded-xl flex justify-center items-center cursor-pointer opacity-0 hover:opacity-100 transition-all duration-500 ease-in-out">

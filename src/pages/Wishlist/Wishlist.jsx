@@ -63,7 +63,7 @@ const Wishlist = () => {
   };
 
   return (
-    <div className="container" style={{ fontFamily: "var(--poppins)" }}>
+    <div className="container mb-36" style={{ fontFamily: "var(--poppins)" }}>
       <div>
         <div className="text-sm breadcrumbs">
           <ul>

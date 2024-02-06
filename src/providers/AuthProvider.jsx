@@ -57,27 +57,18 @@ const AuthProvider = ({ children }) => {
   // Auth State Observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser?.uid !== undefined) {
+        setUser(currentUser);
+        axios
+          .post("http://localhost:5000/jwt", { email: currentUser.email })
+          .then((res) => {
+            if (res.data.token) {
+              localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
 
-      if (currentUser) {
-        // set jwt token upon user login
-        if (localStorage.getItem("ub-jewellers-jwt-token")) {
-          setIsAuthLoading(false);
-        } else {
-          axios
-            .post("http://localhost:5000/jwt", { email: currentUser.email })
-            .then((res) => {
-              if (res.data.token) {
-                localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
-
+              localStorage.getItem("ub-jewellers-jwt-token") &&
                 setIsAuthLoading(false);
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              setIsAuthLoading(false);
-            });
-        }
+            }
+          });
       } else {
         localStorage.removeItem("ub-jewellers-jwt-token");
         setUser(null);
