@@ -15,6 +15,7 @@ import {
   FaLinkedin,
   FaPinterest,
 } from "react-icons/fa6";
+import { RiMenu2Fill } from "react-icons/ri";
 import { TfiClose } from "react-icons/tfi";
 import Textra from "react-textra";
 import { HashLink } from "react-router-hash-link";
@@ -58,8 +59,13 @@ const Header = () => {
   }, []);
 
   // to close drawer(on mobile devices) upon link click
+  const [isOpen, setIsOpen] = useState(false);
+  document.getElementById("my-drawer-3").addEventListener("click", () => {
+    setIsOpen(true);
+  });
   const handleLinkClicked = () => {
     document.getElementById("my-drawer-3").click();
+    setIsOpen(false);
   };
 
   // change nav-style on scroll
@@ -161,8 +167,6 @@ const Header = () => {
       </li>
     </>
   );
-
-  console.log(searchedProducts);
 
   return (
     <div className="">
@@ -353,19 +357,7 @@ const Header = () => {
                         aria-label="open sidebar"
                         className="btn btn-square btn-ghost"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          className="inline-block w-6 h-6 stroke-current"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                          ></path>
-                        </svg>
+                        <RiMenu2Fill className="text-xl" />
                       </label>
                     </div>
                     <div className="w-[27%] md:w-[25%] md:px-2 text-center">
@@ -438,7 +430,7 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[25%] flex justify-end items-center space-x-5 text-center ml-auto">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-5">
                       <FiSearch
                         className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
@@ -545,19 +537,7 @@ const Header = () => {
                         aria-label="open sidebar"
                         className="btn btn-square btn-ghost"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          className="inline-block w-6 h-6 stroke-current"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                          ></path>
-                        </svg>
+                        <RiMenu2Fill className="text-xl" />
                       </label>
                     </div>
                     <div className="w-[27%] md:w-[25%] md:px-2 text-center">
@@ -569,7 +549,7 @@ const Header = () => {
                         />
                       </Link>
                     </div>
-                    <div className="w-[55%] hidden lg:block text-center">
+                    <div className="w-[50%] hidden lg:block text-center">
                       <ul className="menu menu-horizontal space-x-8">
                         {/* Navbar menu content here */}
                         <HashLink to="/#hero" smooth>
@@ -706,43 +686,99 @@ const Header = () => {
 
               {/* sidebar on visible mobile*/}
               <div className="drawer-side z-[1010]">
-                <ul className="menu w-full min-h-screen bg-base-100 border-2 flex flex-col justify-center items-center space-y-5 relative">
+                <ul className="menu w-full min-h-screen bg-base-100 flex flex-col justify-center items-center space-y-5 relative mobile-navbar">
                   <div
-                    className="border absolute top-5 right-5"
-                    onClick={handleLinkClicked}
+                    className={`absolute top-5 right-5 ${
+                      isOpen ? "animate-bounce-top" : ""
+                    }`}
                   >
-                    <TfiClose className="text-3xl" />
+                    <TfiClose
+                      className="text-3xl"
+                      onClick={handleLinkClicked}
+                    />
                   </div>
 
                   {/* Sidebar content here */}
-                  <HashLink
-                    to="/dashboard/myDashboard"
-                    onClick={handleLinkClicked}
-                    className="block"
-                  >
-                    Dashboard
-                  </HashLink>
-                  <HashLink
-                    to="/#something"
-                    onClick={handleLinkClicked}
-                    className="block"
-                  >
-                    Something2
-                  </HashLink>
-                  <HashLink
-                    to="/#something"
-                    onClick={handleLinkClicked}
-                    className="block"
-                  >
-                    Something2
-                  </HashLink>
-                  <HashLink
-                    to="/#something"
-                    onClick={handleLinkClicked}
-                    className="block"
-                  >
-                    Something2
-                  </HashLink>
+                  <div className="space-y-8 text-center">
+                    <HashLink
+                      to="/"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      Home
+                    </HashLink>
+                    <HashLink
+                      to="/#categories"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      Categories
+                    </HashLink>
+                    <div
+                      className={`flex items-center justify-center gap-1 text-center ${
+                        isOpen ? "animate-slide-left" : ""
+                      }`}
+                    >
+                      <HashLink
+                        to="/#flashsale"
+                        className={`block`}
+                        onClick={handleLinkClicked}
+                        scroll={(el) => scrollWithOffset(el)}
+                        smooth
+                      >
+                        Sale
+                      </HashLink>
+                      <div
+                        className={`badge badge-warning text-white rounded-md uppercase font-bold`}
+                        style={{
+                          fontFamily: "var(--montserrat)",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Hot
+                      </div>
+                    </div>
+                    <HashLink
+                      to="/#products"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      Products
+                    </HashLink>
+                    <HashLink
+                      to="/shop"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      Shop
+                    </HashLink>
+                    <HashLink
+                      to="/#reviews"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      Reviews
+                    </HashLink>
+                    <HashLink
+                      to="/#connect"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      Connect Us
+                    </HashLink>
+                  </div>
                 </ul>
               </div>
             </div>
@@ -755,9 +791,9 @@ const Header = () => {
               showRightDrawer ? "transform-x-0" : "translate-x-full"
             } transition-all duration-300 ease-in-out  z-[9999]`}
           >
-            <div className="relative ">
+            <div className={`relative`}>
               <button
-                className="text-2xl absolute top-6 right-5"
+                className={`text-2xl absolute top-6 right-5`}
                 onClick={() => setShowRightDrawer(false)}
               >
                 <TfiClose />
