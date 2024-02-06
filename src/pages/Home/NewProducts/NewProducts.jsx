@@ -36,7 +36,7 @@ const NewProducts = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-3 gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-16 gap-y-10 mt-14 mb-16 w-fit mx-auto">
             {newProducts?.map((product) => (
               <ProductCard key={product._id} cardData={product} />
             ))}

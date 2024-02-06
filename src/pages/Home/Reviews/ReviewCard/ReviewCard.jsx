@@ -4,8 +4,8 @@ import StarRatings from "react-star-ratings";
 const ReviewCard = ({ reviewObj }) => {
   const { name, img, review, rating, location } = reviewObj;
   return (
-    <div className="border border-black w-[80%] mx-auto flex items-start gap-4 p-10 bg-white">
-      <div className="w-[20%]">
+    <div className="border border-black w-[90%] md:w-[80%] mx-auto flex flex-col md:flex-row items-start gap-4 p-10 bg-white">
+      <div className="w-[50%] md:w-[20%] mx-auto md:mx-0">
         <img
           src={img}
           alt={name}
@@ -13,9 +13,11 @@ const ReviewCard = ({ reviewObj }) => {
           referrerPolicy="no-referrer"
         />
       </div>
-      <div style={{ fontFamily: "var(--poppins)" }} className="w-[80%]">
-        <h4 className="text-lg text-black font-medium">{review}</h4>
-        <div className="flex items-center gap-3 mt-4 mb-1">
+      <div style={{ fontFamily: "var(--poppins)" }} className="md:w-[80%]">
+        <h4 className="text-lg text-black font-medium text-center md:text-left">
+          {review}
+        </h4>
+        <div className="flex flex-col md:flex-row items-center gap-1 md:gap-3 mt-4 mb-1">
           <h3 className="text-2xl text-black font-semibold">{name}</h3>
           <StarRatings
             rating={rating}
@@ -28,7 +30,7 @@ const ReviewCard = ({ reviewObj }) => {
           />
         </div>
 
-        <p>{location}</p>
+        <p className="text-center mt-2">{location}</p>
       </div>
     </div>
   );

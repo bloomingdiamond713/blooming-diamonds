@@ -32,7 +32,7 @@ const Featured = () => {
   }, [products]);
 
   return (
-    <div className="container grid grid-cols-2 gap-x-6 mb-24">
+    <div className="container grid grid-cols-1 md:grid-cols-2 md:gap-x-6 gap-y-8 md:gap-y-0 mb-24">
       <div className="h-[450px] relative">
         <img
           src={featuredBanner}
@@ -58,7 +58,7 @@ const Featured = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center gap-x-4">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-x-4 space-y-8 md:space-y-0">
         <div>
           <h4
             className="font-bold text-2xl mb-4"

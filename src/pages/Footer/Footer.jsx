@@ -25,13 +25,13 @@ const Footer = () => {
 
   return (
     <div
-      className={`bg-[#f7f7f7] px-12 pt-16 pb-4 hidden md:${
+      className={`bg-[#f7f7f7] px-12 pt-16 pb-4 md:${
         location?.pathname?.includes("admin") ? "hidden" : "block"
       }`}
       style={{ fontFamily: "var(--poppins)" }}
     >
-      <div className="footer flex items-start justify-between gap-4 py-10">
-        <div className="w-[31%]">
+      <div className="footer flex flex-col md:flex-row items-start justify-between gap-4 py-10 space-y-10 md:space-y-0">
+        <div className="md:w-[31%]">
           <img src={logo} alt="logo" className="w-1/2 mb-4" />
           <p className="text-gray-600">
             Find your perfect imperfection, handcrafted with love only from UB
@@ -43,7 +43,7 @@ const Footer = () => {
           />
         </div>
 
-        <div className="w-[23%]">
+        <div className="md:w-[23%]">
           <h4>Contact Us</h4>
           <div className="mt-4 flex items-start gap-4 text-gray-600">
             <IoHomeOutline className="text-lg" />
@@ -59,7 +59,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="w-[23%]">
+        <div className="md:w-[23%]">
           <h4>All Departments</h4>
           {categories?.map((category) => (
             <Link key={category._id} to="#" className="mt-4 text-gray-600">
@@ -68,7 +68,7 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="w-[23%]">
+        <div className="md:w-[23%]">
           <h4>Follow Us</h4>
           <div className="flex items-center justify-between mt-8 gap-5">
             <div className="text-lg text-gray-600 bg-white p-3 rounded-full">

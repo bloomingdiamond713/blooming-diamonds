@@ -10,11 +10,11 @@ import { FaInstagram } from "react-icons/fa6";
 const Instagram = () => {
   const instaImgs = [insta1, insta2, insta3, insta4, insta5];
   return (
-    <section id="connect" className="container pt-14 mb-24">
-      <div className="flex items-end justify-between">
+    <section id="connect" className="container pt-14 mb-24 px-4 mx:px-0">
+      <div className="flex items-center md:items-end justify-between">
         <h3
           style={{ fontFamily: "var(--italiana)" }}
-          className="text-4xl text-black font-bold tracking-wider"
+          className="text-xl md:text-4xl text-black font-bold tracking-wider w-[50%]"
         >
           Follow Us On Instagram
         </h3>
@@ -23,17 +23,17 @@ const Instagram = () => {
           target="_blank"
           rel="noreferrer"
           style={{ fontFamily: "var(--poppins)" }}
-          className="text-lg underline"
+          className="text-xs md:text-lg underline"
         >
           <h5>OUR INSTAGRAM</h5>
         </a>
       </div>
 
-      <div className="grid grid-cols-5 gap-x-5 mt-8">
+      <div className="md:grid md:grid-cols-5 gap-x-5 mt-8 overflow-x-auto whitespace-nowrap">
         {instaImgs.map((img) => (
           <div
             key={img}
-            className="relative insta-img-con overflow-hidden rounded-xl"
+            className="relative insta-img-con overflow-hidden rounded-xl inline-block h-[300px] w-[60%] md:block md:h-auto mr-6 md:mr-0"
           >
             <img src={img} alt="" className="w-full h-full rounded-xl" />
             <div className="insta-img-overlay w-full h-full bg-[#00000066] absolute top-0 left-0 right-0 rounded-xl flex justify-center items-center cursor-pointer opacity-0 hover:opacity-100 transition-all duration-500 ease-in-out">

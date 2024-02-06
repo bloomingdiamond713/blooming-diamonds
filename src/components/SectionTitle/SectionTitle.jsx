@@ -4,13 +4,13 @@ import imgRight from "../../assets/heading_right.png";
 
 const SectionTitle = ({ title }) => {
   return (
-    <div className="w-[50%] mx-auto flex justify-center items-center space-x-6">
+    <div className="px-2 md:px-0 md:w-[50%] mx-auto flex justify-center items-center space-x-6">
       <div>
         <img src={imgLeft} alt="heading_left" />
       </div>
 
       <h1
-        className="text-4xl font-extrabold text-black tracking-wide"
+        className="text-2xl md:text-4xl text-center font-extrabold text-black tracking-wide"
         style={{ fontFamily: "var(--italiana)" }}
       >
         {title}

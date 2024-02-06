@@ -29,6 +29,15 @@ const Reviews = () => {
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const sliderRef = useRef(null);
@@ -41,9 +50,9 @@ const Reviews = () => {
   };
 
   return (
-    <div id="reviews" className="mb-32 pt-6">
+    <div id="reviews" className="mb-32 pt-6 container">
       <SectionTitle title={"Customers Say"} />
-      <div className="container relative mt-16">
+      <div className="w-full md:container relative mt-16">
         {isReviewsLoading ? (
           <div>
             <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
@@ -58,14 +67,14 @@ const Reviews = () => {
 
         {/* slider left right buttons */}
         <button
-          className="button absolute top-1/2 left-14 -translate-x-1/2 -translate-y-1/2 "
+          className="button absolute top-1/2 left-11 md:left-14 -translate-x-1/2 -translate-y-1/2 "
           onClick={previous}
         >
           <svg
             fill="#000000"
             viewBox="0 0 1024 1024"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-[170px] h-[120px] rotate-180"
+            className="w-[70px] md:w-[170px] h-[50px] md:h-[120px] rotate-180"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -80,14 +89,14 @@ const Reviews = () => {
           </svg>
         </button>
         <button
-          className="button absolute top-1/2 -right-28 -translate-x-1/2 -translate-y-1/2"
+          className="button absolute top-1/2 -right-6 md:-right-28 -translate-x-1/2 -translate-y-1/2"
           onClick={next}
         >
           <svg
             fill="#000000"
             viewBox="0 0 1024 1024"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-[170px] h-[120px]"
+            className="w-[70px] md:w-[170px] h-[50px] md:h-[120px]"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -104,8 +113,8 @@ const Reviews = () => {
 
         {/* quote icons */}
 
-        <TfiQuoteLeft className="text-9xl absolute -top-20 left-10 text-gray-300 -z-10" />
-        <TfiQuoteRight className="text-9xl absolute -bottom-[74px] right-[38px] text-gray-300 -z-10" />
+        <TfiQuoteLeft className="text-6xl md:text-9xl absolute -top-10 md:-top-20 left-1 md:left-10 text-gray-300 -z-10" />
+        <TfiQuoteRight className="hidden md:block text-6xl md:text-9xl absolute bottom-3 right-2 md:-bottom-[74px] md:right-[38px] text-gray-300 -z-10" />
       </div>
     </div>
   );

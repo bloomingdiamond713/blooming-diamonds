@@ -21,20 +21,38 @@ const Categories = () => {
     infinite: true,
     speed: 800,
     slidesToShow: 5,
+    slidesToScroll: 1,
     swipeToSlide: true,
     autoplay: true,
     autoplaySpeed: 4000,
     pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          initialSlide: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
-    <section className="pt-24" id="categories">
+    <section className="pt-24 mb-16" id="categories">
       <SectionTitle title={"Shop By Categories"} />
 
       {/* categories */}
       <Slider
         {...settings}
-        className="w-[85%] mx-auto mt-12 h-[300px] items-center"
+        className="w-full md:px-0 md:w-[85%] md:mx-auto mt-12 h-[300px] items-center"
       >
         {categories?.map((category) => (
           <CategoryCard key={category._id} category={category} />

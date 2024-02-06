@@ -162,8 +162,10 @@ const Header = () => {
     </>
   );
 
+  console.log(searchedProducts);
+
   return (
-    <>
+    <div className="">
       {!isAdminRoute && !isUserLoading && (
         <div className="relative">
           {/* upper navbar */}
@@ -230,14 +232,14 @@ const Header = () => {
 
           <div style={{ fontFamily: "var(--montserrat)" }}>
             <div
-              className={`w-full min-h-[300px] fixed top-0 left-0 right-0 bg-white z-[1005]  ${
+              className={`w-full min-h-[300px] fixed top-0 left-0 right-0 bg-white z-[1005] overflow-auto max-h-screen ${
                 searchBar === "open" ? "translate-y-0" : "translate-y-[-100%]"
               } transition-all duration-300 ease-in-out pt-2 pb-10`}
             >
               {/* close button */}
               <button
                 onClick={() => setSearchBar("closed")}
-                className="flex justify-end text-3xl w-full pr-6"
+                className="flex justify-end text-3xl w-full pr-6 mt-3"
               >
                 <TfiClose className="hover:fill-red-400" />
               </button>
@@ -273,15 +275,39 @@ const Header = () => {
                     ) : (
                       <>
                         {searchedProducts?.length ? (
-                          <Slider {...settings}>
-                            {searchedProducts?.map((product) => (
-                              <ProductCard
-                                key={product._id}
-                                cardData={product}
-                                flashSale={true}
-                              />
-                            ))}
-                          </Slider>
+                          <div>
+                            <div className="hidden md:block">
+                              <Slider {...settings}>
+                                {searchedProducts?.map((product) => (
+                                  <ProductCard
+                                    key={product._id}
+                                    cardData={product}
+                                    flashSale={true}
+                                  />
+                                ))}
+                              </Slider>
+                            </div>
+                            <div className="px-8 space-y-5 md:hidden">
+                              {searchedProducts?.map((product) => (
+                                <div
+                                  key={product._id}
+                                  className="md:hidden container flex items-center gap-2"
+                                >
+                                  <img
+                                    src={product?.img}
+                                    alt={product.name}
+                                    className="w-[20%] rounded-full bg-slate-100"
+                                  />
+                                  <div className="flex-grow">
+                                    <h4>{product.name}</h4>
+                                    <p className="mt-1">
+                                      $ {product.discountPrice || product.price}
+                                    </p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         ) : (
                           <>
                             {searchText !== "" && (
@@ -747,7 +773,7 @@ const Header = () => {
           ></div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

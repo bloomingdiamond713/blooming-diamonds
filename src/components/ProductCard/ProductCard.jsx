@@ -76,7 +76,7 @@ const ProductCard = ({ cardData, flashSale }) => {
   return (
     <div
       className={`${
-        flashSale ? "w-[270px]" : " w-[330px]"
+        flashSale ? "w-[270px]" : "max-w-[330px]"
       } product-card mx-auto rounded-lg`}
       style={{ fontFamily: "var(--poppins)" }}
     >

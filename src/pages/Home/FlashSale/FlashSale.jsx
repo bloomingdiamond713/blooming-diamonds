@@ -4,7 +4,7 @@ import flashSaleIcon from "../../../assets/flash sale products images/flashSale.
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import CountDownTimer from "../../../components/CountDownTimer/CountDownTimer";
 import Slider from "react-slick";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import useProducts from "../../../hooks/useProducts";
 import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 
@@ -26,24 +26,48 @@ const FlashSale = () => {
   const next = () => {
     sliderRef.current.slickNext();
   };
+  const prev = () => {
+    sliderRef.current.slickPrev();
+  };
 
   const settings = {
     arrow: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 2,
     autoplay: true,
     autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
     <div
       id="flashSale"
-      className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex border items-center py-10 gap-8"
+      className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex flex-col md:flex-row border items-center py-10 gap-8"
     >
       <div
-        className="w-[30%] text-center px-6"
+        className="md:w-[30%] text-center px-4 md:px-6"
         style={{ fontFamily: "var(--montserrat)" }}
       >
         <img
@@ -72,7 +96,7 @@ const FlashSale = () => {
           ))}
         </div>
       ) : (
-        <div className="w-[70%] relative">
+        <div className="w-[80%] md:w-[70%] relative">
           {/* TODO: use _id as the key in the ProductCard */}
           <Slider ref={sliderRef} {...settings}>
             {flashSaleData?.map((cardData, idx) => (
@@ -80,10 +104,16 @@ const FlashSale = () => {
             ))}
           </Slider>
           <button
-            className="button absolute bottom-1/2 -right-16 translate-x-[-50%] translate-y-[-50%] bg-[#f8da2e] rounded-badge p-5 hover:bg-slate-300 transition-all duration-200"
+            className="button absolute bottom-1/2 -right-16 translate-x-[-50%] translate-y-[-50%] bg-[#f8da2e] rounded-badge p-5 active:bg-yellow-400 transition-all duration-200"
             onClick={next}
           >
             <FaArrowRight className="" />
+          </button>
+          <button
+            className="md:hidden button absolute bottom-1/2 left-0 translate-x-[-50%] translate-y-[-50%] bg-[#f8da2e] rounded-badge p-5 active:bg-yellow-400 transition-all duration-200"
+            onClick={prev}
+          >
+            <FaArrowLeft className="" />
           </button>
         </div>
       )}

@@ -23,7 +23,7 @@ const Hero = () => {
   };
 
   return (
-    <div id="hero">
+    <div id="hero" className="">
       <Slider {...settings}>
         <div className="hero-slide">
           <img src={img1} alt="Slide 1" />
