@@ -60,11 +60,11 @@ const Header = () => {
 
   // to close drawer(on mobile devices) upon link click
   const [isOpen, setIsOpen] = useState(false);
-  document.getElementById("my-drawer-3").addEventListener("click", () => {
+  document.getElementById("my-drawer-3")?.addEventListener("click", () => {
     setIsOpen(true);
   });
   const handleLinkClicked = () => {
-    document.getElementById("my-drawer-3").click();
+    document.getElementById("my-drawer-3")?.click();
     setIsOpen(false);
   };
 

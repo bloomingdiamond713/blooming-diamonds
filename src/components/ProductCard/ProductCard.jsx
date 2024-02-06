@@ -10,6 +10,7 @@ import useCart from "../../hooks/useCart";
 import useWishlist from "../../hooks/useWishlist";
 import useUserInfo from "../../hooks/useUserInfo";
 import { TfiClose } from "react-icons/tfi";
+import { useMediaQuery } from "react-responsive";
 
 const ProductCard = ({ cardData, flashSale }) => {
   const { user, isAuthLoading } = useAuthContext();
@@ -73,10 +74,12 @@ const ProductCard = ({ cardData, flashSale }) => {
     }
   };
 
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+
   return (
     <div
       className={`${
-        flashSale ? "w-[270px]" : "max-w-[330px]"
+        flashSale ? "w-[270px]" : isMobile ? "w-[200px]" : "max-w-[330px]"
       } product-card mx-auto rounded-lg`}
       style={{ fontFamily: "var(--poppins)" }}
     >
@@ -84,7 +87,7 @@ const ProductCard = ({ cardData, flashSale }) => {
         <Link to={`/products/${_id}/description`} state={{ from: "/" }}>
           <div
             className={`product-img-overlay ${
-              flashSale ? "h-[280px]" : "h-[340px]"
+              flashSale ? "w-[270px]" : isMobile ? "w-[200px]" : "max-w-[330px]"
             } rounded-lg`}
           ></div>
         </Link>
@@ -92,7 +95,7 @@ const ProductCard = ({ cardData, flashSale }) => {
           src={img}
           alt={name}
           className={`w-[100%] ${
-            flashSale ? "h-[280px]" : "h-[340px]"
+            flashSale ? "w-[270px]" : isMobile ? "w-[200px]" : "max-w-[330px]"
           } bg-[#ebebed] rounded-lg product-img`}
         />
 
@@ -177,22 +180,24 @@ const ProductCard = ({ cardData, flashSale }) => {
           )}
         </button>
       </div>
-      <div className="mt-2">
+      <div className="mt-2 product-text">
         <Link
           to={`/products/${_id}/description`}
-          className="text-lg font-bold text-[#3b3b3b]"
+          className="md:text-lg font-bold text-[#3b3b3b]"
           state={{ from: "/" }}
         >
           {name}
         </Link>
         <p className="text-gray-600 mt-1 mb-3">{category}</p>
         <div className="flex items-baseline justify-start gap-3">
-          <h4 className="text-lg font-bold mb-2">${discountPrice || price}</h4>
+          <h4 className="md:text-lg font-bold mb-2">
+            ${discountPrice || price}
+          </h4>
           {discountPrice && (
             <h5 className="text-base text-gray-400 line-through">{price}</h5>
           )}
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <StarRatings
             rating={averageRating}
             starDimension="20px"

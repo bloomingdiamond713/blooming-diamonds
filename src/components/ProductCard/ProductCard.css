@@ -12,6 +12,7 @@
   background-color: rgba(0, 0, 0, 0.265);
   opacity: 0;
   border: 1px solid transparent;
+  height: 100%;
 }
 
 .product-card:hover .product-img-overlay {
@@ -81,4 +82,7 @@
 
 .swal2-popup {
   font-family: var(--poppins);
+}
+
+@media screen and(max-width: 480px) {
 }
