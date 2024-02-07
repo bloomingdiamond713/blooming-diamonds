@@ -6,6 +6,7 @@ import { CgCloseO } from "react-icons/cg";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import AnimateText from "@moxy/react-animate-text";
 
 const AdminCategories = () => {
   const { user, isAuthLoading } = useAuthContext();
@@ -137,11 +138,13 @@ const AdminCategories = () => {
         className="mt-1 font-bold text-3xl"
         style={{ fontFamily: "var(--italiana)" }}
       >
-        Categories
+        <AnimateText initialDelay={0.2} wordDelay={0.2} separator="">
+          Categories
+        </AnimateText>
       </h2>
 
-      <div className="flex justify-between items-start gap-x-8 mt-10">
-        <div className="overflow-x-auto border rounded-lg shadow md:w-[65%] relative">
+      <div className="flex flex-col-reverse md:flex-row justify-between items-start gap-x-8 mt-10 px-4 md:px-0">
+        <div className="overflow-x-auto border rounded-lg shadow w-[78vw] md:w-[65%] relative">
           <table className="table table-zebra">
             {/* head */}
             <thead>
@@ -202,7 +205,7 @@ const AdminCategories = () => {
           </table>
         </div>
 
-        <div className="border rounded-lg shadow md:w-[35%] sticky top-20">
+        <div className="border rounded-lg shadow w-full md:w-[35%] md:sticky md:top-20 mb-10 md:mb-0">
           <h4 className="font-semibold text-gray-600 border-b-2 p-4">
             Add New Category
           </h4>

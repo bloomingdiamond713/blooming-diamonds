@@ -6,6 +6,7 @@ import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import useAuthContext from "../../hooks/useAuthContext";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+import AnimateText from "@moxy/react-animate-text";
 
 const Login = () => {
   const { signIn, signInGoogle } = useAuthContext();
@@ -71,7 +72,9 @@ const Login = () => {
         className="text-6xl font-bold tracking-wide mb-10"
         style={{ fontFamily: "var(--italiana)" }}
       >
-        Login
+        <AnimateText initialDelay={0.2} wordDelay={0.2} separator="">
+          Login
+        </AnimateText>
       </h1>
 
       {/* error notification */}

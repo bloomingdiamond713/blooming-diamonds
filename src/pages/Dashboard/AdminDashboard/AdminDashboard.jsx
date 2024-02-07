@@ -13,6 +13,7 @@ import RadarChartComponent from "../../../components/RadarChartComponent/RadarCh
 import BarChartComponent from "../../../components/BarChartComponent/BarChartComponent";
 import StarRatings from "react-star-ratings";
 import useAdminStats from "../../../hooks/useAdminStats";
+import AnimateText from "@moxy/react-animate-text";
 
 const AdminDashboard = () => {
   const {
@@ -30,13 +31,15 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div>
+    <div className="px-4 md:px-0">
       <div className="space-y-1 mb-8">
         <h1
           className="text-3xl font-semibold"
           style={{ fontFamily: "var(--italiana)" }}
         >
-          Dashboard
+          <AnimateText initialDelay={0.2} wordDelay={0.2} separator="">
+            Dashboard
+          </AnimateText>
         </h1>
         <p className="text-sm text-gray-500">Welcome to your dashboard</p>
       </div>
@@ -285,7 +288,7 @@ const AdminDashboard = () => {
       </div>
 
       <section className="mt-16 flex flex-col md:flex-row items-center gap-6">
-        <div className="w-[35%] h-[450px] border rounded-lg pb-10 shadow">
+        <div className="w-full md:w-[35%] h-[450px] border rounded-lg pb-10 shadow">
           <h3 className=" font-semibold text-gray-600 p-4 pb-0">
             Most Selling Categories{" "}
             <span className="text-xs text-gray-400">
@@ -304,12 +307,12 @@ const AdminDashboard = () => {
         </div>
       </section>
 
-      <section className="flex items-stretch justify-between gap-8 mt-16">
+      <section className="flex flex-col md:flex-row md:items-stretch justify-between gap-8 mt-16">
         <div className="border rounded-lg md:w-[55%] shadow">
           <h4 className="font-semibold text-gray-600 border-b-2 p-4">
             Popular Products
           </h4>
-          <div className="overflow-x-auto p-4">
+          <div className="overflow-x-auto p-4 max-w-[90vw]">
             <table className="table">
               {/* head */}
               <thead>

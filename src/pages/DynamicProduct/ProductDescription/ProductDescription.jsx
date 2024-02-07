@@ -14,8 +14,8 @@ const ProductDescription = () => {
   }, [products, id]);
 
   return (
-    <div className="mt-7 mb-32 px-3 flex justify-between items-start gap-20">
-      <div className="w-[57%]">
+    <div className="mt-7 mb-32 px-3 flex flex-col md:flex-row justify-between items-start gap-20">
+      <div className="md:w-[57%]">
         <h4
           className="text-2xl font-bold mb-4"
           style={{ fontFamily: "var(--poppins)" }}
@@ -58,7 +58,7 @@ const ProductDescription = () => {
           ))}
         </ul>
       </div>
-      <div className="w-[43%]">
+      <div className="md:w-[43%]">
         <h4
           className="text-2xl font-bold mb-4"
           style={{ fontFamily: "var(--poppins)" }}

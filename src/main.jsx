@@ -10,6 +10,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AuthProvider from "./providers/AuthProvider.jsx";
 import "react-pagination-bar/dist/index.css";
+import "@moxy/react-animate-text/dist/index.css";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(

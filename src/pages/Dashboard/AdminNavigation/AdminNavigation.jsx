@@ -37,23 +37,25 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
   return (
     <div>
       <header className="min-h-16 bg-white top-0 w-full fixed shadow z-[9999]">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex justify-between items-center gap-x-3 w-[24%]">
+        <div className="flex justify-between items-center h-16 gap-10 md:gap-0">
+          <div className="flex justify-between items-center gap-x-3 w-[50%] md:w-[24%]">
             <div
-              className="flex-grow flex items-center justify-around bg-[var(--pink-gold)] px-2 py-7 h-16"
+              className="flex-grow flex flex-col md:flex-row items-center justify-around bg-[var(--pink-gold)] px-2 py-7 h-16"
               style={{ boxShadow: "inset -2px 0px 5px rgba(0, 0, 0, 0.2)" }}
             >
-              <Link to={"/"} className="block w-[55%]">
+              <Link to={"/"} className="block w-[70%] md:w-[55%]">
                 <img src={logo} alt="logo" className="w-full" />
               </Link>
-              <div className=" bg-white px-5 py-1 rounded-sm">
-                <p className="text-black uppercase text-xs font-bold">Admin</p>
+              <div className="bg-white md:px-5 md:py-1 px-1 rounded-sm mt-1 md:mt-0">
+                <p className="text-black md:uppercase text-xs font-bold">
+                  Admin
+                </p>
               </div>
             </div>
 
             <button
               id="toggle-button"
-              className="hidden lg:block w-[20%] h-12 bg-gray-100 rounded-full"
+              className="block w-[30%] md:w-[20%] h-12 bg-gray-100 rounded-full"
               onClick={collapseSidebar}
             >
               <FaArrowLeft
@@ -64,19 +66,23 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
             </button>
           </div>
 
-          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[19%] mr-5 border-none">
-            <summary className="btn p-0 ml-auto flex flex-row gap-x-3 justify-center items-center w-full bg-white shadow-none rounded-none h-full hover:bg-base-200 border-none px-2">
-              <img
-                src={user?.photoURL}
-                alt={userFromDB?.name}
-                className="w-[18%] h-11 rounded-full border-2"
-              />
-              <div className="text-left space-y-1 flex-grow">
+          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[16%] md:w-[19%] mr-5 border-none">
+            <summary className="btn p-0 ml-auto flex gap-x-3 justify-center items-center w-full bg-white shadow-none rounded-none h-full hover:bg-base-200 border-none md:px-2">
+              <div className="w-full md:w-[18%] px-2 md:px-0">
+                <img
+                  src={user?.photoURL}
+                  alt={userFromDB?.name}
+                  className="w-full h-11 rounded-full"
+                />
+              </div>
+              <div className="md:text-left space-y-1 text-center hidden md:block">
                 <h5 className="font-extrabold">{userFromDB?.name}</h5>
-                <p className="text-sm font-light">{user?.email}</p>
+                <p className="text-sm font-light hidden md:block">
+                  {user?.email}
+                </p>
               </div>
             </summary>
-            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-full rounded-none border">
+            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-[300%] md:w-full rounded-none border">
               <li>
                 <Link to={"/"}>Home</Link>
               </li>
@@ -114,8 +120,8 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
 
       <aside
         className={`w-[55px] ${
-          !sidebarCollapsed && "lg:w-[19.72%]"
-        } h-[calc(100vh-64px)] whitespace-nowrap fixed shadow overflow-x-hidden transition-all duration-500 ease-in-out top-16 bg-black`}
+          !sidebarCollapsed && "w-[100vw] md:w-[19.72%]"
+        } h-[calc(100vh-64px)] whitespace-nowrap fixed shadow overflow-x-hidden transition-all duration-500 ease-in-out top-16 bg-black z-[9999]`}
       >
         <div className="sidebar-menu-con flex flex-col justify-between h-full">
           <ul className="flex flex-col gap-2 mt-2 overflow-x-hidden overflow-y-auto flex-grow">

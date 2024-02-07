@@ -25,7 +25,7 @@ const Footer = () => {
 
   return (
     <div
-      className={`bg-[#f7f7f7] px-12 pt-16 pb-4 md:${
+      className={`bg-[#f7f7f7] px-12 pt-16 pb-4 ${
         location?.pathname?.includes("admin") ? "hidden" : "block"
       }`}
       style={{ fontFamily: "var(--poppins)" }}

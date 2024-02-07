@@ -6,6 +6,7 @@ import { Pagination } from "react-pagination-bar";
 import useSearchedProducts from "../../../hooks/useSearchedProducts";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import AnimateText from "@moxy/react-animate-text";
 
 const AdminProducts = () => {
   const [products, isProductsLoading, refetch] = useProducts();
@@ -73,13 +74,15 @@ const AdminProducts = () => {
           className="mt-1 font-bold text-3xl"
           style={{ fontFamily: "var(--italiana)" }}
         >
-          Products
+          <AnimateText initialDelay={0.2} wordDelay={0.2} separator="">
+            Products
+          </AnimateText>
         </h2>
       </div>
 
       <div className="p-4 shadow mt-10 border rounded-lg">
-        <header className="flex justify-between items-stretch">
-          <div className="w-[30%]">
+        <header className="flex flex-col md:flex-row justify-between items-stretch space-y-3 md:space-y-0">
+          <div className="md:w-[30%]">
             <input
               type="text"
               name="searchInput"
@@ -88,7 +91,7 @@ const AdminProducts = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
-          <Link to="/dashboard/adminAddProducts" className="w-[15%]">
+          <Link to="/dashboard/adminAddProducts" className="md:w-[15%]">
             <button className="btn btn-neutral text-white border-none rounded w-full">
               <FiPlusCircle className="text-lg" />
               Add Product
@@ -168,7 +171,7 @@ const AdminProducts = () => {
                       </td>
                       <td>{product.sold}</td>
                       <td>${product.discountPrice || product.price}</td>
-                      <td className="space-x-2">
+                      <td className="space-y-2 md:space-y-0 md:space-x-2 flex flex-col md:flex-row items-center">
                         <div className="tooltip" data-tip="Edit">
                           <Link
                             to={`/dashboard/adminAddProducts`}

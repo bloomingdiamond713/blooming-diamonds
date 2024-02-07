@@ -31,6 +31,16 @@ const RelatedDynamicProducts = () => {
     autoplaySpeed: 4000,
     pauseOnHover: true,
     adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slideToScroll: 1,
+          swipeToSlide: true,
+        },
+      },
+    ],
   };
 
   return (

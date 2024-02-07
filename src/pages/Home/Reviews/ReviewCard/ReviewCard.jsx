@@ -30,7 +30,7 @@ const ReviewCard = ({ reviewObj }) => {
           />
         </div>
 
-        <p className="text-center mt-2">{location}</p>
+        <p className="text-center md:text-left mt-2">{location}</p>
       </div>
     </div>
   );

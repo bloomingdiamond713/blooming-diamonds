@@ -9,6 +9,7 @@ import LineChartComponent from "../../../components/LineChartComponent/LineChart
 import useAdminStats from "../../../hooks/useAdminStats";
 import useAuthContext from "../../../hooks/useAuthContext";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import AnimateText from "@moxy/react-animate-text";
 
 const AdminOrders = () => {
   const location = useLocation();
@@ -69,7 +70,9 @@ const AdminOrders = () => {
           className="mt-1 font-bold text-3xl"
           style={{ fontFamily: "var(--italiana)" }}
         >
-          Orders
+          <AnimateText initialDelay={0.2} wordDelay={0.2} separator="">
+            Orders
+          </AnimateText>
         </h2>
       </div>
 
@@ -163,7 +166,7 @@ const AdminOrders = () => {
                           label: order.orderStatus.toUpperCase(),
                         }}
                         onChange={(e) => handleStatusChange(e)}
-                        className="w-fit"
+                        className="w-max md:w-fit"
                       />
                     </td>
                     <td>{order.orderDetails.length}</td>

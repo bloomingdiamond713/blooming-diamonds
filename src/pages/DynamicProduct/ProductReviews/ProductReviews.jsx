@@ -147,7 +147,7 @@ const ProductReviews = () => {
 
   return (
     <div className="mt-7 mb-32 px-3" id="productReviews">
-      <div className="border-2 rounded-xl border-[var(--pink-gold)] flex flex-col items-center p-8 w-[40%] space-y-5 mx-auto">
+      <div className="border-2 rounded-xl border-[var(--pink-gold)] flex flex-col items-center p-8 md:w-[40%] space-y-5 mx-auto">
         <h1 className="text-6xl font-extrabold text-black">{averageRating}</h1>
         <StarRatings
           rating={averageRating}
@@ -170,10 +170,10 @@ const ProductReviews = () => {
             CUSTOMERS FEEDBACK
           </h4>
 
-          <div className="pl-10 pr-20 product-reviews-con">
+          <div className="md:pl-10 md:pr-20 product-reviews-con">
             {dynamicProduct?.review?.slice(0, reviewsLength).map((r) => (
               <div key={r._id} className="flex items-start gap-4 ">
-                <div className="w-[5%]">
+                <div className="md:w-[5%]">
                   <img
                     src={r.reviewerImg}
                     alt={r.reviewerName}
@@ -181,7 +181,7 @@ const ProductReviews = () => {
                   />
                 </div>
 
-                <div className="w-[95%]">
+                <div className="md:w-[95%]">
                   <div className="flex items-center gap-4">
                     <h5 className="text-xl text-black font-semibold">
                       {r.reviewerName}

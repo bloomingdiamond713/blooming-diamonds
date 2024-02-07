@@ -5,6 +5,7 @@ import CustomHelmet from "../components/CustomHelmet/CustomHelmet";
 import useUserInfo from "../hooks/useUserInfo";
 import AdminNavigation from "../pages/Dashboard/AdminNavigation/AdminNavigation";
 import useAuthContext from "../hooks/useAuthContext";
+import AnimateText from "@moxy/react-animate-text";
 
 const DashboardLayout = () => {
   const [userFromDB, isUserLoading] = useUserInfo();
@@ -28,11 +29,11 @@ const DashboardLayout = () => {
                 />
                 <div className="mt-20 mb-24">
                   <div
-                    className={`w-[100wh-75px] ${
+                    className={`w-[100vw-100px] ml-[60px] ${
                       !sidebarCollapsed
-                        ? "lg:w-[calc(100vw-330px)] lg:ml-[300px]"
-                        : "ml-[75px] lg:w-[calc(100vw-100px)]"
-                    } py-5 transition-all duration-500 ease-in-out`}
+                        ? "md:w-[calc(100vw-330px)] md:ml-[300px]"
+                        : "ml-[75px] md:w-[calc(100vw-100px)]"
+                    } py-5 transition-all duration-500 ease-in-out md:px-6`}
                   >
                     <Outlet />
                   </div>
@@ -44,7 +45,9 @@ const DashboardLayout = () => {
                   className="text-4xl font-bold text-black tracking-wide"
                   style={{ fontFamily: "var(--italiana)" }}
                 >
-                  Welcome, {userFromDB?.name}
+                  <AnimateText initialDelay={0.2} wordDelay={0.2}>
+                    {`Welcome, ${userFromDB?.name}`}
+                  </AnimateText>
                 </h1>
 
                 <div className="flex flex-col md:flex-row items-start mt-16">

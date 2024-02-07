@@ -280,7 +280,7 @@ const AdminAddProduct = () => {
         <div>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="loginRegisterForm my-10 flex items-start justify-between gap-8 relative"
+            className="loginRegisterForm my-10 flex flex-col md:flex-row md:items-start md:justify-between gap-8 relative"
           >
             <div className="md:w-[65%]">
               <div className="shadow rounded-lg border pb-8">
@@ -567,14 +567,14 @@ const AdminAddProduct = () => {
             {dynamicProduct ? (
               <button
                 type="submit"
-                className="btn absolute -top-20 right-0 bg-black text-white font-bold border-0 rounded-none w-[180px] hover:bg-[var(--pink-gold)] transition-all duration-300 ease-in-out"
+                className="btn md:absolute md:-top-20 md:right-0 bg-black text-white font-bold border-0 rounded-none w-full md:w-[180px] hover:bg-[var(--pink-gold)] transition-all duration-300 ease-in-out"
               >
                 Publish Edit
               </button>
             ) : (
               <button
                 type="submit"
-                className="btn absolute -top-20 right-0 bg-black text-white font-bold border-0 rounded-none w-[180px] hover:bg-[var(--pink-gold)] transition-all duration-300 ease-in-out"
+                className="btn absolute -top-20 right-0 bg-black text-white font-bold border-0 rounded-none md:w-[180px] hover:bg-[var(--pink-gold)] transition-all duration-300 ease-in-out"
               >
                 Publish
               </button>

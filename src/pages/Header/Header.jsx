@@ -529,7 +529,11 @@ const Header = () => {
                 </div>
 
                 {/* Main Navbar non sticky */}
-                <div className={`w-full navbar bg-white z-[1000]`}>
+                <div
+                  className={`w-full navbar bg-white z-[1000]`}
+                  data-aos="fade-down"
+                  data-aos-duration="1200"
+                >
                   <div className="w-full md:container text-center">
                     <div className="flex-none lg:hidden">
                       <label

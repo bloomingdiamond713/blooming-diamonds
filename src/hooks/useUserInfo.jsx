@@ -8,9 +8,6 @@ const useUserInfo = () => {
   const [axiosSecure] = useAxiosSecure();
   const [totalSpentArray, setTotalSpentArray] = useState([]);
 
-  console.log("user for useUserInfo");
-  console.log(user, isAuthLoading);
-
   const {
     data: userFromDB,
     isLoading: isUserLoading,

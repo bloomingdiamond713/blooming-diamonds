@@ -6,6 +6,7 @@ import insta3 from "../../../assets/instagram/instagram3-2-194x300.png";
 import insta4 from "../../../assets/instagram/instagram4-2.png";
 import insta5 from "../../../assets/instagram/instagram5-2.png";
 import { FaInstagram } from "react-icons/fa6";
+import AnimateText from "@moxy/react-animate-text";
 
 const Instagram = () => {
   const instaImgs = [insta1, insta2, insta3, insta4, insta5];
@@ -16,7 +17,9 @@ const Instagram = () => {
           style={{ fontFamily: "var(--italiana)" }}
           className="text-xl md:text-4xl text-black font-bold tracking-wider w-[50%]"
         >
-          Follow Us On Instagram
+          <AnimateText initialDelay={0.2} wordDelay={0.2}>
+            Follow Us On Instagram
+          </AnimateText>
         </h3>
         <a
           href="https://instagram.com"
@@ -30,10 +33,12 @@ const Instagram = () => {
       </div>
 
       <div className="md:grid md:grid-cols-5 gap-x-5 mt-8 overflow-x-auto whitespace-nowrap">
-        {instaImgs.map((img) => (
+        {instaImgs.map((img, counter) => (
           <div
             key={img}
             className="relative insta-img-con overflow-hidden rounded-xl inline-block h-[300px] w-[60%] md:h-auto md:w-auto md:block mr-6 md:mr-0"
+            data-aos="fade-left"
+            data-aos-delay={`${counter * 150}`}
           >
             <img src={img} alt="" className="w-full h-full rounded-xl" />
             <div className="insta-img-overlay w-full h-full bg-[#00000066] absolute top-0 left-0 right-0 rounded-xl flex justify-center items-center cursor-pointer opacity-0 hover:opacity-100 transition-all duration-500 ease-in-out">

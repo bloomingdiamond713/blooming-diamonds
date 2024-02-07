@@ -12,7 +12,7 @@ import useUserInfo from "../../hooks/useUserInfo";
 import { TfiClose } from "react-icons/tfi";
 import { useMediaQuery } from "react-responsive";
 
-const ProductCard = ({ cardData, flashSale }) => {
+const ProductCard = ({ cardData, flashSale, counter }) => {
   const { user, isAuthLoading } = useAuthContext();
   const [userFromDB] = useUserInfo();
   const { cartData, isCartLoading, addToCart } = useCart();
@@ -87,6 +87,8 @@ const ProductCard = ({ cardData, flashSale }) => {
           : "max-w-[330px]"
       } product-card mx-auto rounded-lg`}
       style={{ fontFamily: "var(--poppins)" }}
+      data-aos="fade-up"
+      data-aos-delay={counter && `${counter * 200}`}
     >
       <div className="relative overflow-hidden rounded-lg">
         <Link to={`/products/${_id}/description`} state={{ from: "/" }}>

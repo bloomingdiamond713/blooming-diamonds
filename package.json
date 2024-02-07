@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@moxy/react-animate-text": "^1.0.0",
+    "@moxy/react-split-text": "^1.0.1",
     "@stripe/react-stripe-js": "^2.4.0",
     "@stripe/stripe-js": "^2.3.0",
     "animate.css": "^4.1.1",
+    "aos": "^2.3.4",
     "axios": "^1.6.3",
     "country-state-city": "^3.2.1",
     "easyinvoice": "^3.0.22",

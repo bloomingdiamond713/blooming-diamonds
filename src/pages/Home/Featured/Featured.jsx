@@ -4,6 +4,7 @@ import useProducts from "../../../hooks/useProducts";
 import featuredBanner from "../../../assets/featuredBanner.jpg";
 import FeaturedCard from "./FeaturedCard/FeaturedCard";
 import { Link } from "react-router-dom";
+import AnimateText from "@moxy/react-animate-text";
 
 const Featured = () => {
   const [products, isProductsLoading] = useProducts();
@@ -33,7 +34,7 @@ const Featured = () => {
 
   return (
     <div className="container grid grid-cols-1 md:grid-cols-2 md:gap-x-6 gap-y-8 md:gap-y-0 mb-24">
-      <div className="h-[450px] relative">
+      <div className="h-[450px] relative" data-aos="fade-up">
         <img
           src={featuredBanner}
           className="border w-full h-full hover:scale-[1.01] transition-all duration-150 ease"
@@ -47,7 +48,9 @@ const Featured = () => {
             className="text-4xl font-bold text-black mt-2 mb-6"
             style={{ fontFamily: "var(--italiana)" }}
           >
-            Wedding Rings
+            <AnimateText initialDelay={0.2} wordDelay={0.2}>
+              Wedding Rings
+            </AnimateText>
           </h4>
 
           <Link to="/shop" state={{ category: "diamond rings" }}>
@@ -73,8 +76,12 @@ const Featured = () => {
             </div>
           ) : (
             <div className="space-y-3">
-              {featuredProducts?.map((product) => (
-                <FeaturedCard key={product._id} product={product} />
+              {featuredProducts?.map((product, counter) => (
+                <FeaturedCard
+                  counter={counter}
+                  key={product._id}
+                  product={product}
+                />
               ))}
             </div>
           )}

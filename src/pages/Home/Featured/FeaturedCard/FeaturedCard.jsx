@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const FeaturedCard = ({ product }) => {
+const FeaturedCard = ({ product, counter }) => {
   const { _id, img, name, price, discountPrice } = product;
   return (
     <Link
@@ -12,6 +12,8 @@ const FeaturedCard = ({ product }) => {
       <div
         className="h-[90px] flex justify-start items-center gap-3 pr-2 cursor-pointer"
         style={{ fontFamily: "var(--poppins)" }}
+        data-aos="fade-up"
+        data-aos-delay={`${counter * 200}`}
       >
         <img
           src={img}

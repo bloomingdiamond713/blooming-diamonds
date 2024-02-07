@@ -4,6 +4,8 @@ import Header from "../pages/Header/Header";
 import Footer from "../pages/Footer/Footer";
 import { Toaster } from "react-hot-toast";
 import TakeToLoginModal from "../components/TakeToLoginModal/TakeToLoginModal";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const MainLayout = () => {
   // scroll to top on route change
@@ -24,6 +26,10 @@ const MainLayout = () => {
       });
     }
   }, [location]);
+
+  useEffect(() => {
+    AOS.init({ once: true });
+  }, []);
 
   return (
     <div className="max-w-screen-2xl mx-auto">
