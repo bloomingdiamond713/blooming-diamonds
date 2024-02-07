@@ -8,7 +8,9 @@ const useSearchedProducts = (searchText) => {
   useEffect(() => {
     setIsSearchLoading(true);
     axios
-      .get(`http://localhost:5000/products?searchText=${searchText}`)
+      .get(
+        `https://ub-jewellers-server-production.up.railway.app/products?searchText=${searchText}`
+      )
       .then((res) => {
         setSearchedProducts(res.data);
         setIsSearchLoading(false);

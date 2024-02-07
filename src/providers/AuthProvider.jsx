@@ -60,7 +60,9 @@ const AuthProvider = ({ children }) => {
       if (currentUser?.uid !== undefined) {
         setUser(currentUser);
         axios
-          .post("http://localhost:5000/jwt", { email: currentUser.email })
+          .post("https://ub-jewellers-server-production.up.railway.app/jwt", {
+            email: currentUser.email,
+          })
           .then((res) => {
             if (res.data.token) {
               localStorage.setItem("ub-jewellers-jwt-token", res.data.token);

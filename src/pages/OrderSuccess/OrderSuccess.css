@@ -12,15 +12,13 @@
   padding: 1rem;
 }
 
-.order-info-con .right-side {
-  table,
-  table tr,
-  table td,
-  table th {
-    border: 1px solid rgb(211, 211, 211);
-    border-collapse: collapse;
-    font-size: 1.1rem;
-  }
+.order-info-con .right-side table,
+.order-info-con .right-side tr,
+.order-info-con .right-side td,
+.order-info-con .right-side th {
+  border: 1px solid rgb(211, 211, 211);
+  border-collapse: collapse;
+  font-size: 1.1rem;
 }
 
 .order-info-con .right-side td,
