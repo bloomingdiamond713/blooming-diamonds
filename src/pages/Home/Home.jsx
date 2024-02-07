@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Home.css";
 import Hero from "./Hero/Hero";
 import MarqueeSection from "./MarqueeSection/MarqueeSection";
@@ -10,8 +10,18 @@ import Featured from "./Featured/Featured";
 import Reviews from "./Reviews/Reviews";
 import Instagram from "./Instagram/Instagram";
 import OtherFeatures from "./OtherFeatures/OtherFeatures";
+import { useLocation } from "react-router-dom";
+import Pace from "pace-js";
 
 const Home = () => {
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash === "") {
+      Pace.restart();
+    }
+  }, [location]);
+
+  console.log(location);
   return (
     <div id="home">
       <CustomHelmet title={"Home"} />

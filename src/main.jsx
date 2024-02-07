@@ -12,7 +12,6 @@ import AuthProvider from "./providers/AuthProvider.jsx";
 import "react-pagination-bar/dist/index.css";
 import "@moxy/react-animate-text/dist/index.css";
 import "pace-js";
-// import "pace-js/themes/yellow/pace-theme-minimal.css";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(

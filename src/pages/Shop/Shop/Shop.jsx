@@ -12,6 +12,8 @@ import { RiEqualizerLine } from "react-icons/ri";
 import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import CustomHelmet from "../../../components/CustomHelmet/CustomHelmet";
+import Pace from "pace-js";
 
 const Shop = () => {
   const isMobile = useMediaQuery({ maxWidth: 480 });
@@ -139,11 +141,18 @@ const Shop = () => {
     document.getElementById("shop-page-drawer").click();
   };
 
+  useEffect(() => {
+    if (location.pathname.includes("shop")) {
+      Pace.restart();
+    }
+  }, [location]);
+
   return (
     <div
       style={{ fontFamily: "var(--poppins)" }}
       className="md:w-[95%] mx-auto my-1"
     >
+      <CustomHelmet title={"Shop"} />
       <div className="text-sm breadcrumbs text-gray-500 ml-5 md:ml-0">
         <ul>
           <li>

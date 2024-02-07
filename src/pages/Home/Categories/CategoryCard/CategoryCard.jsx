@@ -1,16 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const CategoryCard = ({ category, counter }) => {
+const CategoryCard = ({ category }) => {
   const { categoryName, categoryPic } = category;
 
   return (
-    <Link
-      to={`/shop`}
-      state={{ category: categoryName }}
-      data-aos="fade-up"
-      data-aos-delay={`${counter * 180}`}
-    >
+    <Link to={`/shop`} state={{ category: categoryName }} data-aos="fade-up">
       <div className="text-center mt-5">
         <img
           src={categoryPic}

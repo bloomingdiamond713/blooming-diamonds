@@ -375,7 +375,7 @@ const Header = () => {
                       <ul className="menu menu-horizontal space-x-8">
                         {/* Navbar menu content here */}
                         <HashLink
-                          to="/#hero"
+                          to="/"
                           smooth
                           scroll={(el) => scrollWithOffset(el)}
                         >
@@ -413,7 +413,7 @@ const Header = () => {
                         >
                           Products
                         </HashLink>
-                        <Link to="/Shop">Shop</Link>
+                        <Link to="/shop">Shop</Link>
 
                         <HashLink
                           to="/#reviews"
@@ -558,7 +558,7 @@ const Header = () => {
                     <div className="w-[50%] hidden lg:block text-center">
                       <ul className="menu menu-horizontal space-x-8">
                         {/* Navbar menu content here */}
-                        <HashLink to="/#hero" smooth>
+                        <HashLink to="/" smooth>
                           Home
                         </HashLink>
                         <HashLink to="/#categories" smooth>
@@ -581,7 +581,7 @@ const Header = () => {
                         <HashLink to="/#products" smooth>
                           Products
                         </HashLink>
-                        <Link to="/Shop">Shop</Link>
+                        <Link to="/shop">Shop</Link>
 
                         <HashLink to="/#reviews" smooth>
                           Reviews
