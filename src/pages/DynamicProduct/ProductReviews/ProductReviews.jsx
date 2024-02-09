@@ -32,7 +32,9 @@ const ProductReviews = () => {
   // fetch dynamic product data
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/single-product/${id}`)
+      .get(
+        `https://ub-jewellers-server-production.up.railway.app/single-product/${id}`
+      )
       .then((res) => setDynamicProduct(res.data))
       .catch((error) => console.error(error));
   }, [id, products]);

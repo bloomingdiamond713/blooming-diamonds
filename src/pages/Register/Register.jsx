@@ -96,11 +96,14 @@ const Register = () => {
                 updateUserProfile(data?.name, data?.profilePic)
                   .then(() => {
                     // add user to users collection in db
-                    axios.post("http://localhost:5000/users", {
-                      name: result?.user?.displayName,
-                      email: result?.user?.email,
-                      img: result?.user?.photoURL,
-                    });
+                    axios.post(
+                      "https://ub-jewellers-server-production.up.railway.app/users",
+                      {
+                        name: result?.user?.displayName,
+                        email: result?.user?.email,
+                        img: result?.user?.photoURL,
+                      }
+                    );
 
                     toast.success(`Authenticated as ${result?.user?.email}`);
                     reset(); // reset the form
@@ -133,11 +136,14 @@ const Register = () => {
     signInGoogle()
       .then((res) => {
         // add user to users collection in db
-        axios.post("http://localhost:5000/users", {
-          name: res?.user?.displayName,
-          email: res?.user?.email,
-          img: res?.user?.photoURL,
-        });
+        axios.post(
+          "https://ub-jewellers-server-production.up.railway.app/users",
+          {
+            name: res?.user?.displayName,
+            email: res?.user?.email,
+            img: res?.user?.photoURL,
+          }
+        );
 
         toast.success(`Authenticated as ${res?.user?.email}`);
         navigate(from, { replace: true });

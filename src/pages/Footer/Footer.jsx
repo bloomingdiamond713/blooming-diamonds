@@ -18,7 +18,7 @@ const Footer = () => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/categories")
+      .get("https://ub-jewellers-server-production.up.railway.app/categories")
       .then((res) => setCategories(res.data))
       .catch((error) => console.error(error));
   }, []);
