@@ -32,7 +32,7 @@ const DashboardLayout = () => {
                     className={`w-[100vw-100px] ml-[60px] ${
                       !sidebarCollapsed
                         ? "md:w-[calc(100vw-330px)] md:ml-[300px]"
-                        : "ml-[75px] md:w-[calc(100vw-100px)]"
+                        : "md:ml-[75px] md:w-[calc(100vw-100px)]"
                     } py-5 transition-all duration-500 ease-in-out md:px-6`}
                   >
                     <Outlet />

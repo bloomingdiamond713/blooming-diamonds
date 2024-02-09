@@ -55,7 +55,7 @@ const CheckoutForm = ({ setPaymentInfo }) => {
     <form
       id="payment-form"
       onSubmit={handleSubmit}
-      className="border w-[60%] p-8 pb-6 rounded-xl shadow"
+      className="border md:w-[60%] p-8 pb-6 rounded-xl shadow"
     >
       <PaymentElement id="payment-element" options={paymentElementOptions} />
       <button

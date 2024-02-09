@@ -164,7 +164,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
                           <span className="font-bold text-lg">
                             {product._id === quantityLoading._id &&
                             quantityLoading.status ? (
-                              <span className="loading loading-ring loading-sm"></span>
+                              <span className="loading loading-ring loading-xs"></span>
                             ) : (
                               product.quantity
                             )}
@@ -196,7 +196,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
               </div>
             )}
           </div>
-          <div className="right-drawer-footer border-t-2 border-dashed py-3 px-2 mt-5 space-y-8">
+          <div className="right-drawer-footer border-t-2 border-dashed py-3 px-2 mt-5 mb-1 space-y-8">
             <div className="text-gray-700 text-sm font-bold flex justify-between items-center">
               <p>Subtotal:</p>
               <p>${parseFloat(subtotal).toFixed(2)}</p>

@@ -113,11 +113,11 @@ const OrderSuccess = () => {
   };
 
   return (
-    <div style={{ fontFamily: "var(--poppins)" }}>
+    <div style={{ fontFamily: "var(--poppins)" }} className="mb-32">
       {location?.state?.orderId ? (
         <div className="container">
           <CustomHelmet title={"Order Success"} />
-          <div className="text-sm breadcrumbs text-gray-500">
+          <div className="text-sm breadcrumbs text-gray-500 ml-6">
             <ul>
               <li>
                 <Link to="/">Home</Link>
@@ -136,7 +136,7 @@ const OrderSuccess = () => {
             )}
           </div>
 
-          <div className="order-info-con my-10 grid grid-cols-2 gap-x-10">
+          <div className="order-info-con my-10 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-0 px-6 md:px-0">
             <div className="left-side">
               <div>
                 <h1>Order Details</h1>
@@ -291,14 +291,14 @@ const OrderSuccess = () => {
         </div>
       ) : (
         <div className="flex justify-center items-center h-screen">
-          <div className="w-[30%] text-center font-bold">
+          <div className="md:w-[30%] text-center font-bold">
             <img
               src={emptyBox}
               alt=""
-              className="w-[80%] block mx-auto mb-10"
+              className="md:w-[80%] block mx-auto mb-10"
             />
             <h5 className="text-error text-xl mb-3">
-              Sorry. Seems like no order was made!
+              Sorry, it seems like no order was made!
             </h5>
             <Link to="/" className="underline text-blue-500">
               Go back to home

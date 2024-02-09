@@ -55,6 +55,9 @@ const AdminManageUsers = () => {
       confirmButtonColor: "#000",
       cancelButtonColor: "#ef4c53",
       confirmButtonText: "Yes, delete it!",
+      customClass: {
+        popup: "w-[85%] ml-14",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure

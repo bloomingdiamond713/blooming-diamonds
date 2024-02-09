@@ -34,7 +34,7 @@ const AdminAddProduct = () => {
   useEffect(() => {
     if (user) {
       axios
-        .get("https://ub-jewellers-server-production.up.railway.app/categories")
+        .get("http://localhost:5000/categories")
         .then((res) => setCategories(res.data))
         .catch((e) => console.error(e));
     }

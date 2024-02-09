@@ -4,7 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
 import useDynamicRating from "../../../hooks/useDynamicRating";
 import StarRatings from "react-star-ratings";
-import { FaRegThumbsUp, FaThumbsUp } from "react-icons/fa";
+import { IoHeartCircleOutline, IoHeartCircleSharp } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
@@ -27,13 +27,12 @@ const ProductReviews = () => {
   const [productReviewError, setProductReviewError] = useState("");
   const [hasUserReviewed, setHasUserReviewed] = useState(false);
   const { averageRating } = useDynamicRating(dynamicProduct?.review);
+  const [updateLikeLoading, setUpdateLikeLoading] = useState(false);
 
   // fetch dynamic product data
   useEffect(() => {
     axios
-      .get(
-        `https://ub-jewellers-server-production.up.railway.app/single-product/${id}`
-      )
+      .get(`http://localhost:5000/single-product/${id}`)
       .then((res) => setDynamicProduct(res.data))
       .catch((error) => console.error(error));
   }, [id, products]);
@@ -116,8 +115,7 @@ const ProductReviews = () => {
       .delete(
         `/products/delete-review/${dynamicProduct?._id}/reviewer-email/${user?.email}`
       )
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         refetch();
       })
       .catch((e) => console.error(e));
@@ -125,6 +123,8 @@ const ProductReviews = () => {
 
   // UPDATE PRODUCT LIKE STATUS
   const handleLikeStatus = (reviewObjId) => {
+    setUpdateLikeLoading({ status: true, id: reviewObjId });
+
     if (!isAuthLoading && user?.uid !== undefined) {
       axiosSecure
         .post("/single-product-like-update", {
@@ -135,15 +135,18 @@ const ProductReviews = () => {
         .then((res) => {
           if (res.data.modifiedCount > 0) {
             refetch();
+            setUpdateLikeLoading({ status: false });
           }
         })
         .catch((error) => {
           console.error(error);
+          setUpdateLikeLoading({ status: false });
         });
     } else {
       document.getElementById("loginModalTextContent").innerText =
         "to give reaction";
       document.getElementById("takeToLoginModal").showModal();
+      setUpdateLikeLoading({ status: false });
     }
   };
 
@@ -214,22 +217,30 @@ const ProductReviews = () => {
                   </div>
 
                   <button
-                    className="flex items-baseline gap-2 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
+                    className="flex gap-1 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
                     onClick={() => handleLikeStatus(r._id)}
+                    disabled={updateLikeLoading?.status}
                   >
                     {r.likedBy?.includes(user?.email) ? (
-                      <FaThumbsUp className="text-[var(--light-pink)]" />
+                      <IoHeartCircleSharp className="text-[var(--light-pink)] text-2xl" />
                     ) : (
-                      <FaRegThumbsUp />
+                      <IoHeartCircleOutline className="text-2xl" />
                     )}
 
-                    <span>
-                      {r.likeCount > 0 ? (
-                        <span className="font-bold">{r.likeCount}</span>
-                      ) : (
-                        "Like"
-                      )}
-                    </span>
+                    {updateLikeLoading?.status &&
+                    updateLikeLoading?.id === r._id ? (
+                      <span className="loading loading-ring block mt-[2px]"></span>
+                    ) : (
+                      <span>
+                        {r.likeCount > 0 ? (
+                          <span className="font-bold mt-[2px] block">
+                            {r.likeCount}
+                          </span>
+                        ) : (
+                          <span className="mt-[2px] block">Like</span>
+                        )}
+                      </span>
+                    )}
                   </button>
                 </div>
               </div>

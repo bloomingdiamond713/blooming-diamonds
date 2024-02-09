@@ -9,16 +9,17 @@ const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
 
 const Payment = ({ setPaymentInfo }) => {
   const [clientSecret, setClientSecret] = useState("");
-  const { cartSubtotal: orderPrice } = useCart();
+  const { cartSubtotal } = useCart();
   const [axiosSecure] = useAxiosSecure();
 
   useEffect(() => {
-    if (orderPrice) {
+    const orderPrice = cartSubtotal?.subtotal;
+    if (parseInt(orderPrice) > 0) {
       axiosSecure
         .post("/create-payment-intent", { orderPrice })
         .then((res) => setClientSecret(res.data.clientSecret));
     }
-  }, [orderPrice]);
+  }, [cartSubtotal]);
 
   const appearance = {
     theme: "stripe",

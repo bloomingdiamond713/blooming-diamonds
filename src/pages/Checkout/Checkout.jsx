@@ -29,7 +29,7 @@ const Checkout = () => {
           orderId: orderId,
           name: user?.displayName,
           email: user?.email,
-          total: cartSubtotal,
+          total: parseFloat(cartSubtotal?.subtotal),
           paymentMethod,
           paymentStatus: paymentInfo ? "paid" : "unpaid",
           transactionId: paymentInfo ? paymentInfo.id : null,
@@ -64,7 +64,7 @@ const Checkout = () => {
 
   return (
     <div className="container mb-20" style={{ fontFamily: "var(--poppins)" }}>
-      <div className="text-sm breadcrumbs">
+      <div className="text-sm breadcrumbs ml-6">
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -75,7 +75,7 @@ const Checkout = () => {
         </ul>
       </div>
 
-      <section className="flex justify-between items-start gap-6 pt-10">
+      <section className="flex flex-col-reverse md:flex-row justify-between items-center md:items-start gap-6 gap-y-9 md:gap-y-0 pt-10 px-6 md:px-0">
         {/* left side - shipping address, payment */}
         <div className="flex-grow">
           <div>
@@ -215,7 +215,7 @@ const Checkout = () => {
         </div>
 
         {/* right side - cart items, place order button */}
-        <div className="bg-slate-100 rounded-lg p-6 w-[35%]">
+        <div className="bg-slate-100 rounded-lg p-6 w-full md:w-[35%]">
           <div>
             <h6 className="text-lg font-semibold">Your order(s)</h6>
             <div className="my-4 space-y-4">
@@ -239,7 +239,7 @@ const Checkout = () => {
           <div className="divider"></div>
           <div className="flex justify-between items-center font-bold text-lg">
             <h5>Total</h5>
-            <h5>${cartSubtotal}</h5>
+            <h5>${cartSubtotal?.subtotal}</h5>
           </div>
           <div className="divider"></div>
           <div>

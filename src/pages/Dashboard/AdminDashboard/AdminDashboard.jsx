@@ -316,7 +316,7 @@ const AdminDashboard = () => {
             <table className="table">
               {/* head */}
               <thead>
-                <tr>
+                <tr className="font-bold text-black border-b border-b-black">
                   <th>Product</th>
                   <th>Category</th>
                   <th>Price</th>
@@ -366,8 +366,8 @@ const AdminDashboard = () => {
                   idx !== recentReviews.length - 1 && "border-b"
                 } pb-5`}
               >
-                <div className="flex justify-between items-center px-4 mb-4">
-                  <div className="flex items-center gap-3 w-[50%]">
+                <div className="flex flex-col md:flex-row justify-between md:items-center px-4 mb-4">
+                  <div className="flex items-center gap-3 w-3/4 md:w-[50%]">
                     <img
                       src={reviewObj.img}
                       alt={reviewObj.name}
@@ -382,7 +382,7 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="ml-16 md:ml-0">
                     <StarRatings
                       rating={reviewObj.rating}
                       starDimension="20px"

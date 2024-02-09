@@ -12,9 +12,7 @@ const Reviews = () => {
   const { data: reviews, isLoading: isReviewsLoading } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
-      const res = await axios.get(
-        "https://ub-jewellers-server-production.up.railway.app/reviews"
-      );
+      const res = await axios.get("http://localhost:5000/reviews");
       return res.data;
     },
   });

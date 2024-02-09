@@ -24,6 +24,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
   const collapseSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
+  console.log(sidebarCollapsed);
 
   // handle logout user
   const handleLogout = () => {
@@ -39,10 +40,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
       <header className="min-h-16 bg-white top-0 w-full fixed shadow z-[9999]">
         <div className="flex justify-between items-center h-16 gap-10 md:gap-0">
           <div className="flex justify-between items-center gap-x-3 w-[50%] md:w-[24%]">
-            <div
-              className="flex-grow flex flex-col md:flex-row items-center justify-around bg-[var(--pink-gold)] px-2 py-7 h-16"
-              style={{ boxShadow: "inset -2px 0px 5px rgba(0, 0, 0, 0.2)" }}
-            >
+            <div className="flex-grow flex flex-col md:flex-row items-center justify-around bg-[var(--pink-gold)] px-2 py-7 h-16">
               <Link to={"/"} className="block w-[70%] md:w-[55%]">
                 <img src={logo} alt="logo" className="w-full" />
               </Link>
@@ -119,8 +117,8 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
       </header>
 
       <aside
-        className={`w-[55px] ${
-          !sidebarCollapsed && "w-[100vw] md:w-[19.72%]"
+        className={`${
+          !sidebarCollapsed ? "w-[100vw] md:w-[19.72%]" : "w-[55px]"
         } h-[calc(100vh-64px)] whitespace-nowrap fixed shadow overflow-x-hidden transition-all duration-500 ease-in-out top-16 bg-black z-[9999]`}
       >
         <div className="sidebar-menu-con flex flex-col justify-between h-full">

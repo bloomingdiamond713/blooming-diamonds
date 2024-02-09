@@ -21,7 +21,6 @@ const Home = () => {
     }
   }, [location]);
 
-  console.log(location);
   return (
     <div id="home">
       <CustomHelmet title={"Home"} />

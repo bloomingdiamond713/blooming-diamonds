@@ -47,15 +47,13 @@ const Header = () => {
   // fetch or update upper nav notifications
   useEffect(() => {
     // un-comment to add new notification(reminder: notification array is in backend)
-    // axios.post("https://ub-jewellers-server-production.up.railway.app/nav-notifications", {}).then((res) => {
+    // axios.post("http://localhost:5000/nav-notifications", {}).then((res) => {
     //   console.log(res.data);
     // });
 
     // fetching notifications
     axios
-      .get(
-        "https://ub-jewellers-server-production.up.railway.app/nav-notifications"
-      )
+      .get("http://localhost:5000/nav-notifications")
       .then((res) => setNavNotifications(res.data))
       .catch((error) => console.error(error));
   }, []);
@@ -432,7 +430,7 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-4">
                       <FiSearch
                         className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
@@ -793,9 +791,9 @@ const Header = () => {
 
           {/* right side drawer for cart */}
           <div
-            className={`w-[100%] md:w-[30%] bg-white border fixed top-0 right-0 bottom-0 z-[9999] md:rounded-tl-2xl rounded-bl-2xl ${
+            className={`w-[100%] md:w-[30%] bg-white md:border fixed top-0 right-0 bottom-0 z-[9999] md:rounded-tl-2xl md:rounded-bl-2xl ${
               showRightDrawer ? "transform-x-0" : "translate-x-full"
-            } transition-all duration-300 ease-in-out  z-[9999]`}
+            } transition-all duration-300 ease-in-out`}
           >
             <div className={`relative`}>
               <button

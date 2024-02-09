@@ -35,7 +35,6 @@ const Login = () => {
 
     signIn(email, password)
       .then((res) => {
-        console.log(res.user);
         toast.success(`Authenticated as ${res.user?.email}`);
         reset(); // reset the form
         setLoginLoading(false);
@@ -56,7 +55,6 @@ const Login = () => {
   const handleGoogleSignIn = () => {
     signInGoogle()
       .then((res) => {
-        console.log(res.user);
         toast.success(`Authenticated as ${res.user?.email}`);
         navigate(from, { replace: true });
       })
