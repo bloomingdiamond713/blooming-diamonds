@@ -54,8 +54,6 @@ const OrderSuccess = () => {
     setOrderDate({ date, month, year });
   }, [orderObj]);
 
-  console.log(orderObj, orderDate);
-
   // create invoice
   const handleDownloadInvoice = async () => {
     setInvoiceLoading(true);

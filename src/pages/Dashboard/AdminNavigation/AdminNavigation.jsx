@@ -24,7 +24,6 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
   const collapseSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
-  console.log(sidebarCollapsed);
 
   // handle logout user
   const handleLogout = () => {

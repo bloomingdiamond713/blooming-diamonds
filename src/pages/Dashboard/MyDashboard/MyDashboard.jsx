@@ -32,8 +32,6 @@ const MyDashboard = () => {
         location: location || undefined,
       })
       .then((res) => {
-        console.log(res.data);
-        console.log("hello");
         if (res.data.modifiedCount > 0) {
           setUpdateUserDetails(false);
           refetch();
