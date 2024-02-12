@@ -42,6 +42,8 @@ Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Co
 - React.js
 - Tailwind CSS
 - DaisyUI
+- JavaScript
+- HTML/CSS
 
 ### Backend:
 
@@ -57,6 +59,3 @@ Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Co
 - JSON Web Tokens (JWT)
 - Axios
 - React Query
-- Node.js
-- JavaScript
-- HTML/CSS
