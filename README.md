@@ -46,20 +46,17 @@ Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Co
 ### Backend:
 
 - Express.js
-- MongoDB (database)
+- MongoDB
 
 ### Authentication:
 
 - Firebase
 
-### State Management
-
-- React Query
-
 ### Other Technologies:
 
-- Axios (HTTP client)
-- Node.js (runtime environment)
-- JavaScript (programming language)
-- HTML/CSS (markup and styling)
-- JSON Web Tokens (JWT) for secure authentication
+- JSON Web Tokens (JWT)
+- Axios
+- React Query
+- Node.js
+- JavaScript
+- HTML/CSS
