@@ -63,23 +63,17 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
             </button>
           </div>
 
-          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[16%] md:w-[19%] mr-5 border-none">
+          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[16%] md:w-[5%] mr-5 border-none">
             <summary className="btn p-0 ml-auto flex gap-x-3 justify-center items-center w-full bg-white shadow-none rounded-none h-full hover:bg-base-200 border-none md:px-2">
-              <div className="w-full md:w-[18%] px-2 md:px-0">
+              <div className="w-full px-2 md:px-0">
                 <img
                   src={user?.photoURL}
                   alt={userFromDB?.name}
                   className="w-full h-11 rounded-full"
                 />
               </div>
-              <div className="md:text-left space-y-1 text-center hidden md:block">
-                <h5 className="font-extrabold">{userFromDB?.name}</h5>
-                <p className="text-sm font-light hidden md:block">
-                  {user?.email}
-                </p>
-              </div>
             </summary>
-            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-[300%] md:w-full rounded-none border">
+            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 w-[300%] rounded-none border">
               <li>
                 <Link to={"/"}>Home</Link>
               </li>

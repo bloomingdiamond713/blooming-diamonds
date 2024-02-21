@@ -38,7 +38,7 @@ const AdminProducts = () => {
       cancelButtonColor: "#ef4c53",
       confirmButtonText: "Yes, delete it!",
       customClass: {
-        popup: "w-[85%] ml-14",
+        popup: "w-[85%] md:w-[32em] ml-14",
       },
     }).then((result) => {
       if (result.isConfirmed) {
