@@ -64,7 +64,6 @@ const Register = () => {
    * input.value=""
    */
   const [profilePicFile, setProfilePicFile] = useState(null);
-  const [uploadedProfilePic, setUploadedProfilePic] = useState(null);
 
   // check profile pic size limit 200KB
   useEffect(() => {
@@ -84,24 +83,18 @@ const Register = () => {
       }
   }, [profilePicFile]);
 
-  // upload profile pic to cloudinary
-  const uploadToCloudinary = (base64Image, userName) => {
-    axios
-      .post("http://localhost:5000/cloudinary-upload", {
-        name: userName,
-        img: base64Image,
-      })
-      .then((res) => {
-        if (res.data?.success) {
-          setUploadedProfilePic(res.data.imgURL);
-        } else {
-          Swal.fire({
-            title: "Failed",
-            text: "Something went wrong while uploading profile picture. Try again later",
-            icon: "error",
-          });
-        }
-      });
+  // convert file/image to base64
+  const convertBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = reject;
+    });
   };
 
   // form output
@@ -112,57 +105,66 @@ const Register = () => {
     setRegisterLoading(true);
     setRegisterError(false);
 
-    // upload profile pic to cloudinary
-    if (profilePicFile) {
-      const reader = new FileReader();
-      reader.readAsDataURL(profilePicFile[0]);
-      reader.onloadend = () => {
-        uploadToCloudinary(reader.result, data?.name);
-      };
-    }
-
-    // upload success if uploadedProfilePic has value
-    if (uploadedProfilePic) {
-      data["profilePic"] = uploadedProfilePic;
-
-      // sign up user with email, password
-      signUp(data.email, data.password)
-        .then((result) => {
-          // update user's profile
-          if (result.user?.uid) {
-            updateUserProfile(data?.name, data?.profilePic)
-              .then(() => {
-                // add user to users collection in db
-                axios.post(
-                  "https://ub-jewellers-server-production.up.railway.app/users",
-                  {
-                    name: result?.user?.displayName,
-                    email: result?.user?.email,
-                    img: result?.user?.photoURL,
-                  }
-                );
-                toast.success(`Authenticated as ${result?.user?.email}`);
-                reset(); // reset the form
-                setProfilePicFile(null); // reset profile pic state
-                setRegisterLoading(false);
-                navigate(from, { replace: true });
-              })
-              .catch((error) => {
-                setRegisterError(error?.code);
-                setRegisterLoading(false);
-              });
-          }
+    // convert image to base64
+    convertBase64(profilePicFile[0]).then((base64Image) => {
+      // upload image to cloudinary
+      axios
+        .post("http://localhost:5000/cloudinary-upload", {
+          name: data?.name,
+          img: base64Image,
         })
-        .catch((error) => {
-          setRegisterError(error?.code);
-          setRegisterLoading(false);
-          document.documentElement.scroll({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-          });
+        .then((res) => {
+          if (!res.data?.success) {
+            Swal.fire({
+              title: "Failed",
+              text: "Something went wrong while uploading profile picture. Try again later",
+              icon: "error",
+            });
+
+            return;
+          }
+
+          data["profilePic"] = res.data.imgURL;
+
+          // sign up user with email, password
+          signUp(data.email, data.password)
+            .then((result) => {
+              // update user's profile
+              if (result.user?.uid) {
+                updateUserProfile(data?.name, data?.profilePic)
+                  .then(() => {
+                    // add user to users collection in db
+                    axios.post(
+                      "https://ub-jewellers-server-production.up.railway.app/users",
+                      {
+                        name: result?.user?.displayName,
+                        email: result?.user?.email,
+                        img: result?.user?.photoURL,
+                      }
+                    );
+                    toast.success(`Authenticated as ${result?.user?.email}`);
+                    reset(); // reset the form
+                    setProfilePicFile(null); // reset profile pic state
+                    setRegisterLoading(false);
+                    navigate(from, { replace: true });
+                  })
+                  .catch((error) => {
+                    setRegisterError(error?.code);
+                    setRegisterLoading(false);
+                  });
+              }
+            })
+            .catch((error) => {
+              setRegisterError(error?.code);
+              setRegisterLoading(false);
+              document.documentElement.scroll({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              });
+            });
         });
-    }
+    });
   };
 
   // google sign in
