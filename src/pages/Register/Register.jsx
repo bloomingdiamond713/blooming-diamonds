@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Login/Login.css";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import AnimateText from "@moxy/react-animate-text";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
@@ -63,6 +64,45 @@ const Register = () => {
    * input.value=""
    */
   const [profilePicFile, setProfilePicFile] = useState(null);
+  const [uploadedProfilePic, setUploadedProfilePic] = useState(null);
+
+  // check profile pic size limit 200KB
+  useEffect(() => {
+    if (profilePicFile)
+      if (profilePicFile[0]?.size > 200 * 1024) {
+        setProfilePicFile(null);
+        document.getElementById("profilePicture").value = "";
+
+        Swal.fire({
+          title: "Limit Exceeded!",
+          icon: "error",
+          text: "Image size must not exceed 200KB",
+          confirmButtonColor: "#eebfab",
+          confirmButtonText: "Ok, I'll change",
+          showCloseButton: true,
+        });
+      }
+  }, [profilePicFile]);
+
+  // upload profile pic to cloudinary
+  const uploadToCloudinary = (base64Image, userName) => {
+    axios
+      .post("http://localhost:5000/cloudinary-upload", {
+        name: userName,
+        img: base64Image,
+      })
+      .then((res) => {
+        if (res.data?.success) {
+          setUploadedProfilePic(res.data.imgURL);
+        } else {
+          Swal.fire({
+            title: "Failed",
+            text: "Something went wrong while uploading profile picture. Try again later",
+            icon: "error",
+          });
+        }
+      });
+  };
 
   // form output
   const [registerLoading, setRegisterLoading] = useState(false);
@@ -72,62 +112,57 @@ const Register = () => {
     setRegisterLoading(true);
     setRegisterError(false);
 
-    const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
-      import.meta.env.VITE_IMGHOSTINGKEY
-    }`;
+    // upload profile pic to cloudinary
+    if (profilePicFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(profilePicFile[0]);
+      reader.onloadend = () => {
+        uploadToCloudinary(reader.result, data?.name);
+      };
+    }
 
-    const formData = new FormData();
-    formData.append("image", profilePicFile[0]); // as profile pic is getting set in profilePicFile the data.profilePic is not necessary to use here.
+    // upload success if uploadedProfilePic has value
+    if (uploadedProfilePic) {
+      data["profilePic"] = uploadedProfilePic;
 
-    fetch(imgHostingUrl, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((imgHostingResponse) => {
-        if (imgHostingResponse.success) {
-          data["profilePic"] = imgHostingResponse.data.display_url;
-
-          // sign up user with email, password
-          signUp(data.email, data.password)
-            .then((result) => {
-              // update user's profile
-              if (result.user?.uid) {
-                updateUserProfile(data?.name, data?.profilePic)
-                  .then(() => {
-                    // add user to users collection in db
-                    axios.post(
-                      "https://ub-jewellers-server-production.up.railway.app/users",
-                      {
-                        name: result?.user?.displayName,
-                        email: result?.user?.email,
-                        img: result?.user?.photoURL,
-                      }
-                    );
-
-                    toast.success(`Authenticated as ${result?.user?.email}`);
-                    reset(); // reset the form
-                    setProfilePicFile(null); // reset profile pic state
-                    setRegisterLoading(false);
-                    navigate(from, { replace: true });
-                  })
-                  .catch((error) => {
-                    setRegisterError(error?.code);
-                    setRegisterLoading(false);
-                  });
-              }
-            })
-            .catch((error) => {
-              setRegisterError(error?.code);
-              setRegisterLoading(false);
-              document.documentElement.scroll({
-                top: 0,
-                left: 0,
-                behavior: "smooth",
+      // sign up user with email, password
+      signUp(data.email, data.password)
+        .then((result) => {
+          // update user's profile
+          if (result.user?.uid) {
+            updateUserProfile(data?.name, data?.profilePic)
+              .then(() => {
+                // add user to users collection in db
+                axios.post(
+                  "https://ub-jewellers-server-production.up.railway.app/users",
+                  {
+                    name: result?.user?.displayName,
+                    email: result?.user?.email,
+                    img: result?.user?.photoURL,
+                  }
+                );
+                toast.success(`Authenticated as ${result?.user?.email}`);
+                reset(); // reset the form
+                setProfilePicFile(null); // reset profile pic state
+                setRegisterLoading(false);
+                navigate(from, { replace: true });
+              })
+              .catch((error) => {
+                setRegisterError(error?.code);
+                setRegisterLoading(false);
               });
-            });
-        }
-      });
+          }
+        })
+        .catch((error) => {
+          setRegisterError(error?.code);
+          setRegisterLoading(false);
+          document.documentElement.scroll({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
+        });
+    }
   };
 
   // google sign in
@@ -321,7 +356,7 @@ const Register = () => {
               onChange: (e) => setProfilePicFile(e.target.files),
             })}
             id="profilePicture"
-            accept=".png, .jpg, .jpeg"
+            accept="image/*"
             hidden
           />
 
@@ -355,8 +390,17 @@ const Register = () => {
               </div>
             </button>
           ) : (
-            <div className="border-2 border-gray-400 rounded-xl p-4 w-fit flex justify-between items-center gap-6">
-              <span>{profilePicFile[0]?.name}</span>
+            <div className="border-2 border-gray-400 rounded-xl p-4 w-fit flex justify-between items-center gap-16">
+              <div className={profilePicFile && "flex items-center gap-4"}>
+                {profilePicFile && (
+                  <img
+                    src={URL.createObjectURL(profilePicFile[0])}
+                    alt={profilePicFile[0]?.name}
+                    className="w-[55px] h-[55px] rounded-full"
+                  />
+                )}
+                <span>{profilePicFile[0]?.name}</span>
+              </div>
               <button
                 onClick={() => {
                   document.getElementById("profilePicture").value = "";
