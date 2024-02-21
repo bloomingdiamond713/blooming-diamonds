@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Login/Login.css";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import AnimateText from "@moxy/react-animate-text";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
@@ -64,6 +65,38 @@ const Register = () => {
    */
   const [profilePicFile, setProfilePicFile] = useState(null);
 
+  // check profile pic size limit 200KB
+  useEffect(() => {
+    if (profilePicFile)
+      if (profilePicFile[0]?.size > 200 * 1024) {
+        setProfilePicFile(null);
+        document.getElementById("profilePicture").value = "";
+
+        Swal.fire({
+          title: "Limit Exceeded!",
+          icon: "error",
+          text: "Image size must not exceed 200KB",
+          confirmButtonColor: "#eebfab",
+          confirmButtonText: "Ok, I'll change",
+          showCloseButton: true,
+        });
+      }
+  }, [profilePicFile]);
+
+  // convert file/image to base64
+  const convertBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = reject;
+    });
+  };
+
   // form output
   const [registerLoading, setRegisterLoading] = useState(false);
   const [registerError, setRegisterError] = useState(null);
@@ -72,21 +105,26 @@ const Register = () => {
     setRegisterLoading(true);
     setRegisterError(false);
 
-    const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${
-      import.meta.env.VITE_IMGHOSTINGKEY
-    }`;
+    // convert image to base64
+    convertBase64(profilePicFile[0]).then((base64Image) => {
+      // upload image to cloudinary
+      axios
+        .post("http://localhost:5000/cloudinary-upload", {
+          name: data?.name,
+          img: base64Image,
+        })
+        .then((res) => {
+          if (!res.data?.success) {
+            Swal.fire({
+              title: "Failed",
+              text: "Something went wrong while uploading profile picture. Try again later",
+              icon: "error",
+            });
 
-    const formData = new FormData();
-    formData.append("image", profilePicFile[0]); // as profile pic is getting set in profilePicFile the data.profilePic is not necessary to use here.
+            return;
+          }
 
-    fetch(imgHostingUrl, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((imgHostingResponse) => {
-        if (imgHostingResponse.success) {
-          data["profilePic"] = imgHostingResponse.data.display_url;
+          data["profilePic"] = res.data.imgURL;
 
           // sign up user with email, password
           signUp(data.email, data.password)
@@ -104,7 +142,6 @@ const Register = () => {
                         img: result?.user?.photoURL,
                       }
                     );
-
                     toast.success(`Authenticated as ${result?.user?.email}`);
                     reset(); // reset the form
                     setProfilePicFile(null); // reset profile pic state
@@ -126,8 +163,8 @@ const Register = () => {
                 behavior: "smooth",
               });
             });
-        }
-      });
+        });
+    });
   };
 
   // google sign in
@@ -321,7 +358,7 @@ const Register = () => {
               onChange: (e) => setProfilePicFile(e.target.files),
             })}
             id="profilePicture"
-            accept=".png, .jpg, .jpeg"
+            accept="image/*"
             hidden
           />
 
@@ -355,8 +392,17 @@ const Register = () => {
               </div>
             </button>
           ) : (
-            <div className="border-2 border-gray-400 rounded-xl p-4 w-fit flex justify-between items-center gap-6">
-              <span>{profilePicFile[0]?.name}</span>
+            <div className="border-2 border-gray-400 rounded-xl p-4 w-fit flex justify-between items-center gap-16">
+              <div className={profilePicFile && "flex items-center gap-4"}>
+                {profilePicFile && (
+                  <img
+                    src={URL.createObjectURL(profilePicFile[0])}
+                    alt={profilePicFile[0]?.name}
+                    className="w-[55px] h-[55px] rounded-full"
+                  />
+                )}
+                <span>{profilePicFile[0]?.name}</span>
+              </div>
               <button
                 onClick={() => {
                   document.getElementById("profilePicture").value = "";

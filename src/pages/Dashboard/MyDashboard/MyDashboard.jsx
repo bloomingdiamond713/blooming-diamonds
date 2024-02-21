@@ -51,7 +51,9 @@ const MyDashboard = () => {
           <div className="mt-8 profile-details-con space-y-7 mb-10">
             <div>
               <h6>Profile Picture</h6>
-              <img src={user?.photoURL} alt={user?.displayName} />
+              <div className="gradient-shadow">
+                <img src={user?.photoURL} alt={user?.displayName} />
+              </div>
             </div>
 
             <div>
