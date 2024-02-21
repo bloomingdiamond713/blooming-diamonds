@@ -56,6 +56,7 @@ Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Co
 
 ### Other Technologies:
 
+- Cloudinary
 - JSON Web Tokens (JWT)
 - Axios
 - React Query
