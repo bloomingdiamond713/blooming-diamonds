@@ -18,7 +18,7 @@ const FlashSale = () => {
   }, [products]);
 
   // countdown timer values
-  const targetDate = new Date(2024, 1, 10, 12, 0, 0, 0);
+  const targetDate = new Date(2024, 10, 10, 12, 0, 0, 0);
 
   // slick slider settings
   const sliderRef = useRef(null);
@@ -92,7 +92,6 @@ const FlashSale = () => {
         </div>
       ) : (
         <div className="w-[80%] md:w-[70%] relative">
-          {/* TODO: use _id as the key in the ProductCard */}
           <Slider ref={sliderRef} {...settings}>
             {flashSaleData?.map((cardData, idx) => (
               <ProductCard key={idx + 1} cardData={cardData} flashSale={true} />

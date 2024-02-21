@@ -109,10 +109,13 @@ const Register = () => {
     convertBase64(profilePicFile[0]).then((base64Image) => {
       // upload image to cloudinary
       axios
-        .post("http://localhost:5000/cloudinary-upload", {
-          name: data?.name,
-          img: base64Image,
-        })
+        .post(
+          "https://ub-jewellers-server-production.up.railway.app/cloudinary-upload",
+          {
+            name: data?.name,
+            img: base64Image,
+          }
+        )
         .then((res) => {
           if (!res.data?.success) {
             Swal.fire({
