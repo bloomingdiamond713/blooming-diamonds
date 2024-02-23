@@ -61,6 +61,6 @@ Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Co
 - Axios
 - React Query
 
-### Contributors ❤️
+### Acknowledgements ❤️
 
 - [@jst_hamim](https://github.com/de-knight): Provided project logo design and essential graphic assets
