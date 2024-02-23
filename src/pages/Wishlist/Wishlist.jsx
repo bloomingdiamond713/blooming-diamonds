@@ -6,6 +6,7 @@ import useCart from "../../hooks/useCart";
 import Swal from "sweetalert2";
 import useProducts from "../../hooks/useProducts";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 
 const Wishlist = () => {
   const [wishlistData, isWishlistLoading, refetch] = useWishlist();
@@ -64,6 +65,7 @@ const Wishlist = () => {
 
   return (
     <div className="container mb-36" style={{ fontFamily: "var(--poppins)" }}>
+      <CustomHelmet title="Wishlist" />
       <div>
         <div className="text-sm breadcrumbs">
           <ul>

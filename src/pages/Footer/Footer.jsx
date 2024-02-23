@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Footer.css";
-import logo from "/logo1dark.svg";
+import logo from "/logo.png";
 import { IoHomeOutline, IoMailOutline, IoCallOutline } from "react-icons/io5";
 import {
   FaFacebookF,

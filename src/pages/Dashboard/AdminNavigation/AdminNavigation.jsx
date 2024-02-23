@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "/logo1dark.svg";
+import logo from "/logo.png";
 import "./AdminNavigation.css";
 import {
   FaAngleRight,
@@ -38,32 +38,15 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
     <div>
       <header className="min-h-16 bg-white top-0 w-full fixed shadow z-[9999]">
         <div className="flex justify-between items-center h-16 gap-10 md:gap-0">
-          <div className="flex justify-between items-center gap-x-3 w-[50%] md:w-[24%]">
+          <div className="flex justify-between items-center gap-x-3 w-[50%] md:w-[19.8%] border">
             <div className="flex-grow flex flex-col md:flex-row items-center justify-around bg-[var(--pink-gold)] px-2 py-7 h-16">
-              <Link to={"/"} className="block w-[70%] md:w-[55%]">
+              <Link to={"/"} className="block w-[90%] md:w-[65%]">
                 <img src={logo} alt="logo" className="w-full" />
               </Link>
-              <div className="bg-white md:px-5 md:py-1 px-1 rounded-sm mt-1 md:mt-0">
-                <p className="text-black md:uppercase text-xs font-bold">
-                  Admin
-                </p>
-              </div>
             </div>
-
-            <button
-              id="toggle-button"
-              className="block w-[50%] md:w-[20%] h-12 bg-gray-100 rounded-full"
-              onClick={collapseSidebar}
-            >
-              <FaArrowLeft
-                className={`text-xl block mx-auto transition-all duration-700 ease-in-out ${
-                  sidebarCollapsed && "rotate-180"
-                }`}
-              />
-            </button>
           </div>
 
-          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[16%] md:w-[5%] mr-5 border-none">
+          <details className="dropdown dropdown-end bg-white shadow-none h-16 m-0 w-[16%] md:w-[5%] border-none">
             <summary className="btn p-0 ml-auto flex gap-x-3 justify-center items-center w-full bg-white shadow-none rounded-none h-full hover:bg-base-200 border-none md:px-2">
               <div className="w-full px-2 md:px-0">
                 <img
@@ -111,8 +94,8 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
 
       <aside
         className={`${
-          !sidebarCollapsed ? "w-[100vw] md:w-[19.72%]" : "w-[55px]"
-        } h-[calc(100vh-64px)] whitespace-nowrap fixed shadow overflow-x-hidden transition-all duration-500 ease-in-out top-16 bg-black z-[9999]`}
+          !sidebarCollapsed ? "w-[92vw] md:w-[19.72%]" : "w-[55px]"
+        } h-[calc(100vh-64px)] whitespace-nowrap fixed shadow overflow-x-visible transition-all duration-500 ease-in-out top-16 bg-black z-[9999]`}
       >
         <div className="sidebar-menu-con flex flex-col justify-between h-full">
           <ul className="flex flex-col gap-2 mt-2 overflow-x-hidden overflow-y-auto flex-grow">
@@ -232,6 +215,17 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
             </li>
           </ul>
         </div>
+
+        <button
+          className="absolute top-1 -right-4 bg-slate-100 rounded-full p-2 opacity-70 hover:opacity-100"
+          onClick={collapseSidebar}
+        >
+          <FaArrowLeft
+            className={` block mx-auto transition-all duration-700 ease-in-out ${
+              sidebarCollapsed && "rotate-180"
+            }`}
+          />
+        </button>
       </aside>
     </div>
   );

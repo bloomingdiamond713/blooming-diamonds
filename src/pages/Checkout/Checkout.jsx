@@ -7,6 +7,7 @@ import { FaPencil } from "react-icons/fa6";
 import useAuthContext from "../../hooks/useAuthContext";
 import { v4 as uuidv4 } from "uuid";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 
 const Checkout = () => {
   const { user } = useAuthContext();
@@ -64,6 +65,7 @@ const Checkout = () => {
 
   return (
     <div className="container mb-20" style={{ fontFamily: "var(--poppins)" }}>
+      <CustomHelmet title="Checkout" />
       <div className="text-sm breadcrumbs ml-6">
         <ul>
           <li>

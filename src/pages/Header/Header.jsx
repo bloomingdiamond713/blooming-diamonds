@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css";
-// import logo from "/logo1light.svg";
-import logo from "/testlogo.png";
+import logo from "/logo.png";
 import {
   FiPhone,
   FiSearch,
@@ -361,7 +360,7 @@ const Header = () => {
                         <RiMenu2Fill className="text-xl" />
                       </label>
                     </div>
-                    <div className="w-[40%] md:w-[25%] md:px-2 text-center">
+                    <div className="w-[38%] md:w-[25%] md:px-2 text-center">
                       <Link to="/">
                         <img
                           src={logo}
@@ -554,7 +553,7 @@ const Header = () => {
                         <RiMenu2Fill className="text-xl" />
                       </label>
                     </div>
-                    <div className="w-[40%] md:w-[25%] md:px-2 text-center">
+                    <div className="w-[38%] md:w-[25%] md:px-2 text-center">
                       <Link to="/">
                         <img
                           src={logo}

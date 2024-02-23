@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import AnimateText from "@moxy/react-animate-text";
 import Swal from "sweetalert2";
+import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
@@ -203,6 +204,7 @@ const Register = () => {
       className="container mt-20 mb-24 px-6 md:px-0"
       style={{ fontFamily: "var(--poppins)" }}
     >
+      <CustomHelmet title="Register" />
       <h1
         className="text-6xl font-bold tracking-wide mb-10"
         style={{ fontFamily: "var(--italiana)" }}

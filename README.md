@@ -1,6 +1,6 @@
 # UB Jewellers - Discover Exquisite Pieces
 
-![UB Jewellers](/public/logo1light.svg)
+![UB Jewellers](/public/logo.png)
 
 Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Commerce Project!** This project is a **full-stack** application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) along with other technologies to create an online shop for jewelry products. Users can explore various categories, products, reviews, and more to find unique jewelry pieces at affordable prices..
 
@@ -60,3 +60,7 @@ Welcome to [UB Jewellers](https://ub-jewellers.web.app/), a **Jewelry Store E-Co
 - JSON Web Tokens (JWT)
 - Axios
 - React Query
+
+### Contributors ❤️
+
+- [@jst_hamim](https://github.com/de-knight): Provided project logo design and essential graphic assets
