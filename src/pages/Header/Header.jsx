@@ -242,8 +242,12 @@ const Header = () => {
             >
               {/* close button */}
               <button
-                onClick={() => setSearchBar("closed")}
-                className="flex justify-end text-3xl w-full pr-6 mt-3"
+                onClick={() => {
+                  setSearchBar("closed");
+                  setSearchText("");
+                  document.getElementById("search-input-field").value = "";
+                }}
+                className="flex justify-end text-xl md:text-3xl w-full pr-6 mt-3"
               >
                 <TfiClose className="hover:fill-red-400" />
               </button>
@@ -255,12 +259,31 @@ const Header = () => {
                 </h5>
 
                 <div className="header-search-bar relative">
-                  <FiSearch className="text-3xl absolute -top-1 right-0" />
+                  <FiSearch
+                    className="text-2xl md:text-3xl absolute md:-top-1 right-0"
+                    onClick={() =>
+                      setSearchText(
+                        document.getElementById("search-input-field").value
+                      )
+                    }
+                  />
+
+                  {searchText && (
+                    <TfiClose
+                      className="text-blue-600 text-sm md:text-xl top-1 md:top-0 absolute right-10"
+                      onClick={() => {
+                        setSearchText("");
+                        document.getElementById("search-input-field").value =
+                          "";
+                      }}
+                    />
+                  )}
+
                   <input
                     type="text"
                     id="search-input-field"
                     placeholder="Search"
-                    onBlur={(e) => setSearchText(e.target.value)}
+                    className="pr-10"
                     onKeyDownCapture={(e) =>
                       e.key === "Enter" && setSearchText(e.target.value)
                     }
@@ -430,9 +453,9 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-1">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-4 md:space-x-5 text-center ml-auto pr-1">
                       <FiSearch
-                        className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
+                        className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
                         title="Search Products"
                       />
@@ -441,7 +464,7 @@ const Header = () => {
                         className="hidden md:inline"
                         title="Wishlist"
                       >
-                        <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        <FiHeart className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </Link>
 
                       <div
@@ -449,16 +472,16 @@ const Header = () => {
                         onClick={() => setShowRightDrawer(true)}
                         title="Cart"
                       >
-                        <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
+                        <span className="indicator-item badge badge-sm md:badge-md bg-[var(--pink-gold)] text-white border-none font-bold">
                           {user ? cartData?.length : 0}
                         </span>
-                        <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        <FiShoppingCart className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </div>
 
                       {!user && (
                         <Link to="/login">
                           <FiUser
-                            className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
+                            className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                             title="Login"
                           />
                         </Link>
@@ -474,7 +497,7 @@ const Header = () => {
                               id="sticky-nav"
                             >
                               <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
-                                <div className="w-10 rounded-full">
+                                <div className="w-9 md:w-10 rounded-full">
                                   <img
                                     alt={user.displayName || user.email}
                                     src={
@@ -599,9 +622,9 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-1">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-4 md:space-x-5 text-center ml-auto">
                       <FiSearch
-                        className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
+                        className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
                         title="Search products"
                       />
@@ -618,15 +641,15 @@ const Header = () => {
                         onClick={() => setShowRightDrawer(true)}
                         title="Cart"
                       >
-                        <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
+                        <span className="indicator-item badge badge-sm md:badge-md bg-[var(--pink-gold)] text-white border-none font-bold">
                           {user ? cartData?.length : 0}
                         </span>
-                        <FiShoppingCart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                        <FiShoppingCart className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </div>
 
                       {!user && (
                         <Link to="/login" title="Login">
-                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                          <FiUser className="text-xl md:text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                         </Link>
                       )}
 
@@ -641,7 +664,7 @@ const Header = () => {
                                 id="not-sticky-nav"
                               >
                                 <summary className="btn btn-ghost btn-circle avatar transition-all duration-400 ease">
-                                  <div className="w-10 rounded-full">
+                                  <div className="w-9 md:w-10 rounded-full">
                                     <img
                                       alt={user.displayName || user.email}
                                       src={
