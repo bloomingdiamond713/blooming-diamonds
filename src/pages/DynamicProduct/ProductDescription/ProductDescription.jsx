@@ -7,7 +7,6 @@ const ProductDescription = () => {
   const [products] = useProducts();
   const [dynamicProduct, setDynamicProduct] = useState(null);
 
-  // todo: load data from database
   useEffect(() => {
     const filter = products?.find((item) => item._id == id); // find product by id
     setDynamicProduct(filter);

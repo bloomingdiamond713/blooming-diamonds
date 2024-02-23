@@ -160,3 +160,9 @@
     transform: translate(-32px, 0);
   }
 }
+
+@media screen and (max-width: 600px) {
+  .pace-progress {
+    height: 5px;
+  }
+}

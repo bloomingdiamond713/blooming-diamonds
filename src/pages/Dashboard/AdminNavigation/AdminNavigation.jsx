@@ -52,7 +52,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
 
             <button
               id="toggle-button"
-              className="block w-[30%] md:w-[20%] h-12 bg-gray-100 rounded-full"
+              className="block w-[50%] md:w-[20%] h-12 bg-gray-100 rounded-full"
               onClick={collapseSidebar}
             >
               <FaArrowLeft
@@ -69,7 +69,7 @@ const AdminNavigation = ({ sidebarCollapsed, setSidebarCollapsed }) => {
                 <img
                   src={user?.photoURL}
                   alt={userFromDB?.name}
-                  className="w-full h-11 rounded-full"
+                  className="w-full h-11 rounded-full border border-[var(--pink-gold)]"
                 />
               </div>
             </summary>

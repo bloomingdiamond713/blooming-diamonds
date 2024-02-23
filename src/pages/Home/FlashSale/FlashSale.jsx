@@ -7,15 +7,16 @@ import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import useProducts from "../../../hooks/useProducts";
 import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
+import { useMediaQuery } from "react-responsive";
 
 const FlashSale = () => {
-  // TODO: LOAD DATA FROM DATABASE
   const [products, isProductsLoading] = useProducts();
   const [flashSaleData, setFlashSaleData] = useState([]);
   useEffect(() => {
     const filterFlashProducts = products?.filter((p) => p.flashSale === true);
     setFlashSaleData(filterFlashProducts);
   }, [products]);
+  const isMobile = useMediaQuery({ maxWidth: 480 });
 
   // countdown timer values
   const targetDate = new Date(2024, 10, 10, 12, 0, 0, 0);
@@ -85,8 +86,8 @@ const FlashSale = () => {
       </div>
 
       {isProductsLoading ? (
-        <div className="mx-auto flex items-center gap-2">
-          {[...Array(3)].map((item, idx) => (
+        <div className="mx-auto flex flex-col md:flex-row items-center gap-2">
+          {[...Array(isMobile ? 1 : 3)].map((item, idx) => (
             <CardSkeleton key={idx} height={"280px"} width={"270px"} />
           ))}
         </div>

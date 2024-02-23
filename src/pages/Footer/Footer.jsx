@@ -14,7 +14,6 @@ import axios from "axios";
 
 const Footer = () => {
   const location = useLocation();
-  // todo: load category data from data
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     axios

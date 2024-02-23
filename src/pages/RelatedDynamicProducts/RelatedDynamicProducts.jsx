@@ -10,7 +10,6 @@ const RelatedDynamicProducts = () => {
   const [products] = useProducts();
   const [relatedProducts, setRelatedProducts] = useState(null);
 
-  //   todo: load data from database
   useEffect(() => {
     const dynamicProduct = products?.find((p) => p._id === id);
     const sameCategoryProducts = products?.filter(

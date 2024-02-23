@@ -8,7 +8,6 @@ import { TfiQuoteLeft, TfiQuoteRight } from "react-icons/tfi";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 
 const Reviews = () => {
-  // TODO: LOAD DATA FROM DATABASE
   const { data: reviews, isLoading: isReviewsLoading } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {

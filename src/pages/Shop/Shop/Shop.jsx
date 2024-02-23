@@ -435,13 +435,13 @@ const Shop = () => {
 
           {/* products */}
           {filterLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-20 mt-8">
+            <div className="w-[90%] md:w-full grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-20 mt-8 mx-auto">
               {/* iterate empty array of length 9 */}
               {[...Array(9)].map((item, idx) => (
                 <CardSkeleton
                   key={idx}
                   height={isMobile ? "220px" : "340px"}
-                  width={isMobile ? "200px" : "330px"}
+                  width={"100%"}
                 />
               ))}
             </div>

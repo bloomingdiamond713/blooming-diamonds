@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css";
-import logo from "/logo1light.svg";
+// import logo from "/logo1light.svg";
+import logo from "/testlogo.png";
 import {
   FiPhone,
   FiSearch,
@@ -194,8 +195,6 @@ const Header = () => {
               />
             </div>
             <div className="w-[25%] flex justify-end items-center gap-3 upper-nav-right">
-              {/* TODO: Create relevant social media accounts for ub-jewellers */}
-
               <a
                 href="https://www.facebook.com/uzzal.bhowmik01"
                 target="_blank"
@@ -362,12 +361,12 @@ const Header = () => {
                         <RiMenu2Fill className="text-xl" />
                       </label>
                     </div>
-                    <div className="w-[27%] md:w-[25%] md:px-2 text-center">
+                    <div className="w-[40%] md:w-[25%] md:px-2 text-center">
                       <Link to="/">
                         <img
                           src={logo}
                           alt="logo"
-                          className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
+                          className="w-full md:w-[210px] cursor-pointer"
                         />
                       </Link>
                     </div>
@@ -432,18 +431,24 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-4">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-1">
                       <FiSearch
                         className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
+                        title="Search Products"
                       />
-                      <Link to="/wishlist" className="hidden md:inline">
+                      <Link
+                        to="/wishlist"
+                        className="hidden md:inline"
+                        title="Wishlist"
+                      >
                         <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </Link>
 
                       <div
                         className="indicator"
                         onClick={() => setShowRightDrawer(true)}
+                        title="Cart"
                       >
                         <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
                           {user ? cartData?.length : 0}
@@ -453,7 +458,10 @@ const Header = () => {
 
                       {!user && (
                         <Link to="/login">
-                          <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
+                          <FiUser
+                            className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
+                            title="Login"
+                          />
                         </Link>
                       )}
 
@@ -546,12 +554,12 @@ const Header = () => {
                         <RiMenu2Fill className="text-xl" />
                       </label>
                     </div>
-                    <div className="w-[27%] md:w-[25%] md:px-2 text-center">
+                    <div className="w-[40%] md:w-[25%] md:px-2 text-center">
                       <Link to="/">
                         <img
                           src={logo}
                           alt="logo"
-                          className="w-full md:w-[170px] md:h-[90px] cursor-pointer"
+                          className="w-full md:w-[210px] cursor-pointer"
                         />
                       </Link>
                     </div>
@@ -592,18 +600,24 @@ const Header = () => {
                       </ul>
                     </div>
 
-                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto">
+                    <div className="md:w-[20%] flex justify-end items-center space-x-5 text-center ml-auto pr-1">
                       <FiSearch
                         className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out"
                         onClick={handleSearchIcon}
+                        title="Search products"
                       />
-                      <Link to="/wishlist" className="hidden md:inline">
+                      <Link
+                        to="/wishlist"
+                        className="hidden md:inline"
+                        title="Wishlist"
+                      >
                         <FiHeart className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                       </Link>
 
                       <div
                         className="indicator"
                         onClick={() => setShowRightDrawer(true)}
+                        title="Cart"
                       >
                         <span className="indicator-item badge bg-[var(--pink-gold)] text-white border-none font-bold">
                           {user ? cartData?.length : 0}
@@ -612,7 +626,7 @@ const Header = () => {
                       </div>
 
                       {!user && (
-                        <Link to="/login">
+                        <Link to="/login" title="Login">
                           <FiUser className="text-2xl cursor-pointer hover:text-[var(--deep-yellow)] transition-colors duration-150 ease-out" />
                         </Link>
                       )}
@@ -765,6 +779,18 @@ const Header = () => {
                       smooth
                     >
                       Shop
+                    </HashLink>
+                    <HashLink
+                      to="/wishlist"
+                      className={`block ${isOpen ? "animate-slide-left" : ""}`}
+                      onClick={handleLinkClicked}
+                      scroll={(el) => scrollWithOffset(el)}
+                      smooth
+                    >
+                      <div className="flex flex-row-reverse items-center gap-2">
+                        <FiHeart />
+                        Wishlist
+                      </div>
                     </HashLink>
                     <HashLink
                       to="/#reviews"

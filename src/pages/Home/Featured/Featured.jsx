@@ -61,8 +61,8 @@ const Featured = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-center gap-x-4 space-y-8 md:space-y-0">
-        <div>
+      <div className="flex flex-col md:flex-row justify-between md:items-center md:gap-x-4 space-y-8 md:space-y-0 px-4 md:px-0">
+        <div className="md:w-1/2">
           <h4
             className="font-bold text-2xl mb-4"
             style={{ fontFamily: "var(--italiana)" }}
@@ -71,8 +71,13 @@ const Featured = () => {
           </h4>
 
           {isProductsLoading ? (
-            <div>
-              <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+            <div className="w-full">
+              {[...Array(5)].map((_, idx) => (
+                <div
+                  className="skeleton w-full h-16 my-4 rounded-none"
+                  key={idx}
+                ></div>
+              ))}
             </div>
           ) : (
             <div className="space-y-3">
@@ -87,7 +92,7 @@ const Featured = () => {
           )}
         </div>
 
-        <div>
+        <div className="md:w-1/2">
           <h4
             className="font-bold text-2xl mb-4"
             style={{ fontFamily: "var(--italiana)" }}
@@ -95,8 +100,13 @@ const Featured = () => {
             Best Sellers
           </h4>
           {isProductsLoading ? (
-            <div>
-              <span className="loading loading-spinner loading-lg block mx-auto my-10"></span>
+            <div className="w-full">
+              {[...Array(5)].map((_, idx) => (
+                <div
+                  className="skeleton w-full h-16 my-4 rounded-none"
+                  key={idx}
+                ></div>
+              ))}
             </div>
           ) : (
             <div className="space-y-3">

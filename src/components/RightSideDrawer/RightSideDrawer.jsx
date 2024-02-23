@@ -125,75 +125,92 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
                 <span className="loading loading-spinner loading-md"></span>
               </div>
             ) : (
-              <div className="space-y-6 mb-10">
-                {cartData?.map((product) => (
-                  <div
-                    key={product._id}
-                    className="flex items-center gap-4 w-full"
-                  >
-                    <img
-                      src={product.img}
-                      alt={product.name}
-                      className="w-[35%] border-none rounded-lg bg-slate-100"
-                    />
-                    <div className="w-[75%]">
-                      <Link to={`/products/${product.productId}/description`}>
-                        <h5 className="font-bold">{product.name}</h5>
+              <>
+                {!cartData?.length ? (
+                  <div>
+                    <p className="text-center mt-2 text-medium">
+                      No product found.{" "}
+                      <Link to="/shop" className="underline text-blue-400">
+                        Shop Now
                       </Link>
-                      <p className="mt-2 font-semibold">$ {product.price}</p>
-
-                      {/* plus minus quantity or delete option */}
-                      <div className="flex justify-between items-center mt-4">
-                        <div className="w-[60%] flex items-center justify-between border border-black py-1 px-2">
-                          <button
-                            disabled={product.quantity === 1}
-                            onClick={() =>
-                              handleUpdateQuantity(
-                                product._id,
-                                "minus",
-                                product.quantity,
-                                product.productId
-                              )
-                            }
-                            className={`${
-                              product.quantity === 1 && "text-gray-300"
-                            }`}
-                          >
-                            <FaMinus />
-                          </button>
-                          <span className="font-bold text-lg">
-                            {product._id === quantityLoading._id &&
-                            quantityLoading.status ? (
-                              <span className="loading loading-ring loading-xs"></span>
-                            ) : (
-                              product.quantity
-                            )}
-                          </span>
-                          <button
-                            onClick={() =>
-                              handleUpdateQuantity(
-                                product._id,
-                                "plus",
-                                product.quantity,
-                                product.productId
-                              )
-                            }
-                          >
-                            <FaPlus />
-                          </button>
-                        </div>
-
-                        <button
-                          onClick={() => handleRemoveFromCart(product._id)}
-                        >
-                          <FaRegTrashCan className="text-2xl text-gray-600 hover:text-black" />
-                        </button>
-                      </div>
-                      {/* --------------- */}
-                    </div>
+                    </p>
                   </div>
-                ))}
-              </div>
+                ) : (
+                  <div className="space-y-6 mb-10">
+                    {cartData?.map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex items-center gap-4 w-full"
+                      >
+                        <img
+                          src={product.img}
+                          alt={product.name}
+                          className="w-[35%] border-none rounded-lg bg-slate-100"
+                        />
+                        <div className="w-[75%]">
+                          <Link
+                            to={`/products/${product.productId}/description`}
+                          >
+                            <h5 className="font-bold">{product.name}</h5>
+                          </Link>
+                          <p className="mt-2 font-semibold">
+                            $ {product.price}
+                          </p>
+
+                          {/* plus minus quantity or delete option */}
+                          <div className="flex justify-between items-center mt-4">
+                            <div className="w-[60%] flex items-center justify-between border border-black py-1 px-2">
+                              <button
+                                disabled={product.quantity === 1}
+                                onClick={() =>
+                                  handleUpdateQuantity(
+                                    product._id,
+                                    "minus",
+                                    product.quantity,
+                                    product.productId
+                                  )
+                                }
+                                className={`${
+                                  product.quantity === 1 && "text-gray-300"
+                                }`}
+                              >
+                                <FaMinus />
+                              </button>
+                              <span className="font-bold text-lg">
+                                {product._id === quantityLoading._id &&
+                                quantityLoading.status ? (
+                                  <span className="loading loading-ring loading-xs"></span>
+                                ) : (
+                                  product.quantity
+                                )}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  handleUpdateQuantity(
+                                    product._id,
+                                    "plus",
+                                    product.quantity,
+                                    product.productId
+                                  )
+                                }
+                              >
+                                <FaPlus />
+                              </button>
+                            </div>
+
+                            <button
+                              onClick={() => handleRemoveFromCart(product._id)}
+                            >
+                              <FaRegTrashCan className="text-2xl text-gray-600 hover:text-black" />
+                            </button>
+                          </div>
+                          {/* --------------- */}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
           <div className="right-drawer-footer border-t-2 border-dashed py-3 px-2 mt-5 mb-1 space-y-8">

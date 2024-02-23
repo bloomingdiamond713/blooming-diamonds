@@ -11,8 +11,8 @@ const DashboardLayout = () => {
   const [userFromDB, isUserLoading] = useUserInfo();
   const { user, isAuthLoading } = useAuthContext();
 
-  // dashboard sidenav control
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  // amdin dashboard side-navbar control
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   return (
     <div style={{ fontFamily: "var(--poppins)" }} className="max-w-screen-2xl">

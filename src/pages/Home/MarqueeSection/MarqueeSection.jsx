@@ -3,7 +3,6 @@ import "./MarqueeSection.css";
 import Marquee from "react-fast-marquee";
 
 const MarqueeSection = () => {
-  // TODO: Load data from database
   const marqueeData = [
     "Originals",
     "Handcrafted For You",
