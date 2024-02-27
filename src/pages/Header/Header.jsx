@@ -149,8 +149,6 @@ const Header = () => {
     }
   }, [userFromDB, location]);
 
-  console.log(isAuthLoading);
-
   // admin routes links
   const adminRoutes = (
     <>

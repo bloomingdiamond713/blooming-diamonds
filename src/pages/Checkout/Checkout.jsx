@@ -20,7 +20,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log("payment info", paymentInfo);
+  console.log(cartSubtotal?.subtotal);
 
   // POST ORDER DATA TO DB
   const handlePlaceOrder = () => {
@@ -106,7 +106,7 @@ const Checkout = () => {
                   <p>
                     Phone:{" "}
                     <span className="font-bold">
-                      +{userFromDB?.shippingAddress.mobileNumber}
+                      {userFromDB?.shippingAddress.number}
                     </span>
                   </p>
                   <p>
@@ -186,7 +186,10 @@ const Checkout = () => {
                 </div>
 
                 {paymentMethod == "card" && (
-                  <Payment setPaymentInfo={setPaymentInfo} />
+                  <Payment
+                    orderTotal={cartSubtotal?.subtotal}
+                    setPaymentInfo={setPaymentInfo}
+                  />
                 )}
               </div>
 

@@ -6,7 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import useAuthContext from "../../../hooks/useAuthContext";
 
-const CheckoutForm = ({ setPaymentInfo }) => {
+const CheckoutForm = ({ setPaymentInfo, orderTotal }) => {
   const { user } = useAuthContext();
   const stripe = useStripe();
   const elements = useElements();
@@ -69,7 +69,7 @@ const CheckoutForm = ({ setPaymentInfo }) => {
           {isLoading ? (
             <span className="loading loading-spinner text-primary"></span>
           ) : (
-            "Pay now"
+            <span className="font-bold text-base">Pay ${orderTotal}</span>
           )}
         </span>
       </button>

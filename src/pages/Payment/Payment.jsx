@@ -7,7 +7,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
 
-const Payment = ({ setPaymentInfo }) => {
+const Payment = ({ setPaymentInfo, orderTotal }) => {
   const [clientSecret, setClientSecret] = useState("");
   const { cartSubtotal } = useCart();
   const [axiosSecure] = useAxiosSecure();
@@ -33,7 +33,10 @@ const Payment = ({ setPaymentInfo }) => {
     <div className="ml-5 mt-5">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm setPaymentInfo={setPaymentInfo} />
+          <CheckoutForm
+            setPaymentInfo={setPaymentInfo}
+            orderTotal={orderTotal}
+          />
         </Elements>
       )}
     </div>

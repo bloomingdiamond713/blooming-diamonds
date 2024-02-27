@@ -100,7 +100,7 @@ const ProductReviews = () => {
         })
         .then((res) => {
           if (res.data.modifiedCount > 0) {
-            toast.success("Your review was added successfully");
+            toast.success("Review Added", { position: "bottom-right" });
             form.reset();
             setStarRating(0);
             setProductReviewError("");

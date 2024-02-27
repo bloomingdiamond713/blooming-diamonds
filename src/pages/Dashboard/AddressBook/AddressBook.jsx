@@ -6,6 +6,7 @@ import { City, Country, State } from "country-state-city";
 import toast from "react-hot-toast";
 import { FaPencil } from "react-icons/fa6";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import axios from "axios";
 
 const AddressBook = () => {
   // react hook form props
@@ -14,6 +15,7 @@ const AddressBook = () => {
     handleSubmit,
     reset,
     formState: { errors },
+    setError,
   } = useForm();
   const [userFromDB, , refetch] = useUserInfo();
   const [shippingAdd, setShippingAdd] = useState(null);
@@ -60,6 +62,28 @@ const AddressBook = () => {
     }
   }, [stateCode, countryCode]);
 
+  // fetch phone number length for countries
+  const [phoneNumInfo, setPhoneNumInfo] = useState(0);
+  useEffect(() => {
+    axios
+      .get("https://71f90181a2134520be0e927a52b5cdc6.api.mockbin.io/")
+      .then((res) => {
+        const data = res.data;
+        const countryDetails = data.find(
+          (country) =>
+            country.code.toLowerCase() ===
+            Country.getCountryByCode(countryCode).isoCode.toLowerCase()
+        );
+        setPhoneNumInfo({
+          phoneCode: countryDetails.phone,
+          numberLength: parseInt(countryDetails.phoneLength),
+        });
+      })
+      .catch(() => {
+        setPhoneNumInfo(30);
+      });
+  }, [stateData, countryCode]);
+
   // set default values for the form
   useEffect(() => {
     let defaultValues = {};
@@ -74,6 +98,7 @@ const AddressBook = () => {
   const onSubmit = (data) => {
     data.state = State.getStateByCodeAndCountry(data.state, data.country).name;
     data.country = Country.getCountryByCode(data.country).name;
+    data.number = `+${phoneNumInfo?.phoneCode} ${data.mobileNumber}`;
 
     // post the data to user db
     axiosSecure
@@ -129,8 +154,7 @@ const AddressBook = () => {
                 Email: <span className="font-bold">{shippingAdd.email}</span>
               </p>
               <p>
-                Phone:{" "}
-                <span className="font-bold">+{shippingAdd.mobileNumber}</span>
+                Phone: <span className="font-bold">{shippingAdd.number}</span>
               </p>
               <p>
                 City:{" "}
@@ -190,24 +214,12 @@ const AddressBook = () => {
               </div>
 
               <div>
-                <p>Mobile Number *</p>
-                <input
-                  type="number"
-                  {...register("mobileNumber", { required: true })}
-                  placeholder="Enter mobile number with country code(e.g +880)"
-                />
-                {errors.mobileNumber && (
-                  <span className="text-red-400">
-                    Mobile Number is required
-                  </span>
-                )}
-              </div>
-
-              <div>
                 <p>Street Address *</p>
                 <input
                   type="text"
-                  {...register("streetAddress", { required: true })}
+                  {...register("streetAddress", {
+                    required: true,
+                  })}
                 />
                 {errors.streetAddress && (
                   <span className="text-red-400">
@@ -237,7 +249,7 @@ const AddressBook = () => {
               </div>
 
               <div>
-                <p>State/Province/Division/District *</p>
+                <p>State/Province/Division *</p>
                 <select
                   {...register("state", {
                     required: true,
@@ -262,7 +274,9 @@ const AddressBook = () => {
                 <p>City/Town/District *</p>
                 {cityData?.length ? (
                   <select
-                    {...register("city", { required: true })}
+                    {...register("city", {
+                      required: true,
+                    })}
                     defaultValue={cityData[0].name}
                   >
                     {cityData.map((city) => (
@@ -280,6 +294,43 @@ const AddressBook = () => {
                 {errors.state && (
                   <span className="text-red-400">
                     State/Province is required
+                  </span>
+                )}
+              </div>
+
+              <div className="relative">
+                <p>Mobile Number *</p>
+                <input
+                  autoComplete="false"
+                  {...register("mobileNumber", {
+                    required: "Phone number is required",
+                  })}
+                  type="number"
+                  className="pl-20"
+                  onInput={(e) => {
+                    if (e.target.value.length > e.target.maxLength)
+                      setError("mobileNumber", {
+                        type: "maxLength",
+                        message: `Mobile number cannot be more than ${phoneNumInfo?.numberLength} digits`,
+                      });
+                    e.target.value = e.target.value.slice(
+                      0,
+                      e.target.maxLength
+                    );
+                  }}
+                  maxLength={phoneNumInfo?.numberLength}
+                />
+                <span
+                  className={`country-code absolute left-2 text-[1.1rem] border px-3 rounded-lg border-black bottom-2 ${
+                    errors?.mobileNumber?.type === "maxLength" &&
+                    "bottom-14 md:bottom-8"
+                  }`}
+                >
+                  +{Country?.getCountryByCode(countryCode)?.phonecode}
+                </span>
+                {errors?.mobileNumber && (
+                  <span className="text-red-400">
+                    {errors.mobileNumber?.message}
                   </span>
                 )}
               </div>
