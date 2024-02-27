@@ -180,12 +180,10 @@ const ProductReviews = () => {
           <div className="md:pl-10 md:pr-20 product-reviews-con">
             {dynamicProduct?.review?.slice(0, reviewsLength).map((r) => (
               <div key={r._id} className="flex items-start gap-4 ">
-                <div className="md:w-[5%]">
-                  <img
-                    src={r.reviewerImg}
-                    alt={r.reviewerName}
-                    className=" rounded-full"
-                  />
+                <div className="avatar">
+                  <div className="mask mask-circle w-12 h-12">
+                    <img src={r.reviewerImg} alt={r.reviewerName} />
+                  </div>
                 </div>
 
                 <div className="md:w-[95%]">

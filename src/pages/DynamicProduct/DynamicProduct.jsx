@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import useDynamicRating from "../../hooks/useDynamicRating";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { FaCartShopping, FaMagnifyingGlass, FaRegHeart } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaRegHeart } from "react-icons/fa6";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { RiRefund2Line } from "react-icons/ri";
 import Magnifier from "react-magnifier";
@@ -15,6 +15,7 @@ import useCart from "../../hooks/useCart";
 import useAuthContext from "../../hooks/useAuthContext";
 import useWishlist from "../../hooks/useWishlist";
 import toast from "react-hot-toast";
+import { FiShoppingCart } from "react-icons/fi";
 
 const DynamicProduct = () => {
   const { id } = useParams();
@@ -76,7 +77,7 @@ const DynamicProduct = () => {
         style={{ fontFamily: "var(--poppins)" }}
       >
         {/* left side div */}
-        <div className="w-full md:w-[40%] relative product-img-con border rounded-xl h-[500px]">
+        <div className="w-full md:w-[40%] relative product-img-con border-2 rounded-xl h-[500px]">
           <div className="h-[100%] flex justify-center items-center">
             {/* product image magnifier */}
             <Magnifier
@@ -170,7 +171,8 @@ const DynamicProduct = () => {
               disabled={presentInCart}
               onClick={() => handleAddToCartWishlist("cart")}
             >
-              <FaCartShopping />
+              {/* <FaCartShopping /> */}
+              <FiShoppingCart className="text-lg" />
               <span>{presentInCart ? "ADDED TO CART" : "ADD TO CART"}</span>
             </button>
             <button
@@ -183,7 +185,7 @@ const DynamicProduct = () => {
             </button>
           </div>
 
-          <div className="border rounded-xl px-7 py-6 space-y-4 mt-12 md:w-[70%]">
+          <div className="border-2 rounded-xl px-7 py-6 space-y-4 mt-12 md:w-[70%]">
             <div className="flex items-center gap-5">
               <LiaShippingFastSolid className="text-3xl" />
               <div>
