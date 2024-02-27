@@ -147,6 +147,12 @@ svg {
   .animate-slide-left:nth-child(7) {
     animation-delay: 0.8s;
   }
+  .animate-slide-left:nth-child(8) {
+    animation-delay: 0.9s;
+  }
+  .animate-slide-left:nth-child(9) {
+    animation-delay: 0.1s;
+  }
 }
 
 @keyframes slide-in-blurred-left {

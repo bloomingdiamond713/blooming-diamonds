@@ -10,7 +10,7 @@ import AnimateText from "@moxy/react-animate-text";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 
 const Login = () => {
-  const { signIn, signInGoogle } = useAuthContext();
+  const { signIn, signInGoogle, setIsAuthLoading } = useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [loginLoading, setLoginLoading] = useState(false);
@@ -49,6 +49,7 @@ const Login = () => {
           left: 0,
           behavior: "smooth",
         });
+        setIsAuthLoading(false);
       });
   };
 
@@ -59,7 +60,10 @@ const Login = () => {
         toast.success(`Authenticated as ${res.user?.email}`);
         navigate(from, { replace: true });
       })
-      .catch((error) => setLoginError(error?.code));
+      .catch((error) => {
+        setIsAuthLoading(false);
+        setLoginError(error?.code);
+      });
   };
 
   return (

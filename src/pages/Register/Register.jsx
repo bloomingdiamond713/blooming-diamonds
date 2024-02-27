@@ -13,7 +13,8 @@ import Swal from "sweetalert2";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 
 const Register = () => {
-  const { signUp, updateUserProfile, signInGoogle } = useAuthContext();
+  const { signUp, updateUserProfile, signInGoogle, setIsAuthLoading } =
+    useAuthContext();
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [fileDragged, setFileDragged] = useState(false);
@@ -155,6 +156,7 @@ const Register = () => {
                   .catch((error) => {
                     setRegisterError(error?.code);
                     setRegisterLoading(false);
+                    setIsAuthLoading(false);
                   });
               }
             })
@@ -166,6 +168,7 @@ const Register = () => {
                 left: 0,
                 behavior: "smooth",
               });
+              setIsAuthLoading(false);
             });
         });
     });
@@ -196,6 +199,7 @@ const Register = () => {
           left: 0,
           behavior: "smooth",
         });
+        setIsAuthLoading(false);
       });
   };
 

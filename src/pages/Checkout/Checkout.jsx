@@ -20,6 +20,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log("payment info", paymentInfo);
+
   // POST ORDER DATA TO DB
   const handlePlaceOrder = () => {
     const orderId = uuidv4();

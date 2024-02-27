@@ -77,7 +77,6 @@ const AuthProvider = ({ children }) => {
         setIsAuthLoading(false);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -89,6 +88,7 @@ const AuthProvider = ({ children }) => {
     signIn,
     signInGoogle,
     logOut,
+    setIsAuthLoading,
   };
 
   return (
