@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   PaymentElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 import useAuthContext from "../../../hooks/useAuthContext";
+import { PaymentContext } from "../../Checkout/Checkout";
 
-const CheckoutForm = ({ setPaymentInfo, orderTotal }) => {
+const CheckoutForm = () => {
   const { user } = useAuthContext();
   const stripe = useStripe();
   const elements = useElements();
+
+  const { orderTotal, setPaymentInfo } = useContext(PaymentContext);
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

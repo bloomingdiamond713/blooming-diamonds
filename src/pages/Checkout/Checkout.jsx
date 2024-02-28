@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useUserInfo from "../../hooks/useUserInfo";
 import Payment from "../Payment/Payment";
@@ -8,6 +8,9 @@ import useAuthContext from "../../hooks/useAuthContext";
 import { v4 as uuidv4 } from "uuid";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
+
+// Payment Context to handle payment info
+export const PaymentContext = createContext(null);
 
 const Checkout = () => {
   const { user } = useAuthContext();
@@ -184,13 +187,14 @@ const Checkout = () => {
                     Pay with Card
                   </label>
                 </div>
-
-                {paymentMethod == "card" && (
-                  <Payment
-                    orderTotal={cartSubtotal?.subtotal}
-                    setPaymentInfo={setPaymentInfo}
-                  />
-                )}
+                <PaymentContext.Provider
+                  value={{
+                    orderTotal: cartSubtotal?.subtotal,
+                    setPaymentInfo: setPaymentInfo,
+                  }}
+                >
+                  <Payment /> {/* checkout card inside */}
+                </PaymentContext.Provider>
               </div>
 
               {/* cash on delivery */}
