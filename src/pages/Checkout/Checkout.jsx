@@ -23,8 +23,6 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(cartSubtotal?.subtotal);
-
   // POST ORDER DATA TO DB
   const handlePlaceOrder = () => {
     const orderId = uuidv4();

@@ -8,11 +8,11 @@ import { IoHeartCircleOutline, IoHeartCircleSharp } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
-import axios from "axios";
 import useUserInfo from "../../../hooks/useUserInfo";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import TimeAgo from "../../../components/TimeAgo/TimeAgo";
 
 const ProductReviews = () => {
   const { id } = useParams();
@@ -31,12 +31,8 @@ const ProductReviews = () => {
 
   // fetch dynamic product data
   useEffect(() => {
-    axios
-      .get(
-        `https://ub-jewellers-server-production.up.railway.app/single-product/${id}`
-      )
-      .then((res) => setDynamicProduct(res.data))
-      .catch((error) => console.error(error));
+    const dynamicProduct = products.find((p) => p._id === id);
+    setDynamicProduct(dynamicProduct);
   }, [id, products]);
 
   // check if user already reviewed or not
@@ -178,73 +174,79 @@ const ProductReviews = () => {
           </h4>
 
           <div className="md:pl-10 md:pr-20 product-reviews-con">
-            {dynamicProduct?.review?.slice(0, reviewsLength).map((r) => (
-              <div key={r._id} className="flex items-start gap-4 ">
-                <div className="avatar">
-                  <div className="mask mask-circle w-12 h-12">
-                    <img src={r.reviewerImg} alt={r.reviewerName} />
+            {dynamicProduct?.review
+              ?.slice(0, reviewsLength)
+              .sort((a, b) => b.reviewDate.localeCompare(a.reviewDate))
+              .map((r) => (
+                <div key={r._id} className="flex items-start gap-4 ">
+                  <div className="avatar">
+                    <div className="mask mask-circle w-12 h-12">
+                      <img src={r.reviewerImg} alt={r.reviewerName} />
+                    </div>
+                  </div>
+
+                  <div className="md:w-[95%]">
+                    <div className="flex items-center gap-4">
+                      <h5 className="text-xl text-black font-semibold">
+                        {r.reviewerName}
+                      </h5>
+
+                      {/* User friendly Review Date */}
+                      <p className="text-sm text-gray-600">
+                        <TimeAgo timeStamp={r.reviewDate} />
+                      </p>
+
+                      {user && user?.email === r.reviewerEmail && (
+                        <CiEdit
+                          className="text-xl text-black"
+                          onClick={deleteProductReview}
+                        />
+                      )}
+                    </div>
+                    <StarRatings
+                      rating={r.rating}
+                      starDimension="16px"
+                      starSpacing="3px"
+                      starRatedColor="#d4647c"
+                      starEmptyColor="#c7c7c7"
+                      svgIconPath="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1"
+                      svgIconViewBox="0 0 24 24"
+                    />
+
+                    <div className="mt-4 space-y-2">
+                      <h5 className="text-lg text-black">{r.title}</h5>
+                      <p className="text-gray-600">{r.desc}</p>
+                    </div>
+
+                    <button
+                      className="flex gap-1 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
+                      onClick={() => handleLikeStatus(r._id)}
+                      disabled={updateLikeLoading?.status}
+                    >
+                      {r.likedBy?.includes(user?.email) ? (
+                        <IoHeartCircleSharp className="text-[var(--light-pink)] text-2xl" />
+                      ) : (
+                        <IoHeartCircleOutline className="text-2xl" />
+                      )}
+
+                      {updateLikeLoading?.status &&
+                      updateLikeLoading?.id === r._id ? (
+                        <span className="loading loading-ring block mt-[2px]"></span>
+                      ) : (
+                        <span>
+                          {r.likeCount > 0 ? (
+                            <span className="font-bold mt-[2px] block">
+                              {r.likeCount}
+                            </span>
+                          ) : (
+                            <span className="mt-[2px] block">Like</span>
+                          )}
+                        </span>
+                      )}
+                    </button>
                   </div>
                 </div>
-
-                <div className="md:w-[95%]">
-                  <div className="flex items-center gap-4">
-                    <h5 className="text-xl text-black font-semibold">
-                      {r.reviewerName}
-                    </h5>
-                    <p className="text-sm text-gray-600">
-                      {r.reviewDate.slice(0, 10)}
-                    </p>
-                    {user && user?.email === r.reviewerEmail && (
-                      <CiEdit
-                        className="text-xl text-black"
-                        onClick={deleteProductReview}
-                      />
-                    )}
-                  </div>
-                  <StarRatings
-                    rating={r.rating}
-                    starDimension="16px"
-                    starSpacing="3px"
-                    starRatedColor="#d4647c"
-                    starEmptyColor="#c7c7c7"
-                    svgIconPath="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1"
-                    svgIconViewBox="0 0 24 24"
-                  />
-
-                  <div className="mt-4 space-y-2">
-                    <h5 className="text-lg text-black">{r.title}</h5>
-                    <p className="text-gray-600">{r.desc}</p>
-                  </div>
-
-                  <button
-                    className="flex gap-1 mt-5 text-gray-700 cursor-pointer transition-all duration-300"
-                    onClick={() => handleLikeStatus(r._id)}
-                    disabled={updateLikeLoading?.status}
-                  >
-                    {r.likedBy?.includes(user?.email) ? (
-                      <IoHeartCircleSharp className="text-[var(--light-pink)] text-2xl" />
-                    ) : (
-                      <IoHeartCircleOutline className="text-2xl" />
-                    )}
-
-                    {updateLikeLoading?.status &&
-                    updateLikeLoading?.id === r._id ? (
-                      <span className="loading loading-ring block mt-[2px]"></span>
-                    ) : (
-                      <span>
-                        {r.likeCount > 0 ? (
-                          <span className="font-bold mt-[2px] block">
-                            {r.likeCount}
-                          </span>
-                        ) : (
-                          <span className="mt-[2px] block">Like</span>
-                        )}
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
           <button
             onClick={handleShowReviews}

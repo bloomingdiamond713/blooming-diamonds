@@ -21,8 +21,6 @@ const OrderSuccess = () => {
   const [userFromDB] = useUserInfo();
   const [axiosSecure] = useAxiosSecure();
 
-  console.log(userFromDB?.name);
-
   // get all orders for admin users
   useEffect(() => {
     if (userFromDB?.admin) {
