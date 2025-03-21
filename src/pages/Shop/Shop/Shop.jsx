@@ -62,7 +62,7 @@ const Shop = () => {
 
     axios
       .get(
-        `https://ub-jewellers-server-production.up.railway.app/products/filter?category=${category}&minPrice=${minimumPrice}&maxPrice=${maximumPrice}&priceOrder=${priceSortingOrder}&size=${size}&carate=${carate}&search=${searchText}`
+        `https://ub-jewellers-server.onrender.com/products/filter?category=${category}&minPrice=${minimumPrice}&maxPrice=${maximumPrice}&priceOrder=${priceSortingOrder}&size=${size}&carate=${carate}&search=${searchText}`
       )
       .then((res) => {
         setFilteredProducts(res.data);
@@ -110,7 +110,7 @@ const Shop = () => {
   useEffect(() => {
     // fetch all categories
     axios
-      .get("https://ub-jewellers-server-production.up.railway.app/categories")
+      .get("https://ub-jewellers-server.onrender.com/categories")
       .then((res) => {
         setAllCategories(res.data);
       })

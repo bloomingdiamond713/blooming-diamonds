@@ -10,7 +10,7 @@ const useProducts = () => {
     queryKey: ["products"],
     queryFn: async () => {
       const res = await axios.get(
-        "https://ub-jewellers-server-production.up.railway.app/products"
+        "https://ub-jewellers-server.onrender.com/products"
       );
       return res.data;
     },

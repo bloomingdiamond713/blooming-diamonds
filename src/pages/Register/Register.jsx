@@ -111,13 +111,10 @@ const Register = () => {
     convertBase64(profilePicFile[0]).then((base64Image) => {
       // upload image to cloudinary
       axios
-        .post(
-          "https://ub-jewellers-server-production.up.railway.app/cloudinary-upload",
-          {
-            name: data?.name,
-            img: base64Image,
-          }
-        )
+        .post("https://ub-jewellers-server.onrender.com/cloudinary-upload", {
+          name: data?.name,
+          img: base64Image,
+        })
         .then((res) => {
           if (!res.data?.success) {
             Swal.fire({
@@ -140,7 +137,7 @@ const Register = () => {
                   .then(() => {
                     // add user to users collection in db
                     axios.post(
-                      "https://ub-jewellers-server-production.up.railway.app/users",
+                      "https://ub-jewellers-server.onrender.com/users",
                       {
                         name: result?.user?.displayName,
                         email: result?.user?.email,
@@ -180,14 +177,11 @@ const Register = () => {
     signInGoogle()
       .then((res) => {
         // add user to users collection in db
-        axios.post(
-          "https://ub-jewellers-server-production.up.railway.app/users",
-          {
-            name: res?.user?.displayName,
-            email: res?.user?.email,
-            img: res?.user?.photoURL,
-          }
-        );
+        axios.post("https://ub-jewellers-server.onrender.com/users", {
+          name: res?.user?.displayName,
+          email: res?.user?.email,
+          img: res?.user?.photoURL,
+        });
 
         toast.success(`Authenticated as ${res?.user?.email}`);
         navigate(from, { replace: true });
