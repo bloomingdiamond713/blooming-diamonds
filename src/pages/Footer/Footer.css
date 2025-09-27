@@ -3,6 +3,10 @@
   font-weight: bold;
   font-size: 1.5rem;
 }
+
 a {
   cursor: pointer;
+}
+.payment-icons {
+  filter: brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(374%) hue-rotate(356deg) brightness(96%) contrast(90%);
 }
