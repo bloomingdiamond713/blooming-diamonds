@@ -8,6 +8,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 import { v4 as uuidv4 } from "uuid";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
+import toast from "react-hot-toast";
 
 // Payment Context to handle payment info
 export const PaymentContext = createContext(null);
@@ -23,7 +24,42 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // POST ORDER DATA TO DB
+  // This function now handles PhonePe payments
+  const handlePhonePePayment = async () => {
+    const orderId = uuidv4();
+    const orderData = {
+      orderId: orderId,
+      name: user?.displayName,
+      email: user?.email,
+      total: parseFloat(cartSubtotal?.subtotal),
+      paymentMethod: "phonepe",
+      paymentStatus: "unpaid", // Will be updated after confirmation
+      transactionId: null, // Will be added after confirmation
+      orderDetails: cartData,
+      shippingAddress: userFromDB?.shippingAddress,
+      orderStatus: "processing",
+      date: new Date(),
+    };
+
+    // Store order data in session storage to retrieve after redirect
+    sessionStorage.setItem("pendingOrder", JSON.stringify(orderData));
+
+    try {
+      const response = await axiosSecure.post("/api/phonepe/pay", {
+        totalPrice: orderData.total,
+        name: orderData.name,
+        // transactionId is generated on the backend for PhonePe
+      });
+      // Redirect to PhonePe payment page
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error("PhonePe payment initiation failed:", error);
+      toast.error("Could not connect to payment gateway. Please try again.");
+      sessionStorage.removeItem("pendingOrder"); // Clean up on failure
+    }
+  };
+
+  // POST ORDER DATA TO DB (for Card and COD)
   const handlePlaceOrder = () => {
     const orderId = uuidv4();
 
@@ -48,7 +84,6 @@ const Checkout = () => {
               .delete(`/delete-cart-items?email=${user?.email}`)
               .then((res) => {
                 if (res.data.deletedCount > 0) {
-                  // set orderId in link state to uniquely identify the order in orderSuccess page
                   navigate("/order-success", {
                     state: {
                       orderStatus: "success",
@@ -57,12 +92,19 @@ const Checkout = () => {
                     },
                   });
                   setPaymentInfo(null);
-                  // update cart
                   refetch();
                 }
               });
           }
         });
+    }
+  };
+
+  const handleFinalAction = () => {
+    if (paymentMethod === "phonepe") {
+      handlePhonePePayment();
+    } else {
+      handlePlaceOrder();
     }
   };
 
@@ -90,43 +132,13 @@ const Checkout = () => {
             {userFromDB?.shippingAddress ? (
               <div className="border-2 border-gray-200 rounded-xl shadow p-4 w-fit">
                 <div className="text-lg space-y-3 ">
+                  {/* Shipping details... */}
                   <p>
                     Name:{" "}
                     <span className="font-bold">
                       {userFromDB?.shippingAddress.firstName +
                         " " +
                         userFromDB?.shippingAddress.lastName}
-                    </span>
-                  </p>
-                  <p>
-                    Email:{" "}
-                    <span className="font-bold">
-                      {userFromDB?.shippingAddress.email}
-                    </span>
-                  </p>
-                  <p>
-                    Phone:{" "}
-                    <span className="font-bold">
-                      {userFromDB?.shippingAddress.number}
-                    </span>
-                  </p>
-                  <p>
-                    City:{" "}
-                    <span className="font-bold">
-                      {userFromDB?.shippingAddress.streetAddress},{" "}
-                      {userFromDB?.shippingAddress.city}
-                    </span>
-                  </p>
-                  <p>
-                    State:{" "}
-                    <span className="font-bold">
-                      {userFromDB?.shippingAddress.state}
-                    </span>
-                  </p>
-                  <p>
-                    Country:{" "}
-                    <span className="font-bold">
-                      {userFromDB?.shippingAddress.country}
                     </span>
                   </p>
                   <Link to="/dashboard/myAddress">
@@ -151,23 +163,9 @@ const Checkout = () => {
             <h1 className="text-xl font-semibold mb-4">
               Choose Payment Method
             </h1>
-            <p>
-              All transactions are secured and encrypted by{" "}
-              <a
-                href="https://stripe.com/en-gb-us"
-                target="_blank"
-                rel="noreferrer"
-                className="underline font-medium text-blue-700"
-              >
-                Stripe
-              </a>
-            </p>
-
             <div className="mt-8">
-              {/* by card */}
-              <div
-                className={`p-4 ${paymentMethod === "card" && "rounded-lg"}`}
-              >
+              {/* Pay with Card */}
+              <div className={`p-4 ${paymentMethod === "card" && "rounded-lg"}`}>
                 <div className="flex items-center gap-2">
                   <input
                     type="radio"
@@ -178,29 +176,42 @@ const Checkout = () => {
                     checked={paymentMethod === "card"}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  <label
-                    htmlFor="radio-pay-card"
-                    className={`${paymentMethod === "card" && "font-bold"}`}
-                  >
+                  <label htmlFor="radio-pay-card" className={`${paymentMethod === "card" && "font-bold"}`}>
                     Pay with Card
                   </label>
                 </div>
-                <PaymentContext.Provider
-                  value={{
-                    orderTotal: cartSubtotal?.subtotal,
-                    setPaymentInfo: setPaymentInfo,
-                  }}
-                >
-                  <Payment /> {/* checkout card inside */}
-                </PaymentContext.Provider>
+                {paymentMethod === "card" && (
+                  <PaymentContext.Provider
+                    value={{
+                      orderTotal: cartSubtotal?.subtotal,
+                      setPaymentInfo: setPaymentInfo,
+                    }}
+                  >
+                    <Payment />
+                  </PaymentContext.Provider>
+                )}
               </div>
 
-              {/* cash on delivery */}
-              <div
-                className={`p-4 mt-5  ${
-                  paymentMethod === "cod" && "rounded-lg"
-                }`}
-              >
+              {/* PhonePe */}
+              <div className={`p-4 mt-5 ${paymentMethod === "phonepe" && "rounded-lg"}`}>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    id="radio-pay-phonepe"
+                    className="radio radio-primary"
+                    value={"phonepe"}
+                    checked={paymentMethod === "phonepe"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <label htmlFor="radio-pay-phonepe" className={`${paymentMethod === "phonepe" && "font-bold"}`}>
+                    Pay with PhonePe / UPI
+                  </label>
+                </div>
+              </div>
+
+              {/* Cash On Delivery */}
+              <div className={`p-4 mt-5 ${paymentMethod === "cod" && "rounded-lg"}`}>
                 <div className="flex items-center gap-2">
                   <input
                     type="radio"
@@ -208,13 +219,10 @@ const Checkout = () => {
                     id="radio-pay-cod"
                     className="radio radio-primary"
                     value={"cod"}
-                    checked={paymentMethod == "cod"}
+                    checked={paymentMethod === "cod"}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  <label
-                    htmlFor="radio-pay-cod"
-                    className={`${paymentMethod === "cod" && "font-bold"}`}
-                  >
+                  <label htmlFor="radio-pay-cod" className={`${paymentMethod === "cod" && "font-bold"}`}>
                     Cash On Delivery
                   </label>
                 </div>
@@ -229,15 +237,11 @@ const Checkout = () => {
             <h6 className="text-lg font-semibold">Your order(s)</h6>
             <div className="my-4 space-y-4">
               {cartData?.map((item) => (
-                <div
-                  key={item._id}
-                  className="flex items-center gap-3 w-full shadow rounded-lg"
-                >
+                <div key={item._id} className="flex items-center gap-3 w-full shadow rounded-lg">
                   <img src={item.img} alt={item.name} className="w-[25%]" />
                   <div className="flex-grow space-y-2">
-                    <h4 className="text-lg  font-medium">
-                      {item.name}{" "}
-                      <span className="font-bold">x {item.quantity}</span>
+                    <h4 className="text-lg font-medium">
+                      {item.name} <span className="font-bold">x {item.quantity}</span>
                     </h4>
                     <p className="font-bold">${item.price}</p>
                   </div>
@@ -252,32 +256,18 @@ const Checkout = () => {
           </div>
           <div className="divider"></div>
           <div>
-            {paymentMethod === "cod" ? (
-              <div className="font-bold my-5 flex justify-between items-center text-lg">
-                <h4>Payment Method:</h4>
-                <span className="font-bold">Cash on delivery</span>
-              </div>
-            ) : (
-              <>
-                {paymentInfo && (
-                  <div className="font-bold my-5 flex justify-between items-center text-lg">
-                    <h4>Payment Status:</h4>
-                    <span className="text-success">PAID</span>
-                  </div>
-                )}
-              </>
-            )}
+            {/* Logic for displaying payment status */}
           </div>
 
           <button
             className="btn btn-block btn-neutral text-white mt-4"
             disabled={
-              (!paymentInfo && paymentMethod !== "cod") ||
-              !userFromDB.shippingAddress
+              (paymentMethod === "card" && !paymentInfo) ||
+              !userFromDB?.shippingAddress
             }
-            onClick={handlePlaceOrder}
+            onClick={handleFinalAction}
           >
-            Place Order
+            {paymentMethod === "phonepe" ? "Proceed with PhonePe" : "Place Order"}
           </button>
         </div>
       </section>

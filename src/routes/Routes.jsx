@@ -12,6 +12,8 @@ import Shop from "../pages/Shop/Shop/Shop";
 import Wishlist from "../pages/Wishlist/Wishlist";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Payment from "../pages/Payment/Payment";
+import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
 import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
@@ -61,6 +63,22 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Checkout />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment",
+        element: (
+          <PrivateRoute>
+            <Payment />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment-success",
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
           </PrivateRoute>
         ),
       },
@@ -120,7 +138,6 @@ const router = createBrowserRouter([
               </AdminRoute>
             ),
           },
-
           {
             path: "adminAddProducts",
             element: (
@@ -147,7 +164,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
       {
         path: "products/:id",
         element: <ProductPageLayout />,

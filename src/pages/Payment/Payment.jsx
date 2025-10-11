@@ -1,43 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "./CheckoutForm/CheckoutForm";
-import useCart from "../../hooks/useCart";
+import { useLocation } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
-
 const Payment = () => {
-  const [clientSecret, setClientSecret] = useState("");
-  const { cartSubtotal } = useCart();
-  const [axiosSecure] = useAxiosSecure();
+    const location = useLocation();
+    const [axiosSecure] = useAxiosSecure();
+    
+    // Get total price from the navigation state, passed from the cart page
+    const totalPrice = location.state?.price || 0;
 
-  useEffect(() => {
-    const orderPrice = cartSubtotal?.subtotal;
-    if (parseInt(orderPrice) > 0) {
-      axiosSecure
-        .post("/create-payment-intent", { orderPrice })
-        .then((res) => setClientSecret(res.data.clientSecret));
-    }
-  }, [cartSubtotal]);
+    const handlePhonePePayment = async () => {
+        if (totalPrice <= 0) {
+            alert("Amount must be greater than zero.");
+            return;
+        }
 
-  const appearance = {
-    theme: "stripe",
-  };
-  const options = {
-    clientSecret,
-    appearance,
-  };
+        try {
+            const { data } = await axiosSecure.post('/api/phonepe/pay', {
+                amount: totalPrice
+            });
 
-  return (
-    <div className="ml-5 mt-5">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
-      )}
-    </div>
-  );
+            if (data.success) {
+                const redirectUrl = data.data.instrumentResponse.redirectInfo.url;
+                // Redirect the user to the PhonePe payment page
+                window.location.href = redirectUrl;
+            } else {
+                alert(`Payment initiation failed: ${data.message}`);
+            }
+        } catch (error) {
+            console.error("Error initiating PhonePe payment:", error);
+            alert("An error occurred. Please try again.");
+        }
+    };
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
+            <h2 className="text-3xl font-bold mb-8">Confirm Your Payment</h2>
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center w-full max-w-sm">
+                <p className="text-xl mb-6">Total Amount: <span className="font-bold">₹{totalPrice.toFixed(2)}</span></p>
+                <button 
+                    onClick={handlePhonePePayment} 
+                    className="bg-purple-600 text-white font-bold py-3 px-8 rounded-lg w-full hover:bg-purple-700 transition-colors"
+                >
+                    Pay with PhonePe
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default Payment;

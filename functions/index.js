@@ -20,7 +20,8 @@ try {
     credential: admin.credential.cert(serviceAccount)
   });
   console.log("✅ Firebase Admin SDK initialized successfully.");
-} catch (error) {
+} catch (error)
+{
   console.error("❌ Failed to initialize Firebase Admin SDK. Make sure serviceAccountKey.json exists.", error);
 }
 
@@ -29,7 +30,6 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 
 async function verifyFirebaseToken(req, res, next) {
-    // ... (rest of the middleware code is unchanged)
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -51,7 +51,6 @@ async function verifyFirebaseToken(req, res, next) {
 // --- MongoDB Setup ---
 let db;
 async function getDb() {
-    // ... (rest of the DB connection logic is unchanged)
     if (!db) {
         const uri = process.env.DATABASE_URI;
         if (!uri || !uri.startsWith("mongodb")) {
@@ -70,7 +69,6 @@ async function getDb() {
 
 // --- API Routes ---
 
-// Previous routes like /api/products, /api/jwt etc. remain unchanged...
 app.get("/api", (req, res) => res.status(200).send("UB Jewellers API is running!"));
 
 app.post("/api/jwt", (req, res) => {
@@ -92,8 +90,6 @@ app.get("/api/products", async (req, res) => {
       res.status(500).send({ error: "Failed to fetch products" });
     }
 });
-
-// ... other existing routes ...
 
 // === PHONEPE PAYMENT INTEGRATION ROUTES ===
 
@@ -203,4 +199,3 @@ app.get("/api/phonepe/status/:merchantTransactionId", verifyFirebaseToken, async
 
 
 module.exports = { api: app };
-

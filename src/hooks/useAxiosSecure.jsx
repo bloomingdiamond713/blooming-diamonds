@@ -1,64 +1,44 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import useAuthContext from "./useAuthContext";
+  import { useEffect } from "react";
+  import axios from "axios";
+  import { useNavigate } from "react-router-dom";
+  import useAuthContext from "./useAuthContext";
 
-const useAxiosSecure = () => {
-  const navigate = useNavigate();
-  const { logOut } = useAuthContext();
+  const useAxiosSecure = () => {
+    const navigate = useNavigate();
+    const { logOut } = useAuthContext();
 
-  // Create an interceptor instance of Axios with a base URL
-  const axiosSecure = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
-  });
+    // Create an interceptor instance of Axios with the backend base URL from .env
+    const axiosSecure = axios.create({
+      baseURL: import.meta.env.VITE_API_BASE_URL,
+    });
 
-  // Add an interceptor to inject the authorization header
-  axiosSecure.interceptors.request.use(
-    (config) => {
-      // Get the access token from localStorage
-      const accessToken = localStorage.getItem("ub-jewellers-jwt-token");
-
-      // If an access token exists, add it to the request headers
-      if (accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+    // Interceptor to add the auth token to every request
+    axiosSecure.interceptors.request.use(
+      (config) => {
+        const accessToken = localStorage.getItem("ub-jewellers-jwt-token");
+        if (accessToken) {
+          config.headers["Authorization"] = `Bearer ${accessToken}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
       }
+    );
 
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
-  // Add an interceptor to handle 401 and 403 responses
-  axiosSecure.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (
-        error.response &&
-        (error.response.status === 401 || error.response.status === 403)
-      ) {
-        // Unauthorized or Forbidden status received, log the user out and redirect to the login page
-        logOut()
-          .then(() => {})
-          .catch((err) => console.error(err));
-        navigate("/login"); // Redirect to the login page
+    // Interceptor to handle logout on auth errors
+    axiosSecure.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          await logOut();
+          navigate("/login");
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error);
-    }
-  );
+    );
 
-  // Cleanup the interceptor on unmount
-  useEffect(() => {
-    return () => {
-      axiosSecure.interceptors.request.eject(axiosSecure);
-      axiosSecure.interceptors.response.eject(axiosSecure);
-    };
-  }, [axiosSecure]);
+    return [axiosSecure];
+  };
 
-  return [axiosSecure];
-};
-
-export default useAxiosSecure;
+  export default useAxiosSecure;
