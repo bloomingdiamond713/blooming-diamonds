@@ -1,147 +1,162 @@
-const functions = require("firebase-functions");
+// Load environment variables from a .env file for local development
+require('dotenv').config();
+
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
+const admin = require('firebase-admin');
 
-// Initialize Express app
+// --- Initializations ---
+
+// Initialize Stripe with the secret key from your environment variables
+// IMPORTANT: Make sure you have STRIPE_SECRET_KEY in your .env file
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 const app = express();
 
-// Middleware
+// --- Firebase Admin SDK Setup ---
+// This is for verifying user tokens from your frontend
+try {
+  const serviceAccount = require('./serviceAccountKey.json');
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+  console.log("✅ Firebase Admin SDK initialized successfully.");
+} catch (error) {
+  console.error("❌ Failed to initialize Firebase Admin SDK. Make sure serviceAccountKey.json exists.", error);
+}
+
+// --- Middleware ---
+
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-// --- Database Connection ---
-// IMPORTANT: Set your MongoDB URI and JWT Secret in Firebase config using the CLI:
-// firebase functions:config:set database.uri="YOUR_MONGODB_URI"
-// firebase functions:config:set secrets.jwt="YOUR_JWT_SECRET"
-const uri = functions.config().database.uri;
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+// Middleware to verify Firebase ID token sent from the client
+async function verifyFirebaseToken(req, res, next) {
+  const authHeader = req.headers.authorization;
 
-async function run() {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(403).send({ error: 'Unauthorized: No token provided.' });
+  }
+
+  const idToken = authHeader.split('Bearer ')[1];
+
   try {
-    // It's often better to connect once your function is invoked if you have low traffic.
-    // For simplicity in this template, we connect once.
-    await client.connect();
-    console.log("Successfully connected to MongoDB!");
-
-    // --- Database Collections ---
-    const productsCollection = client.db("ubJewellersDB").collection("products");
-    const categoriesCollection = client.db("ubJewellersDB").collection("categories");
-    const usersCollection = client.db("ubJewellersDB").collection("users");
-    const cartCollection = client.db("ubJewellersDB").collection("cart");
-    const wishlistCollection = client.db("ubJewellersDB").collection("wishlist");
-    const ordersCollection = client.db("ubJewellersDB").collection("orders");
-    const reviewsCollection = client.db("ubJewellersDB").collection("reviews");
-
-
-    // --- API Routes ---
-
-    // JWT Generation
-    app.post("/api/jwt", (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, functions.config().secrets.jwt, { expiresIn: '1h' });
-      res.send({ token });
-    });
-
-    // Products Routes
-    app.get("/api/products", async (req, res) => {
-      const result = await productsCollection.find().toArray();
-      res.send(result);
-    });
-
-    app.get("/api/products/:id", async (req, res) => {
-        const id = req.params.id;
-        const query = { _id: new ObjectId(id) };
-        const result = await productsCollection.findOne(query);
-        res.send(result);
-    });
-    
-    // Categories Routes
-    app.get("/api/categories", async (req, res) => {
-        const result = await categoriesCollection.find().toArray();
-        res.send(result);
-    });
-
-    // User Routes
-    app.post("/api/users", async (req, res) => {
-        const user = req.body;
-        const query = { email: user.email };
-        const existingUser = await usersCollection.findOne(query);
-        if (existingUser) {
-            return res.send({ message: 'user already exists' });
-        }
-        const result = await usersCollection.insertOne(user);
-        res.send(result);
-    });
-    
-    app.get("/api/user", async (req, res) => {
-        const email = req.query.email;
-        const query = { email: email };
-        const result = await usersCollection.findOne(query);
-        res.send(result);
-    });
-
-    // Cart Routes
-    app.get("/api/cart", async (req, res) => {
-        const email = req.query.email;
-        const query = { email: email };
-        const result = await cartCollection.find(query).toArray();
-        res.send(result);
-    });
-
-    app.post("/api/cart", async (req, res) => {
-        const item = req.body;
-        const result = await cartCollection.insertOne(item);
-        res.send(result);
-    });
-
-    app.delete("/api/cart/:id", async (req, res) => {
-        const id = req.params.id;
-        const query = { _id: new ObjectId(id) };
-        const result = await cartCollection.deleteOne(query);
-        res.send(result);
-    });
-
-    // Wishlist Routes
-     app.get("/api/wishlist", async (req, res) => {
-        const email = req.query.email;
-        const query = { email: email };
-        const result = await wishlistCollection.find(query).toArray();
-        res.send(result);
-    });
-    
-    app.post("/api/wishlist", async (req, res) => {
-        const item = req.body;
-        const result = await wishlistCollection.insertOne(item);
-        res.send(result);
-    });
-    
-    app.delete("/api/wishlist/:id", async (req, res) => {
-        const id = req.params.id;
-        const query = { _id: new ObjectId(id) };
-        const result = await wishlistCollection.deleteOne(query);
-        res.send(result);
-    });
-
-    // A simple health check
-    app.get("/api", (req, res) => {
-      res.status(200).send("UB Jewellers API is running!");
-    });
-
-
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    req.user = decodedToken; // Add user info to the request object for other routes to use
+    next();
   } catch (error) {
-    console.error("Could not connect to MongoDB", error);
+    console.error("Token verification failed:", error);
+    return res.status(403).send({ error: 'Unauthorized: Invalid token.' });
   }
 }
 
-run().catch(console.dir);
 
-// Expose Express API as a single Cloud Function
-exports.api = functions.https.onRequest(app);
+// --- MongoDB Setup ---
+let client;
+let db;
+
+async function getDb() {
+  if (!db) {
+    // This now correctly uses the full URI from your .env file
+    const uri = process.env.DATABASE_URI;
+    
+    if (!uri || !uri.startsWith("mongodb")) {
+      throw new Error("❌ MongoDB URI is missing or invalid. Check your DATABASE_URI in the .env file.");
+    }
+
+    if (!client) {
+      client = new MongoClient(uri, {
+        serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
+      });
+      await client.connect();
+      console.log("✅ MongoDB connected successfully!");
+    }
+    db = client.db("ubJewellersDB");
+  }
+  return db;
+}
+
+// --- API Routes ---
+
+app.get("/api", (req, res) => res.status(200).send("UB Jewellers API is running!"));
+
+app.post("/api/jwt", (req, res) => {
+  try {
+    const user = req.body;
+    const secret = process.env.JWT_SECRET;
+    const token = jwt.sign(user, secret, { expiresIn: "1h" });
+    res.send({ token });
+  } catch (err) {
+    res.status(500).send({ error: "JWT generation failed" });
+  }
+});
+
+app.get("/api/products", async (req, res) => {
+  try {
+    const database = await getDb();
+    res.send(await database.collection("products").find().toArray());
+  } catch (err) {
+    res.status(500).send({ error: "Failed to fetch products" });
+  }
+});
+
+app.get("/api/products/:id", async (req, res) => {
+  try {
+    const database = await getDb();
+    res.send(await database.collection("products").findOne({ _id: new ObjectId(req.params.id) }));
+  } catch (err) {
+    res.status(500).send({ error: "Failed to fetch product" });
+  }
+});
+
+app.get("/api/categories", async (req, res) => {
+  try {
+    const database = await getDb();
+    res.send(await database.collection("categories").find().toArray());
+  } catch (err) {
+    res.status(500).send({ error: "Failed to fetch categories" });
+  }
+});
+
+// PROTECTED ROUTE: Only authenticated users can add items to the cart.
+app.post("/api/cart", verifyFirebaseToken, async (req, res) => {
+  try {
+    const database = await getDb();
+    // You can now access the verified user's ID via req.user.uid
+    const cartItem = { ...req.body, userId: req.user.uid };
+    const result = await database.collection("cart").insertOne(cartItem);
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ error: "Failed to add to cart" });
+  }
+});
+
+// PROTECTED ROUTE: Only authenticated users can create a payment intent.
+app.post("/create-payment-intent", verifyFirebaseToken, async (req, res) => {
+  try {
+    const { price } = req.body;
+    const amount = parseInt(price * 100);
+
+    if (isNaN(amount) || amount <= 0) {
+      return res.status(400).send({ error: "Invalid price value." });
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: "usd",
+      payment_method_types: ["card"],
+    });
+
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// This exports the app so server.js can use it.
+module.exports = { api: app };
+

@@ -1,94 +1,121 @@
-import React, { useContext, useState } from "react";
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import useAuthContext from "../../../hooks/useAuthContext";
-import { PaymentContext } from "../../Checkout/Checkout";
+// src/pages/Payment/CheckoutForm/CheckoutForm.jsx
 
-const CheckoutForm = () => {
-  const { user } = useAuthContext();
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuthContext from "../../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const CheckoutForm = ({ price, cart }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const [axiosSecure] = useAxiosSecure();
+  const { user } = useAuthContext();
+  const [cardError, setCardError] = useState("");
+  const [clientSecret, setClientSecret] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate();
 
-  const { orderTotal, setPaymentInfo } = useContext(PaymentContext);
+  useEffect(() => {
+    if (price > 0) {
+      axiosSecure.post("/create-payment-intent", { price })
+        .then((res) => {
+          setClientSecret(res.data.clientSecret);
+        });
+    }
+  }, [price, axiosSecure]);
 
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     if (!stripe || !elements) {
       return;
     }
 
-    setIsLoading(true);
+    const card = elements.getElement(CardElement);
+    if (card === null) {
+      return;
+    }
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-      confirmParams: {
-        return_url: window.location.href,
-        payment_method_data: {
-          billing_details: {
-            name: user?.displayName || "anonymous",
-            email: user?.email || "unknown",
-          },
+    setProcessing(true);
+
+    const { error: paymentMethodError } = await stripe.createPaymentMethod({
+      type: "card",
+      card,
+    });
+
+    if (paymentMethodError) {
+      setCardError(paymentMethodError.message);
+      setProcessing(false);
+      return;
+    }
+    
+    setCardError("");
+
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          email: user?.email || "unknown",
+          name: user?.displayName || "anonymous",
         },
       },
     });
 
-    if (error?.type === "card_error" || error?.type === "validation_error") {
-      setMessage({ errorOccured: true, message: error?.message });
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      setPaymentInfo(paymentIntent);
-      setMessage({ errorOccured: false, message: "Payment Successful 🎉" });
+    if (confirmError) {
+      setCardError(confirmError.message);
+      setProcessing(false);
+      return;
     }
 
-    setIsLoading(false);
-  };
+    if (paymentIntent.status === "succeeded") {
+      const payment = {
+        email: user?.email,
+        transactionId: paymentIntent.id,
+        price,
+        date: new Date(),
+        quantity: cart.length,
+        cartItems: cart.map((item) => item._id),
+        productItems: cart.map((item) => item.productId),
+        status: "service pending",
+        itemNames: cart.map((item) => item.name),
+      };
 
-  const paymentElementOptions = {
-    layout: "tabs",
+      axiosSecure.post("/payments", payment)
+        .then((res) => {
+          if (res.data.insertedId) {
+            toast.success("Payment Successful!");
+            navigate("/order-success");
+          }
+        });
+    }
+    
+    setProcessing(false);
   };
 
   return (
-    <form
-      id="payment-form"
-      onSubmit={handleSubmit}
-      className="border md:w-[60%] p-8 pb-6 rounded-xl shadow"
-    >
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button
-        disabled={
-          isLoading || !stripe || !elements || message?.errorOccured === false
-        }
-        id="submit"
-        className="btn btn-primary font-bold btn-block text-white mt-6"
-      >
-        <span id="button-text">
-          {isLoading ? (
-            <span className="loading loading-spinner text-primary"></span>
-          ) : (
-            <span className="font-bold text-base">Pay ${orderTotal}</span>
-          )}
-        </span>
+    <form onSubmit={handleSubmit}>
+      <CardElement
+        options={{
+          style: {
+            base: {
+              fontSize: "16px",
+              color: "#424770",
+              "::placeholder": {
+                color: "#aab7c4",
+              },
+            },
+            invalid: {
+              color: "#9e2146",
+            },
+          },
+        }}
+      />
+      <button type="submit" disabled={!stripe || !clientSecret || processing}>
+        Pay
       </button>
-      {/* Show any error or success messages */}
-      {message?.errorOccured ? (
-        <div
-          id="payment-message"
-          className="mt-5 text-center text-error font-bold text-lg"
-        >
-          {message?.message}
-        </div>
-      ) : (
-        <div className="mt-5 text-center text-success font-bold text-lg">
-          {message?.message}
-        </div>
-      )}
+      {cardError && <p className="text-red-600 ml-1">{cardError}</p>}
     </form>
   );
 };

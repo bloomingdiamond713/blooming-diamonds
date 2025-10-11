@@ -10,7 +10,7 @@ const Categories = () => {
 
   useEffect(() => {
     axios
-      .get("https://ub-jewellers-server.onrender.com/categories")
+      .get("/api/categories")
       .then((res) => setCategories(res.data))
       .catch((error) => console.error(error));
   }, []);
