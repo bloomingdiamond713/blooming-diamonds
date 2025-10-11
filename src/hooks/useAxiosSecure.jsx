@@ -9,7 +9,7 @@ const useAxiosSecure = () => {
 
   // Create an interceptor instance of Axios with a base URL
   const axiosSecure = axios.create({
-    baseURL: "/api",
+    baseURL: import.meta.env.VITE_API_BASE_URL,
   });
 
   // Add an interceptor to inject the authorization header
