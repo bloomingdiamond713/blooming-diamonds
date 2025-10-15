@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "blooming-diamond-c281e"
-  }
+    "default": "blooming-diamond-c281e",
+    "diamond": "blooming-diamonds"
+  },
+  "targets": {},
+  "etags": {}
 }
