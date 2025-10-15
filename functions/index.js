@@ -1,9 +1,5 @@
 // Load environment variables from a .env file for local development
 require('dotenv').config();
-const functions = require("firebase-functions");
-const app = require("./index").api; // Your existing express app
-
-exports.api = functions.https.onRequest(app);
 
 const express = require("express");
 const cors = require("cors");
