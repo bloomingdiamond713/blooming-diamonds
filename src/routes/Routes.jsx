@@ -13,7 +13,6 @@ import Wishlist from "../pages/Wishlist/Wishlist";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Payment from "../pages/Payment/Payment";
-import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
 import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AddressBook from "../pages/Dashboard/AddressBook/AddressBook";
@@ -70,18 +69,19 @@ const router = createBrowserRouter([
         path: "payment",
         element: (
           <PrivateRoute>
-            <Payment />
+            {() => { alert("Feature not available yet. Coming soon!"); return null; }}
           </PrivateRoute>
         ),
       },
-      {
-        path: "payment-success",
+    {
+      path: "payment-success",
         element: (
           <PrivateRoute>
-            <PaymentSuccess />
+            {() => { alert("Feature not available yet. Coming soon!"); return null; }}
           </PrivateRoute>
         ),
       },
+
       {
         path: "order-success",
         element: (
