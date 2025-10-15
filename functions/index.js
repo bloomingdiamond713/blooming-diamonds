@@ -198,4 +198,4 @@ app.get("/api/products", async (req, res) => {
 // });
 
 
-// module.exports = { api: app };
+module.exports = { api: app };
