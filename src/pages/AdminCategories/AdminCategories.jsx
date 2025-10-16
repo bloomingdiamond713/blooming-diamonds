@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import AnimateText from "@moxy/react-animate-text";
-import { auth } from "../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const AdminCategories = () => {
   const { user, isAuthLoading } = useAuthContext();

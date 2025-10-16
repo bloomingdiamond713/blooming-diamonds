@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { TfiTrash } from "react-icons/tfi";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { auth } from "../../../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const MyOrders = () => {
   const { orders, totalSpent, refetch } = useOrders();

@@ -3,7 +3,7 @@ import "./DashboardNav.css";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../../hooks/useAuthContext";
 import { NavLink } from "react-router-dom";
-import { auth } from "../../../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const DashboardNav = () => {
   const { logOut } = useAuthContext();

@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import TimeAgo from "../../../components/TimeAgo/TimeAgo";
-import { auth } from "../firebase";
+import { auth } from '@/firebase/firebase.config.js';
 
 const ProductReviews = () => {
   const { id } = useParams();

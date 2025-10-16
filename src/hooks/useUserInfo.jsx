@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAuthContext from "./useAuthContext";
 import { useQuery } from "react-query";
 import useAxiosSecure from "./useAxiosSecure";
-import { auth } from "../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const useUserInfo = () => {
   const { user, isAuthLoading } = useAuthContext();

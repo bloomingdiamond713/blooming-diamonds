@@ -3,7 +3,7 @@ import ProductPageNavigation from "../pages/DynamicProduct/ProductPageNavigation
 import { Outlet } from "react-router-dom";
 import DynamicProduct from "../pages/DynamicProduct/DynamicProduct";
 import RelatedDynamicProducts from "../pages/RelatedDynamicProducts/RelatedDynamicProducts";
-import { auth } from "../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const ProductPageLayout = () => {
   return (

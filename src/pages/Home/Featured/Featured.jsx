@@ -121,4 +121,6 @@ const Featured = () => {
   );
 };
 
+console.log("Products data:", products);
+
 export default Featured;

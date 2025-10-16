@@ -8,7 +8,7 @@ import { FaMinus, FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import useProducts from "../../hooks/useProducts";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { auth } from "../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const RightSideDrawer = ({ setShowRightDrawer }) => {
   // Reminder: Right side drawer is called from the Header.jsx file

@@ -11,6 +11,7 @@ import axios from "axios";
 import AnimateText from "@moxy/react-animate-text";
 import Swal from "sweetalert2";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
+import { auth } from '@/firebase/firebase.config.js';
 
 const Register = () => {
   const { signUp, updateUserProfile, signInGoogle, setIsAuthLoading } =

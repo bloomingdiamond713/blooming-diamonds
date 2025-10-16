@@ -9,7 +9,7 @@ import Select from "react-select";
 import Swal from "sweetalert2";
 import useProducts from "../../../hooks/useProducts";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { auth } from "../../../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const AdminAddProduct = () => {
   const { user } = useAuthContext();

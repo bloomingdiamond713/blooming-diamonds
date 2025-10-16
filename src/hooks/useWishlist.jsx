@@ -3,7 +3,7 @@ import useAuthContext from "./useAuthContext";
 import { useQuery } from "react-query";
 import toast from "react-hot-toast";
 import useAxiosSecure from "./useAxiosSecure";
-import { auth } from "../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const useWishlist = () => {
   const { user, isAuthLoading } = useAuthContext();

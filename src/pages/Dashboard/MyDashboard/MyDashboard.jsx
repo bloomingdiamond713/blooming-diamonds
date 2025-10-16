@@ -5,7 +5,7 @@ import useAuthContext from "../../../hooks/useAuthContext";
 import { FaPencil } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { auth } from "../../../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const MyDashboard = () => {
   const [userFromDB, , refetch] = useUserInfo();

@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import useAuthContext from "./useAuthContext";
 import toast from "react-hot-toast";
 import useAxiosSecure from "./useAxiosSecure";
-import { auth } from "../firebase.config.js";
+import { auth } from '@/firebase/firebase.config.js';
 
 const useCart = () => {
   const { user, isAuthLoading } = useAuthContext();

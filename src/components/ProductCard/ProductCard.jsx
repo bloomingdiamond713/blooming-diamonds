@@ -11,6 +11,7 @@ import useWishlist from "../../hooks/useWishlist";
 import useUserInfo from "../../hooks/useUserInfo";
 import { TfiClose } from "react-icons/tfi";
 import { useMediaQuery } from "react-responsive";
+import { auth } from '@/firebase/firebase.config.js';
 
 const ProductCard = ({ cardData, flashSale, counter }) => {
   const { user, isAuthLoading } = useAuthContext();
