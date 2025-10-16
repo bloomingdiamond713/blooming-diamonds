@@ -60,7 +60,7 @@ const Footer = () => {
 
         <div className="md:w-[23%]">
           <h4 className="text-[#E6DFCD]">All Departments</h4>
-          {categories?.map((category) => (
+          {Array.isArray(categories) && categories.map((category) => (
             <Link key={category._id} to="#" className="mt-4 text-[#E6DFCD]">
               {category.categoryName}
             </Link>

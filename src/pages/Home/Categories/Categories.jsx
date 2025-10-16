@@ -54,7 +54,7 @@ const Categories = () => {
         {...settings}
         className="w-full md:px-0 md:w-[85%] md:mx-auto mt-12 h-[300px] items-center"
       >
-        {categories?.map((category, counter) => (
+        {Array.isArray(categories) && categories.map((category, counter) => (
           <CategoryCard
             counter={counter + 1}
             key={category._id}

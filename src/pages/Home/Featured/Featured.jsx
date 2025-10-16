@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import AnimateText from "@moxy/react-animate-text";
 
 const Featured = () => {
-  const [products, isProductsLoading] = useProducts();
+  const { data: products, isLoading: isProductsLoading } = useProducts();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
 
@@ -121,6 +121,5 @@ const Featured = () => {
   );
 };
 
-console.log("Products data:", products);
 
 export default Featured;

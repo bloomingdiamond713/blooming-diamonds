@@ -60,7 +60,7 @@ const Reviews = () => {
           </div>
         ) : (
           <Slider {...settings} ref={sliderRef}>
-            {reviews?.map((reviewObj) => (
+            {Array.isArray(reviews) && reviews.map((reviewObj) => (
               <ReviewCard key={reviewObj._id} reviewObj={reviewObj} />
             ))}
           </Slider>

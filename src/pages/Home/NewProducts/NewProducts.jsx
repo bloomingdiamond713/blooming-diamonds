@@ -11,16 +11,19 @@ const NewProducts = () => {
   const [products, isProductsLoading] = useProducts();
 
   useEffect(() => {
-    // filter only new products from all products
-    const filteredNewProducts = products?.filter(
-      (product) => product.newArrival === true
-    );
+    // First, check if 'products' is an array
+    if (Array.isArray(products)) {
+      // filter only new products from all products
+      const filteredNewProducts = products.filter(
+        (product) => product.newArrival === true
+      );
 
-    filteredNewProducts?.sort(
-      (a, b) => new Date(b.addedAt) - new Date(a.addedAt)
-    );
+      filteredNewProducts.sort(
+        (a, b) => new Date(b.addedAt) - new Date(a.addedAt)
+      );
 
-    setNewProducts(filteredNewProducts?.slice(0, 6));
+      setNewProducts(filteredNewProducts.slice(0, 6));
+    }
   }, [products]);
 
   return (

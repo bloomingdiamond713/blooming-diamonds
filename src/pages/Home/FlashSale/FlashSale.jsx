@@ -10,7 +10,7 @@ import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 import { useMediaQuery } from "react-responsive";
 
 const FlashSale = () => {
-  const [products, isProductsLoading] = useProducts();
+  const { data: products, isLoading: isProductsLoading } = useProducts();
   const [flashSaleData, setFlashSaleData] = useState([]);
   useEffect(() => {
     const filterFlashProducts = products?.filter((p) => p.flashSale === true);
