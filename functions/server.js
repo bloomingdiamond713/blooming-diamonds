@@ -1,8 +1,7 @@
-// functions/server.js
+// server.js (root)
+const app = require('./index').api;
+const PORT = process.env.PORT || 10000; // Render sets PORT automatically
 
-const app = require('./index').api; // Import the Express app from your existing index.js
-const port = process.env.PORT || 3001; // Hostinger will provide the PORT
-
-app.listen(port, () => {
-  console.log(`🚀 Server is listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
