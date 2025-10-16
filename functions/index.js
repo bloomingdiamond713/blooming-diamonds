@@ -13,6 +13,15 @@ const { v4: uuidv4 } = require('uuid');
 // --- Initializations ---
 const app = express();
 
+const corsOptions = {
+  origin: 'https://bloomingdiamond.com/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions));
+
+app.use(express.json());
+
 // --- Firebase Admin SDK Setup ---
 try {
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
@@ -25,9 +34,6 @@ try {
   console.error("❌ Failed to initialize Firebase Admin SDK. Make sure serviceAccountKey.json exists.", error);
 }
 
-// --- Middleware ---
-app.use(cors({ origin: true }));
-app.use(express.json());
 
 async function verifyFirebaseToken(req, res, next) {
     const authHeader = req.headers.authorization;
