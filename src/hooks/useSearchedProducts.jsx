@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { auth } from "../firebase.config.js";
 
 const useSearchedProducts = (searchText) => {
   const [searchedProducts, setSearchedProducts] = useState([]);

@@ -14,6 +14,7 @@ import BarChartComponent from "../../../components/BarChartComponent/BarChartCom
 import StarRatings from "react-star-ratings";
 import useAdminStats from "../../../hooks/useAdminStats";
 import AnimateText from "@moxy/react-animate-text";
+import { auth } from "../../../firebase.config.js";
 
 const AdminDashboard = () => {
   const {

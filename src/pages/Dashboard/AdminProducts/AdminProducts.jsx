@@ -7,6 +7,7 @@ import useSearchedProducts from "../../../hooks/useSearchedProducts";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import AnimateText from "@moxy/react-animate-text";
+import { auth } from "../../../firebase.config.js";
 
 const AdminProducts = () => {
   const [products, isProductsLoading, refetch] = useProducts();

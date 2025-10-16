@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import TakeToLoginModal from "../components/TakeToLoginModal/TakeToLoginModal";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { auth } from "../firebase.config.js";
 
 const MainLayout = () => {
   // scroll to top on route change

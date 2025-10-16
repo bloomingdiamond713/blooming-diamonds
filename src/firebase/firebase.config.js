@@ -1,8 +1,7 @@
-// Import the functions you need from the SDKs you need
+// src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration from environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
   authDomain: import.meta.env.VITE_AUTHDOMAIN,
@@ -12,9 +11,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_APPID
 };
 
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export default auth;
+export { app, auth };

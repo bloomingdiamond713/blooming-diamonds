@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import useAuthContext from "../../hooks/useAuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import AnimateText from "@moxy/react-animate-text";
+import { auth } from "../firebase.config.js";
 
 const AdminManageUsers = () => {
   const [userFromDB, , , totalSpentArray] = useUserInfo();

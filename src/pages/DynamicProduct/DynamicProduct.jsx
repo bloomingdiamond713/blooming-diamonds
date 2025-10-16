@@ -16,6 +16,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 import useWishlist from "../../hooks/useWishlist";
 import toast from "react-hot-toast";
 import { FiShoppingCart } from "react-icons/fi";
+import { auth } from "../../../firebase.config.js";
 
 const DynamicProduct = () => {
   const { id } = useParams();

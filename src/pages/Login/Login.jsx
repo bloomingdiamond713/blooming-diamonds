@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import AnimateText from "@moxy/react-animate-text";
 import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
+import { auth } from "../../firebase.config.js";
 
 const Login = () => {
   const { signIn, signInGoogle, setIsAuthLoading } = useAuthContext();

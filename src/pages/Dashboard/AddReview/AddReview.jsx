@@ -9,6 +9,7 @@ import { HashLink } from "react-router-hash-link";
 import Swal from "sweetalert2";
 import { useQuery } from "react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { auth } from "../../../firebase.config.js";
 
 const AddReview = () => {
   const { user, isAuthLoading } = useAuthContext();

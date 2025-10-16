@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { toast, Toaster } from "react-hot-toast";
+import { auth } from "../firebase.config.js";
 
 
 // Inlined dependencies and context to resolve compilation errors

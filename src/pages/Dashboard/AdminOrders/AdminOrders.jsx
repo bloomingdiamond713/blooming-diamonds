@@ -10,6 +10,7 @@ import useAdminStats from "../../../hooks/useAdminStats";
 import useAuthContext from "../../../hooks/useAuthContext";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import AnimateText from "@moxy/react-animate-text";
+import { auth } from "../../../firebase.config.js";
 
 const AdminOrders = () => {
   const location = useLocation();

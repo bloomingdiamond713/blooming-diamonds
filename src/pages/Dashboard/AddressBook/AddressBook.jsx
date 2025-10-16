@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FaPencil } from "react-icons/fa6";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import axios from "axios";
+import { auth } from "../../../firebase.config.js";
 
 const AddressBook = () => {
   // react hook form props

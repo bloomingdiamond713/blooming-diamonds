@@ -6,6 +6,7 @@ import useUserInfo from "../hooks/useUserInfo";
 import AdminNavigation from "../pages/Dashboard/AdminNavigation/AdminNavigation";
 import useAuthContext from "../hooks/useAuthContext";
 import AnimateText from "@moxy/react-animate-text";
+import { auth } from "../firebase.config.js";
 
 const DashboardLayout = () => {
   const [userFromDB, isUserLoading] = useUserInfo();
