@@ -18,7 +18,7 @@ const app = express();
 const corsOptions = {
   origin: [
     "https://bloomingdiamond.com",
-    "https://www.bloomingdiamond.com",
+    "https://www.blooming-diamonds.com",
     "http://localhost:5173", // Added for local development
   ],
   credentials: true,
@@ -127,6 +127,29 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
+// NEW: Database Health Check Route
+app.get("/api/db-status", async (req, res) => {
+  try {
+    // Attempt to get a database connection
+    const database = await getDb();
+    // Ping the database to confirm the connection is live and authenticated
+    await database.command({ ping: 1 });
+    res.status(200).send({
+      status: "success",
+      message: "MongoDB connected successfully!",
+      databaseName: database.databaseName,
+    });
+  } catch (err) {
+    // If getDb() or the ping fails, send back the specific error
+    res.status(500).send({
+      status: "error",
+      message: "MongoDB connection failed.",
+      errorName: err.name,
+      errorMessage: err.message,
+    });
+  }
+});
+
 // Route to create a new user in MongoDB
 app.post("/api/users", async (req, res) => {
   try {
@@ -158,4 +181,5 @@ app.post("/api/users", async (req, res) => {
 
 // === Export App for Render ===
 module.exports = { api: app };
+
 
