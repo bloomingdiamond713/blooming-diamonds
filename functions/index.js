@@ -18,7 +18,7 @@ const app = express();
 const corsOptions = {
   origin: [
     "https://bloomingdiamond.com",
-    "https://www.blooming-diamonds.com",
+    "https://www.bloomingdiamond.com",
     "http://localhost:5173", // Added for local development
   ],
   credentials: true,
