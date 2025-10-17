@@ -18,10 +18,11 @@ const app = express();
 const corsOptions = {
   origin: [
     "https://bloomingdiamond.com",
-    "https://www.blooming-diamonds.com"
+    "https://www.blooming-diamonds.com",
+    "http://localhost:5173", // Added for local development
   ],
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -39,7 +40,10 @@ try {
   });
   console.log("✅ Firebase Admin SDK initialized successfully.");
 } catch (error) {
-  console.error("❌ Failed to initialize Firebase Admin SDK. Check FIREBASE_SERVICE_ACCOUNT_KEY.", error);
+  console.error(
+    "❌ Failed to initialize Firebase Admin SDK. Check FIREBASE_SERVICE_ACCOUNT_KEY.",
+    error
+  );
 }
 
 // === Firebase Token Verification Middleware ===
@@ -66,22 +70,41 @@ async function getDb() {
   if (!db) {
     const uri = process.env.DATABASE_URI;
     if (!uri || !uri.startsWith("mongodb")) {
+      console.error(
+        "❌ Invalid or missing DATABASE_URI in environment variables."
+      );
       throw new Error("❌ Invalid or missing DATABASE_URI.");
     }
 
     const client = new MongoClient(uri, {
-      serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
     });
 
-    await client.connect();
-    console.log("✅ MongoDB connected successfully!");
-    db = client.db("bloom-db");
+    try {
+      // Attempt to connect to the cluster
+      await client.connect();
+      console.log("✅ MongoDB client connected successfully!");
+
+      // Specify the database to use
+      db = client.db("bloomingDiamondsDB"); // Using a new, more descriptive name
+      console.log(`✅ Successfully connected to database: ${db.databaseName}`);
+    } catch (error) {
+      // If connection fails, log the detailed error
+      console.error("❌ MongoDB connection failed. Error:", error);
+      throw error; // Rethrow the error to stop the process if the DB is essential
+    }
   }
   return db;
 }
 
 // === Routes ===
-app.get("/api", (req, res) => res.status(200).send("UB Jewellers API is running!"));
+app.get("/api", (req, res) =>
+  res.status(200).send("UB Jewellers API is running!")
+);
 
 app.post("/api/jwt", (req, res) => {
   try {
@@ -106,23 +129,33 @@ app.get("/api/products", async (req, res) => {
 
 // Route to create a new user in MongoDB
 app.post("/api/users", async (req, res) => {
-  try {
-    const user = req.body;
-    const database = await getDb();
-    const usersCollection = database.collection("users");
+  try {
+    const user = req.body;
+    // This is the step where the connection will be attempted
+    const database = await getDb();
+    const usersCollection = database.collection("users");
 
-    // Check if the user already exists to avoid duplicates
-    const existingUser = await usersCollection.findOne({ email: user.email });
-    if (existingUser) {
-      return res.status(200).send({ message: "User already exists." });
-    }
+    // Check if the user already exists to avoid duplicates
+    const existingUser = await usersCollection.findOne({ email: user.email });
+    if (existingUser) {
+      return res.status(200).send({ message: "User already exists." });
+    }
 
-    const result = await usersCollection.insertOne(user);
-    res.status(201).send(result);
-  } catch (err) {
-    res.status(500).send({ error: "Failed to create user" });
-  }
+    const result = await usersCollection.insertOne(user);
+    res.status(201).send(result);
+  } catch (err) {
+    // This block will catch the error from getDb() if the connection fails
+    console.error("--- ERROR IN /api/users ROUTE ---", err.message); // Log on server
+
+    // IMPORTANT: Send the detailed error message back to the frontend
+    res.status(500).send({
+      message: "An error occurred on the server.",
+      errorDetails: err.message, // The specific error from MongoDB
+      errorName: err.name,
+    });
+  }
 });
 
 // === Export App for Render ===
 module.exports = { api: app };
+
