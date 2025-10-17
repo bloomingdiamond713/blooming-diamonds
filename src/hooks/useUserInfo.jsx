@@ -18,7 +18,7 @@ const useUserInfo = () => {
       !isAuthLoading &&
       user?.uid !== undefined &&
       localStorage.getItem("ub-jewellers-jwt-token") !== null,
-    queryKey: ["user"],
+    queryKey: ["user", user?.email], // More specific query key
     queryFn: async () => {
       const res = await axiosSecure.get(`/user?email=${user?.email}`);
       return res.data;
@@ -27,17 +27,12 @@ const useUserInfo = () => {
 
   // fetch total spent amount by users
   useEffect(() => {
-    if (
-      !isAuthLoading &&
-      user?.uid !== undefined &&
-      localStorage.getItem("ub-jewellers-jwt-token") !== null &&
-      userFromDB?.admin
-    ) {
+    if (userFromDB?.admin) {
       axiosSecure.get("/admin/total-spent").then((res) => {
         setTotalSpentArray(res.data);
       });
     }
-  }, [userFromDB]);
+  }, [userFromDB, axiosSecure]); // Add axiosSecure to dependency array
 
   return [userFromDB, isUserLoading, refetch, totalSpentArray];
 };

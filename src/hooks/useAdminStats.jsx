@@ -18,16 +18,15 @@ const useAdminStats = () => {
       !isAuthLoading &&
       user?.uid !== undefined &&
       localStorage.getItem("ub-jewellers-jwt-token") !== null,
-    queryKey: ["admin-stats"],
+    queryKey: ["admin-stats", user?.uid], // More specific query key
     queryFn: async () => {
       const res = await axiosSecure.get("/admin-dashboard/stats");
       return res.data;
     },
   });
 
-  // TOP SELLING CATEGORIES
   useEffect(() => {
-    if (user) {
+    if (user?.uid) {
       // get categories data
       axiosSecure.get("/admin-dashboard/top-selling-categories").then((res) => {
         setTotalCategories(res.data.totalCategories);
@@ -38,26 +37,18 @@ const useAdminStats = () => {
       axiosSecure.get("/admin-dashboard/income-stats").then((res) => {
         setIncomeStats(res.data);
       });
-    }
-  }, [user]);
 
-  // BEST SELLING POPULAR PRODUCTS
-  useEffect(() => {
-    if (user) {
+      // get popular products
       axiosSecure
         .get("/admin-dashboard/popular-products")
         .then((res) => setPopularProducts(res.data));
-    }
-  }, [user]);
 
-  // Recent Reviews
-  useEffect(() => {
-    if (user) {
+      // get recent reviews
       axiosSecure
         .get("/admin-dashboard/recent-reviews")
         .then((res) => setRecentReviews(res.data));
     }
-  }, [user]);
+  }, [user?.uid, axiosSecure]); // Use a more stable dependency
 
   return {
     adminStats,
