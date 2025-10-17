@@ -75,7 +75,7 @@ async function getDb() {
 
     await client.connect();
     console.log("✅ MongoDB connected successfully!");
-    db = client.db("ubJewellersDB");
+    db = client.db("bloom-db");
   }
   return db;
 }
