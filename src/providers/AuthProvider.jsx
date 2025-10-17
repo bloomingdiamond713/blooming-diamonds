@@ -27,7 +27,22 @@ const AuthProvider = ({ children }) => {
   // Sign Up with email/pass
   const signUp = (email, password) => {
     setIsAuthLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      (userCredential) => {
+        // Save user to MongoDB after successful Firebase registration
+        const newUserInfo = {
+          email: userCredential.user.email,
+          name: userCredential.user.displayName, // This might be null initially
+          role: "user",
+        };
+        axios
+          .post("https://blooming-diamonds-bmbn.onrender.com/api/users", newUserInfo)
+          .catch((error) => {
+            console.error("Error saving user to MongoDB:", error);
+          });
+        return userCredential;
+      }
+    );
   };
 
   // Update user's profile
@@ -47,7 +62,22 @@ const AuthProvider = ({ children }) => {
 
   // Google sign in
   const signInGoogle = () => {
-    return signInWithPopup(auth, googleProvider);
+    setIsAuthLoading(true);
+    return signInWithPopup(auth, googleProvider).then((result) => {
+      // Save user to MongoDB after successful Google sign-in.
+      // Your backend will handle checking if the user already exists.
+      const newUserInfo = {
+        email: result.user.email,
+        name: result.user.displayName,
+        role: "user",
+      };
+      axios
+        .post("https://blooming-diamonds-bmbn.onrender.com/api/users", newUserInfo)
+        .catch((error) => {
+          console.error("Error saving user to MongoDB:", error);
+        });
+      return result;
+    });
   };
 
   // Sign Out

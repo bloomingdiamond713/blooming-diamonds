@@ -104,5 +104,25 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
+// Route to create a new user in MongoDB
+app.post("/api/users", async (req, res) => {
+  try {
+    const user = req.body;
+    const database = await getDb();
+    const usersCollection = database.collection("users");
+
+    // Check if the user already exists to avoid duplicates
+    const existingUser = await usersCollection.findOne({ email: user.email });
+    if (existingUser) {
+      return res.status(200).send({ message: "User already exists." });
+    }
+
+    const result = await usersCollection.insertOne(user);
+    res.status(201).send(result);
+  } catch (err) {
+    res.status(500).send({ error: "Failed to create user" });
+  }
+});
+
 // === Export App for Render ===
 module.exports = { api: app };
