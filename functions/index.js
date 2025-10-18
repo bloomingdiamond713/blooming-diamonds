@@ -235,6 +235,33 @@ app.get("/api/admin/total-spent", async (req, res) => {
     }
 });
 
+// NEW: Route to delete a product by ID (Admin)
+app.delete("/api/admin/delete-product/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send({ error: "Invalid product ID format." });
+    }
+
+    const database = await getDb();
+    const productsCollection = database.collection("products");
+
+    const result = await productsCollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).send({ error: "Product not found." });
+    }
+
+    res.status(200).send(result);
+  } catch (err) {
+    console.error("--- ERROR IN /api/admin/delete-product ROUTE ---", err.message);
+    res.status(500).send({
+      message: "An error occurred on the server.",
+      errorDetails: err.message,
+    });
+  }
+});
+
 
 // === Export App for Render ===
 module.exports = { api: app };

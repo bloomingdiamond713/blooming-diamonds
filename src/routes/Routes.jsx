@@ -27,6 +27,13 @@ import AdminManageUsers from "../pages/AdminManageUsers/AdminManageUsers";
 import AdminCategories from "../pages/AdminCategories/AdminCategories";
 import AdminOrders from "../pages/Dashboard/AdminOrders/AdminOrders";
 
+const DisabledFeature = () => {
+  React.useEffect(() => {
+    alert("Feature not available yet. Coming soon!");
+  }, []); // This runs the alert once when the page tries to load
+  return null; // This renders nothing, fixing the crash
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,7 +76,7 @@ const router = createBrowserRouter([
         path: "payment",
         element: (
           <PrivateRoute>
-            {() => { alert("Feature not available yet. Coming soon!"); return null; }}
+            <DisabledFeature />
           </PrivateRoute>
         ),
       },
@@ -77,7 +84,7 @@ const router = createBrowserRouter([
       path: "payment-success",
         element: (
           <PrivateRoute>
-            {() => { alert("Feature not available yet. Coming soon!"); return null; }}
+            <DisabledFeature />
           </PrivateRoute>
         ),
       },

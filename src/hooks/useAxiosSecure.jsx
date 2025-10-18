@@ -11,7 +11,7 @@ const useAxiosSecure = () => {
 
   // Create an interceptor instance of Axios with the backend base URL from .env
   const axiosSecure = axios.create({
-    baseURL: '${import.meta.env.VITE_API_URL}api', // Corrected environment variable
+    baseURL: `${import.meta.env.VITE_API_URL}api`, // Corrected environment variable
   });
 
   // Interceptor to add the auth token to every request

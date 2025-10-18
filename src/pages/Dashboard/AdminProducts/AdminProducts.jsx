@@ -1,13 +1,16 @@
+// src/pages/Dashboard/AdminProducts/AdminProducts.jsx
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
 import { FiEdit2, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 import { Pagination } from "react-pagination-bar";
+import "react-pagination-bar/dist/index.css";
 import useSearchedProducts from "../../../hooks/useSearchedProducts";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import AnimateText from "@moxy/react-animate-text";
-import { auth } from '@/firebase/firebase.config.js';
+import { auth } from "@/firebase/firebase.config.js";
 
 const AdminProducts = () => {
   const [products, isProductsLoading, refetch] = useProducts();
