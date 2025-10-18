@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, createContext } from "react";
 import { Link, useLocation, useNavigate, MemoryRouter, Routes, Route } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import { toast, Toaster } from "react-hot-toast";
 import { auth } from '@/firebase/firebase.config.js';
 
