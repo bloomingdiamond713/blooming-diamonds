@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "./useAuthContext";
 import { auth } from '@/firebase/firebase.config.js';
+import { api } from "../../functions";
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const useAxiosSecure = () => {
 
   // Create an interceptor instance of Axios with the backend base URL from .env
   const axiosSecure = axios.create({
-    baseURL: import.meta.env.VITE_API_URL, // Corrected environment variable
+    baseURL: '${import.meta.env.VITE_API_URL}api', // Corrected environment variable
   });
 
   // Interceptor to add the auth token to every request

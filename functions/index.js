@@ -19,7 +19,7 @@ const corsOptions = {
   origin: [
     "https://bloomingdiamond.com",
     "https://www.blooming-diamonds.com",
-    "http://localhost:5173", // Added for local development
+    "http://localhost:5173",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -40,10 +40,7 @@ try {
   });
   console.log("✅ Firebase Admin SDK initialized successfully.");
 } catch (error) {
-  console.error(
-    "❌ Failed to initialize Firebase Admin SDK. Check FIREBASE_SERVICE_ACCOUNT_KEY.",
-    error
-  );
+  console.error("❌ Failed to initialize Firebase Admin SDK.", error);
 }
 
 // === Firebase Token Verification Middleware ===
@@ -64,47 +61,34 @@ async function verifyFirebaseToken(req, res, next) {
   }
 }
 
+
 // === MongoDB Setup ===
 let db;
 async function getDb() {
   if (!db) {
     const uri = process.env.DATABASE_URI;
     if (!uri || !uri.startsWith("mongodb")) {
-      console.error(
-        "❌ Invalid or missing DATABASE_URI in environment variables."
-      );
+      console.error("❌ Invalid or missing DATABASE_URI.");
       throw new Error("❌ Invalid or missing DATABASE_URI.");
     }
-
     const client = new MongoClient(uri, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      },
+      serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
     });
-
     try {
-      // Attempt to connect to the cluster
       await client.connect();
       console.log("✅ MongoDB client connected successfully!");
-
-      // Specify the database to use
-      db = client.db("bloomingDiamondsDB"); // Using a new, more descriptive name
+      db = client.db("bloomingDiamondsDB");
       console.log(`✅ Successfully connected to database: ${db.databaseName}`);
     } catch (error) {
-      // If connection fails, log the detailed error
       console.error("❌ MongoDB connection failed. Error:", error);
-      throw error; // Rethrow the error to stop the process if the DB is essential
+      throw error;
     }
   }
   return db;
 }
 
 // === Routes ===
-app.get("/api", (req, res) =>
-  res.status(200).send("UB Jewellers API is running!")
-);
+app.get("/api", (req, res) => res.status(200).send("UB Jewellers API is running!"));
 
 app.post("/api/jwt", (req, res) => {
   try {
@@ -127,12 +111,10 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-// NEW: Database Health Check Route
+// Database Health Check Route
 app.get("/api/db-status", async (req, res) => {
   try {
-    // Attempt to get a database connection
     const database = await getDb();
-    // Ping the database to confirm the connection is live and authenticated
     await database.command({ ping: 1 });
     res.status(200).send({
       status: "success",
@@ -140,7 +122,6 @@ app.get("/api/db-status", async (req, res) => {
       databaseName: database.databaseName,
     });
   } catch (err) {
-    // If getDb() or the ping fails, send back the specific error
     res.status(500).send({
       status: "error",
       message: "MongoDB connection failed.",
@@ -150,65 +131,111 @@ app.get("/api/db-status", async (req, res) => {
   }
 });
 
-// Route to create a new user in MongoDB
 app.post("/api/users", async (req, res) => {
   try {
     const user = req.body;
-    // This is the step where the connection will be attempted
     const database = await getDb();
     const usersCollection = database.collection("users");
-
-    // Check if the user already exists to avoid duplicates
     const existingUser = await usersCollection.findOne({ email: user.email });
     if (existingUser) {
       return res.status(200).send({ message: "User already exists." });
     }
-
     const result = await usersCollection.insertOne(user);
     res.status(201).send(result);
   } catch (err) {
-    // This block will catch the error from getDb() if the connection fails
-    console.error("--- ERROR IN /api/users ROUTE ---", err.message); // Log on server
-
-    // IMPORTANT: Send the detailed error message back to the frontend
-    res.status(500).send({
-      message: "An error occurred on the server.",
-      errorDetails: err.message, // The specific error from MongoDB
-      errorName: err.name,
-    });
+    console.error("--- ERROR IN /api/users ROUTE ---", err.message);
+    res.status(500).send({ message: "An error occurred on the server.", errorDetails: err.message });
   }
 });
 
-// NEW: Route to get a single user by email
 app.get("/api/user", async (req, res) => {
   try {
     const email = req.query.email;
     if (!email) {
       return res.status(400).send({ error: "Email query parameter is required." });
     }
-
     const database = await getDb();
     const usersCollection = database.collection("users");
-
-    // Find the user in the database
     const user = await usersCollection.findOne({ email: email });
-    
     if (!user) {
       return res.status(404).send({ error: "User not found." });
     }
-
-    // Send the user data back
     res.status(200).send(user);
-
   } catch (err) {
     console.error("--- ERROR IN /api/user ROUTE ---", err.message);
-    res.status(500).send({
-      message: "An error occurred on the server.",
-      errorDetails: err.message,
-    });
+    res.status(500).send({ message: "An error occurred on the server.", errorDetails: err.message });
   }
+});
+
+// --- ADMIN ROUTES ---
+
+// Route to get overall admin statistics
+app.get("/api/admin-stats", async (req, res) => {
+    try {
+        const database = await getDb();
+        const usersCollection = database.collection("users");
+        const productsCollection = database.collection("products");
+        const ordersCollection = database.collection("orders"); 
+
+        const totalUsers = await usersCollection.countDocuments();
+        const totalProducts = await productsCollection.countDocuments();
+        const totalOrders = await ordersCollection.countDocuments();
+
+        const revenueResult = await ordersCollection.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: "$price" } 
+                }
+            }
+        ]).toArray();
+
+        const totalRevenue = revenueResult.length > 0 ? revenueResult[0].totalRevenue : 0;
+
+        res.status(200).send({
+            totalUsers,
+            totalProducts,
+            totalOrders,
+            totalRevenue
+        });
+
+    } catch (err) {
+        console.error("--- ERROR IN /api/admin-stats ROUTE ---", err.message);
+        res.status(500).send({ message: "Failed to fetch admin stats." });
+    }
+});
+
+// Route to get total spent by each user
+app.get("/api/admin/total-spent", async (req, res) => {
+    try {
+        const database = await getDb();
+        const ordersCollection = database.collection("orders");
+
+        const totalSpentArray = await ordersCollection.aggregate([
+            {
+                $group: {
+                    _id: "$email", 
+                    totalSpent: { $sum: "$price" } 
+                }
+            },
+            {
+                $project: { 
+                    email: "$_id",
+                    totalSpent: 1,
+                    _id: 0
+                }
+            }
+        ]).toArray();
+
+        res.status(200).send(totalSpentArray);
+
+    } catch (err) {
+        console.error("--- ERROR IN /api/admin/total-spent ROUTE ---", err.message);
+        res.status(500).send({ message: "Failed to fetch total spent data." });
+    }
 });
 
 
 // === Export App for Render ===
 module.exports = { api: app };
+
