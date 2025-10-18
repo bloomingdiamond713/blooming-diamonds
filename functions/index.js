@@ -245,4 +245,3 @@ app.delete("/api/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, 
 
 // === Export App for Render ===
 module.exports = { api: app };
-y
