@@ -25,7 +25,9 @@ const useAdminStats = () => {
     },
   });
 
+  // Consolidated all data fetching into one stable useEffect
   useEffect(() => {
+    // Only run if the user is loaded and has a UID
     if (user?.uid) {
       // get categories data
       axiosSecure.get("/admin-dashboard/top-selling-categories").then((res) => {
@@ -48,7 +50,7 @@ const useAdminStats = () => {
         .get("/admin-dashboard/recent-reviews")
         .then((res) => setRecentReviews(res.data));
     }
-  }, [user?.uid, axiosSecure]); // Use a more stable dependency
+  }, [user?.uid, axiosSecure]); // Runs only when user ID or axios instance changes
 
   return {
     adminStats,

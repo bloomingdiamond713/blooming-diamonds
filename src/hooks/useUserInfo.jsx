@@ -32,7 +32,8 @@ const useUserInfo = () => {
         setTotalSpentArray(res.data);
       });
     }
-  }, [userFromDB, axiosSecure]); // Add axiosSecure to dependency array
+    // Only run when userFromDB or axiosSecure changes
+  }, [userFromDB, axiosSecure]); 
 
   return [userFromDB, isUserLoading, refetch, totalSpentArray];
 };
