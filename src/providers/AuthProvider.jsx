@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import { app } from "@/firebase/firebase.config.js";
 import axios from "axios";
-import { useQueryClient } from "react-query"; // 1. IMPORT THIS
+import { useQueryClient } from "react-query";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -21,28 +21,28 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  const baseURL = import.meta.env.VITE_API_URL; // Use the environment variable
-  const queryClient = useQueryClient(); // 2. GET THE CLIENT INSTANCE
+  const baseURL = import.meta.env.VITE_API_URL;
+  const queryClient = useQueryClient();
 
   const signUp = (email, password) => {
     setIsAuthLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         const newUserInfo = {
           email: userCredential.user.email,
           name: userCredential.user.displayName,
           role: "user",
         };
-        // Use baseURL for API call
-        axios.post(`${baseURL}/api/users`, newUserInfo).catch((error) => {
+        // CORRECTED: Removed "/api" prefix
+        axios.post(`${baseURL}/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
         return userCredential;
-      }
-    ).catch(error => {
-      setIsAuthLoading(false);
-      throw error;
-    });
+      })
+      .catch((error) => {
+        setIsAuthLoading(false);
+        throw error;
+      });
   };
 
   const updateUserProfile = (name, photoURL) => {
@@ -59,31 +59,32 @@ const AuthProvider = ({ children }) => {
 
   const signInGoogle = () => {
     setIsAuthLoading(true);
-    return signInWithPopup(auth, googleProvider).then((result) => {
-      const newUserInfo = {
-        email: result.user.email,
-        name: result.user.displayName,
-        role: "user",
-      };
-      // Use baseURL for API call
-      axios.post(`${baseURL}/api/users`, newUserInfo).catch((error) => {
-        console.error("Error saving user to MongoDB:", error);
+    return signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const newUserInfo = {
+          email: result.user.email,
+          name: result.user.displayName,
+          role: "user",
+        };
+        // CORRECTED: Removed "/api" prefix
+        axios.post(`${baseURL}/users`, newUserInfo).catch((error) => {
+          console.error("Error saving user to MongoDB:", error);
+        });
+        return result;
+      })
+      .catch((error) => {
+        setIsAuthLoading(false);
+        throw error;
       });
-      return result;
-    }).catch(error => {
-      setIsAuthLoading(false);
-      throw error;
-    });
   };
-  
+
   const resetPassword = (email) => {
     return sendPasswordResetEmail(auth, email);
   };
 
-  // Sign Out
   const logOut = () => {
     setIsAuthLoading(true);
-    queryClient.clear(); // 3. CLEAR REACT QUERY CACHE ON LOGOUT
+    queryClient.clear();
     return signOut(auth);
   };
 
@@ -91,15 +92,15 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Use baseURL for API call
-        axios.post(`${baseURL}/api/jwt`, { email: currentUser.email })
+        // CORRECTED: Removed "/api" prefix
+        axios.post(`${baseURL}/jwt`, { email: currentUser.email })
           .then((res) => {
             if (res.data.token) {
               localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
-              setIsAuthLoading(false);
             }
+            setIsAuthLoading(false);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("JWT request failed:", error);
             setIsAuthLoading(false);
           });
@@ -109,7 +110,7 @@ const AuthProvider = ({ children }) => {
       }
     });
     return () => unsubscribe();
-  }, [baseURL, queryClient]); // Add queryClient to dependencies
+  }, [baseURL, queryClient]);
 
   const value = {
     user,
@@ -122,9 +123,8 @@ const AuthProvider = ({ children }) => {
     logOut,
   };
 
-  return (
-    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
+

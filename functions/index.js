@@ -179,7 +179,36 @@ app.post("/api/users", async (req, res) => {
   }
 });
 
+// NEW: Route to get a single user by email
+app.get("/api/user", async (req, res) => {
+  try {
+    const email = req.query.email;
+    if (!email) {
+      return res.status(400).send({ error: "Email query parameter is required." });
+    }
+
+    const database = await getDb();
+    const usersCollection = database.collection("users");
+
+    // Find the user in the database
+    const user = await usersCollection.findOne({ email: email });
+    
+    if (!user) {
+      return res.status(404).send({ error: "User not found." });
+    }
+
+    // Send the user data back
+    res.status(200).send(user);
+
+  } catch (err) {
+    console.error("--- ERROR IN /api/user ROUTE ---", err.message);
+    res.status(500).send({
+      message: "An error occurred on the server.",
+      errorDetails: err.message,
+    });
+  }
+});
+
+
 // === Export App for Render ===
 module.exports = { api: app };
-
-
