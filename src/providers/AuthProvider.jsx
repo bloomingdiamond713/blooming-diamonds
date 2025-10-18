@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
           role: "user",
         };
         // CORRECTED: Added "/api" prefix
-        axios.post(`${baseURL}/api/users`, newUserInfo).catch((error) => {
+        axios.post(`${baseURL}api/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
         return userCredential;
@@ -67,7 +67,7 @@ const AuthProvider = ({ children }) => {
           role: "user",
         };
         // CORRECTED: Added "/api" prefix
-        axios.post(`${baseURL}/api/users`, newUserInfo).catch((error) => {
+        axios.post(`${baseURL}api/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
         return result;
@@ -93,7 +93,7 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       if (currentUser) {
         // CORRECTED: Added "/api" prefix
-        axios.post(`${baseURL}/api/jwt`, { email: currentUser.email })
+        axios.post(`${baseURL}api/jwt`, { email: currentUser.email })
           .then((res) => {
             if (res.data.token) {
               localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
@@ -116,7 +116,7 @@ const AuthProvider = ({ children }) => {
     user,
     isAuthLoading,
     signUp,
-    updateUserProfile,
+    updateProfile,
     signIn,
     signInGoogle,
     resetPassword,
