@@ -9,7 +9,6 @@ import "aos/dist/aos.css";
 import { auth } from '@/firebase/firebase.config.js';
 
 const MainLayout = () => {
-  // scroll to top on route change
   const location = useLocation();
 
   useEffect(() => {
@@ -33,7 +32,8 @@ const MainLayout = () => {
   }, []);
 
   return (
-    <div className="max-w-screen-2xl mx-auto">
+    // ADDED overflow-x-hidden to prevent horizontal scroll/whitespace
+    <div className="max-w-screen-2xl mx-auto overflow-x-hidden">
       <Header />
       <Outlet />
       <Footer />
