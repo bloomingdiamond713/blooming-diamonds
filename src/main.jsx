@@ -1,19 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import "animate.css";
 import { RouterProvider } from "react-router-dom";
-import router from "./routes/routes.jsx";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import router from "./routes/Routes";
+import AuthProvider from "./providers/AuthProvider";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "react-query";
-import AuthProvider from "./providers/AuthProvider.jsx";
-import "react-pagination-bar/dist/index.css";
-import { auth } from '@/firebase/firebase.config.js';
-// import "@moxy/react-animate-text/dist/index.css";
-import "pace-js";
-const queryClient = new QueryClient();
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // Disable refetching on window focus
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
