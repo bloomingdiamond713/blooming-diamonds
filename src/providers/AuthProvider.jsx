@@ -33,8 +33,8 @@ const AuthProvider = ({ children }) => {
           name: userCredential.user.displayName,
           role: "user",
         };
-        // CORRECTED: Removed "/api" prefix
-        axios.post(`${baseURL}/users`, newUserInfo).catch((error) => {
+        // CORRECTED: Added "/api" prefix
+        axios.post(`${baseURL}/api/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
         return userCredential;
@@ -66,8 +66,8 @@ const AuthProvider = ({ children }) => {
           name: result.user.displayName,
           role: "user",
         };
-        // CORRECTED: Removed "/api" prefix
-        axios.post(`${baseURL}/users`, newUserInfo).catch((error) => {
+        // CORRECTED: Added "/api" prefix
+        axios.post(`${baseURL}/api/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
         return result;
@@ -92,8 +92,8 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // CORRECTED: Removed "/api" prefix
-        axios.post(`${baseURL}/jwt`, { email: currentUser.email })
+        // CORRECTED: Added "/api" prefix
+        axios.post(`${baseURL}/api/jwt`, { email: currentUser.email })
           .then((res) => {
             if (res.data.token) {
               localStorage.setItem("ub-jewellers-jwt-token", res.data.token);
@@ -127,4 +127,3 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
-

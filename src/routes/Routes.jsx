@@ -30,8 +30,8 @@ import AdminOrders from "../pages/Dashboard/AdminOrders/AdminOrders";
 const DisabledFeature = () => {
   React.useEffect(() => {
     alert("Feature not available yet. Coming soon!");
-  }, []); // This runs the alert once when the page tries to load
-  return null; // This renders nothing, fixing the crash
+  }, []);
+  return null; // Renders nothing
 };
 
 const router = createBrowserRouter([

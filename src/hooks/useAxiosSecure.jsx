@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "./useAuthContext";
 import { auth } from '@/firebase/firebase.config.js';
-import { api } from "../../functions";
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
