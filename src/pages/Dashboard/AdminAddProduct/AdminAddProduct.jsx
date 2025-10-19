@@ -158,7 +158,7 @@ const AdminAddProduct = () => {
             .then((res) => {
               if (res.data.success) {
                 // add image link to product
-                product.img = res.data.display_url;
+                product.img = res.data.data.display_url;
 
                 axiosSecure
                   .post("/admin/add-product", product)
