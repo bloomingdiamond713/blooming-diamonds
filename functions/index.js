@@ -7,31 +7,25 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const admin = require("firebase-admin");
-const axios = require("axios");
-const crypto = require("crypto");
-const { v4: uuidv4 } = require("uuid");
 
 // === Express App ===
 const app = express();
 
-// === CORS Setup (IMPORTANT) ===
+// === CORS Setup (CORRECTED) ===
+// The origin list should contain your FRONTEND URLs, not your backend URL.
 const corsOptions = {
   origin: [
-    "https://bloomingdiamond.com",
-    "https://www.bloomingdiamond.com",
-    "http://localhost:5173",
-    "https://blooming-diamonds-bmbn.onrender.com",
+    "http://localhost:5173", // For local development
+    "https://bloomingdiamond.com", // Your production domain
+    "https://www.bloomingdiamond.com", // Your production domain with www
+    // Add your Hostinger URL here if it's different
+    // "https://your-hostinger-frontend-url.com" 
   ],
   credentials: true,
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 app.use(express.json());
-
-// === Health Check Route ===
-app.get("/", (req, res) => {
-  res.status(200).send("✅ Blooming Diamonds Backend is alive!");
-});
 
 // === Firebase Admin SDK Setup ===
 try {
@@ -46,7 +40,8 @@ try {
 
 // === MongoDB Setup ===
 let db;
-let usersCollection; // Define collections at a higher scope
+let usersCollection;
+let productsCollection; // Define products collection
 async function connectToDb() {
   if (db) {
     return;
@@ -63,7 +58,8 @@ async function connectToDb() {
     await client.connect();
     console.log("✅ MongoDB client connected successfully!");
     db = client.db("bloomingDiamondsDB");
-    usersCollection = db.collection("users"); // Initialize collection here
+    usersCollection = db.collection("users");
+    productsCollection = db.collection("products"); // Initialize products collection
     console.log(`✅ Successfully connected to database: ${db.databaseName}`);
   } catch (error) {
     console.error("❌ MongoDB connection failed. Error:", error);
@@ -71,7 +67,7 @@ async function connectToDb() {
   }
 }
 
-// Ensure DB is connected before starting
+// Middleware to ensure DB is connected before handling requests
 app.use(async (req, res, next) => {
     try {
         await connectToDb();
@@ -81,38 +77,33 @@ app.use(async (req, res, next) => {
     }
 });
 
-
 // ===================================================
-// === NEW & CORRECTED MIDDLEWARE ===
+// === MIDDLEWARE ===
 // ===================================================
 
-// 1. Middleware to verify the custom JWT
 const verifyJWT = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return res.status(401).send({ error: true, message: "Unauthorized: No token provided." });
   }
-
   const token = authorization.split(" ")[1];
   const secret = process.env.JWT_SECRET;
-
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({ error: true, message: "Unauthorized: Invalid token." });
     }
-    req.decoded = decoded; // Attach decoded payload (which includes email)
+    req.decoded = decoded;
     next();
   });
 };
 
-// 2. Middleware to verify if the user is an admin (runs AFTER verifyJWT)
 const verifyAdmin = async (req, res, next) => {
   const email = req.decoded.email;
   const query = { email: email };
   try {
     const user = await usersCollection.findOne(query);
     if (user && user.admin === true) {
-      next(); // User is an admin, proceed
+      next();
     } else {
       return res.status(403).send({ error: true, message: "Forbidden: Admin access required." });
     }
@@ -122,10 +113,12 @@ const verifyAdmin = async (req, res, next) => {
   }
 };
 
-
 // === ROUTES ===
 
-app.get("/", (req, res) => res.status(200).send("UB Jewellers API is running!"));
+// Health Check Route
+app.get("/", (req, res) => {
+  res.status(200).send("✅ Blooming Diamonds API is alive!");
+});
 
 app.post("/jwt", (req, res) => {
   try {
@@ -140,20 +133,10 @@ app.post("/jwt", (req, res) => {
 
 app.get("/products", async (req, res) => {
   try {
-    const products = await db.collection("products").find().toArray();
+    const products = await productsCollection.find().toArray();
     res.send(products);
   } catch (err) {
     res.status(500).send({ error: "Failed to fetch products" });
-  }
-});
-
-// Database Health Check Route
-app.get("/db-status", async (req, res) => {
-  try {
-    await db.command({ ping: 1 });
-    res.status(200).send({ status: "success", message: "MongoDB connected successfully!" });
-  } catch (err) {
-    res.status(500).send({ status: "error", message: "MongoDB connection failed." });
   }
 });
 
@@ -171,15 +154,12 @@ app.post("/users", async (req, res) => {
   }
 });
 
-// SECURED: This route now requires a valid login token
 app.get("/user", verifyJWT, async (req, res) => {
   try {
     const email = req.query.email;
-    // Security check: Ensure the email in the query matches the one in the token
     if (req.decoded.email !== email) {
         return res.status(403).send({ error: "Forbidden: You can only request your own user data." });
     }
-
     const user = await usersCollection.findOne({ email: email });
     if (!user) {
       return res.status(404).send({ error: "User not found." });
@@ -190,27 +170,37 @@ app.get("/user", verifyJWT, async (req, res) => {
   }
 });
 
-
 // --- ADMIN ROUTES (NOW SECURED) ---
 
-// SECURED: All admin routes now use both verifyJWT and verifyAdmin middleware
 app.get("/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
   try {
-    const productsCollection = db.collection("products");
     const ordersCollection = db.collection("orders");
-
     const totalUsers = await usersCollection.countDocuments();
     const totalProducts = await productsCollection.countDocuments();
     const totalOrders = await ordersCollection.countDocuments();
-
     const revenueResult = await ordersCollection.aggregate([
       { $group: { _id: null, totalRevenue: { $sum: "$price" } } }
     ]).toArray();
     const totalRevenue = revenueResult.length > 0 ? revenueResult[0].totalRevenue : 0;
-
     res.status(200).send({ totalUsers, totalProducts, totalOrders, totalRevenue });
   } catch (err) {
     res.status(500).send({ message: "Failed to fetch admin stats." });
+  }
+});
+
+// NEW: This is the missing route for adding a product
+app.post("/admin/add-product", verifyJWT, verifyAdmin, async (req, res) => {
+  try {
+    const newProduct = req.body;
+    // Optional: Add validation to ensure newProduct has required fields
+    if (!newProduct.name || !newProduct.price) {
+      return res.status(400).send({ message: "Product name and price are required." });
+    }
+    const result = await productsCollection.insertOne(newProduct);
+    res.status(201).send(result);
+  } catch (err) {
+    console.error("Error adding product:", err);
+    res.status(500).send({ message: "An error occurred while adding the product." });
   }
 });
 
@@ -233,7 +223,6 @@ app.delete("/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res)
     if (!ObjectId.isValid(id)) {
       return res.status(400).send({ error: "Invalid product ID format." });
     }
-    const productsCollection = db.collection("products");
     const result = await productsCollection.deleteOne({ _id: new ObjectId(id) });
     if (result.deletedCount === 0) {
       return res.status(404).send({ error: "Product not found." });
