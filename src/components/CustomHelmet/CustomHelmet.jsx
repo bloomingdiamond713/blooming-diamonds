@@ -4,7 +4,12 @@ import { Helmet } from "react-helmet-async";
 const CustomHelmet = ({ title }) => {
   return (
     <Helmet>
-      <title>{title} :: Blooming Diamonds</title>
+      {/* This ternary operator provides a default title if the 'title' prop is not provided, 
+        preventing the app from crashing.
+      */}
+      <title>
+        {title ? `${title} :: Blooming Diamonds` : "Blooming Diamonds"}
+      </title>
     </Helmet>
   );
 };

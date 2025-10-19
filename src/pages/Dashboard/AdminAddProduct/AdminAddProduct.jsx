@@ -35,7 +35,7 @@ const AdminAddProduct = () => {
   useEffect(() => {
     if (user) {
       axios
-        .get("https://ub-jewellers-server.onrender.com/categories")
+        .get("/admin/categories")
         .then((res) => setCategories(res.data))
         .catch((e) => console.error(e));
     }
@@ -113,7 +113,7 @@ const AdminAddProduct = () => {
     };
 
     // add new product
-    if (!dynamicProduct) {
+    if (!dynamicProduct?._id) { // <-- FIX: Check for the ID
       Swal.fire({
         title: "Are you sure?",
         text: "Did you make sure all data provided are correct?",
