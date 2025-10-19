@@ -314,6 +314,82 @@ router.get("/cart/subtotal", verifyJWT, async(req, res) => {
     }
 });
 
+// PATCH (Update quantity in) Cart Item
+router.patch("/cart/:id", verifyJWT, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { operation } = req.body; // Expecting 'plus' or 'minus'
+    const userEmail = req.decoded.email; // Get email from verified token
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send({ error: "Invalid cart item ID format." });
+    }
+
+    const filter = { 
+      _id: new ObjectId(id),
+      email: userEmail // Ensure user can only update their own items
+    };
+
+    // Determine the update operation based on 'operation' field
+    let updateDoc;
+    if (operation === 'plus') {
+      updateDoc = { $inc: { quantity: 1 } }; // Increment quantity by 1
+    } else if (operation === 'minus') {
+      updateDoc = { $inc: { quantity: -1 } }; // Decrement quantity by 1
+    } else {
+      return res.status(400).send({ error: "Invalid operation specified. Use 'plus' or 'minus'." });
+    }
+
+    // Additionally, ensure quantity doesn't go below 1 after decrementing
+    if (operation === 'minus') {
+       filter.quantity = { $gt: 1 }; // Only update if quantity is greater than 1
+    }
+
+    const result = await cartCollection.updateOne(filter, updateDoc);
+
+    if (result.matchedCount === 0) {
+      // Could be not found, belonged to another user, or quantity was already 1 for 'minus' op
+       return res.status(404).send({ error: "Cart item not found, quantity cannot be reduced below 1, or permission denied." });
+    }
+     if (result.modifiedCount === 0 && result.matchedCount === 1) {
+        // This happens if quantity was 1 and operation was 'minus'
+         return res.status(200).send({ message: "Quantity already at minimum (1)." });
+    }
+
+    res.status(200).send(result);
+  } catch (err) {
+    console.error("Error updating cart item quantity:", err);
+    res.status(500).send({ message: "Failed to update cart item quantity.", errorDetails: err.message });
+  }
+});
+
+// DELETE Item from Cart
+router.delete("/cart/:id", verifyJWT, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userEmail = req.decoded.email; // Get email from verified token
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send({ error: "Invalid cart item ID format." });
+    }
+
+    const filter = { 
+      _id: new ObjectId(id),
+      email: userEmail // Ensure user can only delete their own items
+    }; 
+    const result = await cartCollection.deleteOne(filter);
+
+    if (result.deletedCount === 0) {
+      // Could be not found OR belonged to another user
+      return res.status(404).send({ error: "Cart item not found or you don't have permission to delete it." });
+    }
+    res.status(200).send(result); 
+  } catch (err) {
+    console.error("Error deleting from cart:", err);
+    res.status(500).send({ message: "Failed to delete item from cart.", errorDetails: err.message });
+  }
+});
+
 // --- Wishlist Routes (Protected) ---
 
 // GET User's Wishlist
@@ -672,6 +748,23 @@ router.patch("/admin/categories/:id", verifyJWT, verifyAdmin, async (req, res) =
   } catch (err) {
     console.error("Error updating category:", err);
     res.status(500).send({ message: "Failed to update category.", errorDetails: err.message });
+  }
+});
+
+// --- Nav Notifications Route (Public Example) ---
+// You might want to fetch this from a 'notifications' collection later
+router.get("/nav-notifications", (req, res) => {
+  try {
+    // Example: Returning static data
+    const notifications = [
+       { _id: "1", notification: "✨ Free Shipping on Orders Over $500!" },
+       { _id: "2", notification: "💎 New Arrivals: Check out the Fall Collection!" },
+       { _id: "3", notification: "🏷️ Flash Sale Ends Soon!" }
+    ];
+    res.status(200).send(notifications);
+  } catch (err) {
+     console.error("Error fetching nav notifications:", err);
+     res.status(500).send({ message: "Failed to fetch notifications." });
   }
 });
 
