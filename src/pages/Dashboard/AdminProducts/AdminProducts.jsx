@@ -14,7 +14,7 @@ import { auth } from "@/firebase/firebase.config.js";
 
 const AdminProducts = () => {
   const [products, isProductsLoading, refetch] = useProducts();
-  const [displayedProducts, setDisplayedProducts] = useState(products || []);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedProducts, isSearchLoading] = useSearchedProducts(searchText);
   const [axiosSecure] = useAxiosSecure();
@@ -22,8 +22,10 @@ const AdminProducts = () => {
   useEffect(() => {
     if (searchedProducts.length) {
       setDisplayedProducts(searchedProducts);
-    } else {
+    } else if (Array.isArray(products)) { // Add this check
       setDisplayedProducts(products);
+    } else {
+      setDisplayedProducts([]); // Fallback to empty array
     }
   }, [searchedProducts, products]);
 

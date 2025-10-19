@@ -10,7 +10,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { app } from "@/firebase/firebase.config.js";
+import { app } from "../firebase/firebase.config.js";
 import axios from "axios";
 import { useQueryClient } from "react-query";
 
@@ -33,7 +33,6 @@ const AuthProvider = ({ children }) => {
           name: userCredential.user.displayName,
           role: "user",
         };
-        // CORRECTED: Added "/api" prefix
         axios.post(`${baseURL}api/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
@@ -66,7 +65,6 @@ const AuthProvider = ({ children }) => {
           name: result.user.displayName,
           role: "user",
         };
-        // CORRECTED: Added "/api" prefix
         axios.post(`${baseURL}api/users`, newUserInfo).catch((error) => {
           console.error("Error saving user to MongoDB:", error);
         });
@@ -92,7 +90,6 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // CORRECTED: Added "/api" prefix
         axios.post(`${baseURL}api/jwt`, { email: currentUser.email })
           .then((res) => {
             if (res.data.token) {
@@ -127,3 +124,4 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
+
