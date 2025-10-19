@@ -34,12 +34,21 @@ const AdminAddProduct = () => {
   // fetch categories
   useEffect(() => {
     if (user) {
-      axios
-        .get("/admin/categories")
-        .then((res) => setCategories(res.data))
-        .catch((e) => console.error(e));
+      // Use axiosSecure to send the JWT token automatically
+      axiosSecure 
+        .get("/admin/categories") // Fetch from your secure admin route
+        .then((res) => {
+          // Ensure the data structure matches what the <select> expects.
+          // If res.data is the array of categories, this is fine.
+          setCategories(res.data); 
+        })
+        .catch((e) => {
+          console.error("Error fetching categories:", e);
+          // Optionally, set an error state here to inform the user
+          setCategories([]); // Set to empty array on error
+        });
     }
-  }, [user]);
+  }, [user, axiosSecure]); // Add axiosSecure to dependency array
 
   // react hook form settings
   const {
@@ -152,7 +161,7 @@ const AdminAddProduct = () => {
                 product.img = res.data.display_url;
 
                 axiosSecure
-                  .post("/products", product)
+                  .post("/admin/add-product", product)
                   .then((res) => {
                     if (res.data.insertedId) {
                       Swal.fire({
@@ -197,7 +206,7 @@ const AdminAddProduct = () => {
                 if (res.data.success) {
                   product.img = res.data.data.display_url;
                   axiosSecure
-                    .put(`/products/${dynamicProduct?._id}`, product)
+                    .put(`/admin/update-product/${dynamicProduct?._id}`, product)
                     .then((res) => {
                       if (res.data.modifiedCount > 0) {
                         Swal.fire({
@@ -214,7 +223,7 @@ const AdminAddProduct = () => {
           } else {
             product.img = dynamicProduct.img;
             axiosSecure
-              .put(`/products/${dynamicProduct?._id}`, product)
+              .put(`/admin/update-product/${dynamicProduct?._id}`, product)
               .then((res) => {
                 if (res.data.modifiedCount > 0) {
                   Swal.fire({
