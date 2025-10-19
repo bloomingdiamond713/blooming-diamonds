@@ -60,12 +60,14 @@ const AdminAddProduct = () => {
   // SET PRODUCT BADGE DEFAULT VALUES
   useEffect(() => {
     if (dynamicProduct) {
-      setDefaultBadges([
+      const badges = [
         dynamicProduct?.newArrival ? tagOptions[2] : null,
         dynamicProduct?.badge === "HOT" ? tagOptions[0] : null,
-
         dynamicProduct?.flashSale ? tagOptions[1] : null,
-      ]);
+      ];
+      
+      // <-- FIX: Add .filter(Boolean) to remove all null/undefined values
+      setDefaultBadges(badges.filter(Boolean)); 
     }
   }, [tagOptions, dynamicProduct]);
 

@@ -46,6 +46,7 @@ async function connectToDb() {
     productsCollection = db.collection("products");
     cartCollection = db.collection("cart");
     ordersCollection = db.collection("orders");
+    categoriesCollection = db.collection("categories");
     console.log(`✅ Successfully connected to database: ${db.databaseName}`);
   } catch (error) {
     console.error("❌ MongoDB connection failed. Error:", error);
@@ -406,6 +407,102 @@ router.delete("/admin/users/delete/:id", verifyJWT, verifyAdmin, async (req, res
   }
 });
 
+// --- ADMIN CATEGORY ROUTES ---
+
+// GET All Categories (for Admin page)
+router.get("/admin/categories", verifyJWT, verifyAdmin, async (req, res) => {
+  try {
+    const categories = await categoriesCollection.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "categoryName",
+          foreignField: "category",
+          as: "products"
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          categoryId: "$_id", // Pass _id as categoryId for the frontend
+          categoryName: 1,
+          categoryPic: 1,
+          itemCount: { $size: "$products" } // Count matched products
+        }
+      }
+    ]).toArray();
+    res.status(200).send(categories);
+  } catch (err) {
+    console.error("Failed to fetch admin categories:", err);
+    res.status(500).send({ message: "Failed to fetch categories.", errorDetails: err.message });
+  }
+});
+
+// POST (Add) a new Category
+router.post("/admin/categories", verifyJWT, verifyAdmin, async (req, res) => {
+  try {
+    const { categoryName, categoryPic } = req.body;
+    if (!categoryName || !categoryPic) {
+      return res.status(400).send({ message: "Category name and picture URL are required." });
+    }
+
+    // Check for duplicates (case-insensitive)
+    const existingCategory = await categoriesCollection.findOne({
+      categoryName: { $regex: new RegExp(`^${categoryName}$`, 'i') }
+    });
+
+    if (existingCategory) {
+      return res.status(409).send({ message: "Category already exists." });
+    }
+
+    const newCategory = {
+      categoryName,
+      categoryPic,
+      createdAt: new Date()
+    };
+    const result = await categoriesCollection.insertOne(newCategory);
+    res.status(201).send(result);
+  } catch (err) {
+    console.error("Error adding category:", err);
+    res.status(500).send({ message: "Failed to add category.", errorDetails: err.message });
+  }
+});
+
+// PATCH (Update) a Category
+router.patch("/admin/categories/:id", verifyJWT, verifyAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { categoryName, categoryPic } = req.body;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send({ error: "Invalid category ID format." });
+    }
+
+    if (!categoryName && !categoryPic) {
+      return res.status(400).send({ message: "Nothing to update." });
+    }
+
+    const filter = { _id: new ObjectId(id) };
+    const updateDoc = {
+      $set: {
+        ...(categoryName && { categoryName }),
+        ...(categoryPic && { categoryPic }),
+        updatedAt: new Date()
+      }
+    };
+
+    const result = await categoriesCollection.updateOne(filter, updateDoc);
+
+    if (result.matchedCount === 0) {
+      return res.status(404).send({ error: "Category not found." });
+    }
+
+    res.status(200).send(result);
+  } catch (err) {
+    console.error("Error updating category:", err);
+    res.status(500).send({ message: "Failed to update category.", errorDetails: err.message });
+  }
+});
 
 // Get All Orders
 router.get("/admin/orders", verifyJWT, verifyAdmin, async (req, res) => {

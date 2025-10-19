@@ -65,7 +65,7 @@ const AdminCategories = () => {
     }
 
     axiosSecure
-      .post("/categories", { categoryName, categoryPic })
+      .post("/admin/categories", { categoryName, categoryPic })
       .then((res) => {
         if (res.data.insertedId) {
           form.reset();
@@ -102,7 +102,7 @@ const AdminCategories = () => {
     }
 
     axiosSecure
-      .patch(`/categories/${selectedCategory?.categoryId}`, {
+      .patch(`admin/categories/${selectedCategory?.categoryId}`, {
         categoryName: categoryName || selectedCategory?.categoryName,
         categoryPic: categoryPic || selectedCategory?.categoryPic,
       })

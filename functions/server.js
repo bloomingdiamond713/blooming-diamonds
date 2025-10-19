@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Mount API routes (keep as is)
-app.use('/api', apiRoutes);
+app.use('/api', cors(corsOptions), apiRoutes);
 
 // === FIX: Correct the static file paths ===
 // Serve static files from the 'dist' directory in the project root
