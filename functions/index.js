@@ -12,7 +12,6 @@ const admin = require("firebase-admin");
 const app = express();
 
 // === CORS Setup (CORRECTED) ===
-// The origin list should contain your FRONTEND URLs, not your backend URL.
 const corsOptions = {
   origin: [
     "http://localhost:5173", // For local development
@@ -41,7 +40,10 @@ try {
 // === MongoDB Setup ===
 let db;
 let usersCollection;
-let productsCollection; // Define products collection
+let productsCollection;
+let cartCollection; // Define cart collection
+let ordersCollection; // Define orders collection
+
 async function connectToDb() {
   if (db) {
     return;
@@ -59,7 +61,9 @@ async function connectToDb() {
     console.log("✅ MongoDB client connected successfully!");
     db = client.db("bloomingDiamondsDB");
     usersCollection = db.collection("users");
-    productsCollection = db.collection("products"); // Initialize products collection
+    productsCollection = db.collection("products");
+    cartCollection = db.collection("cart"); // Initialize cart collection
+    ordersCollection = db.collection("orders"); // Initialize orders collection
     console.log(`✅ Successfully connected to database: ${db.databaseName}`);
   } catch (error) {
     console.error("❌ MongoDB connection failed. Error:", error);
@@ -170,11 +174,31 @@ app.get("/user", verifyJWT, async (req, res) => {
   }
 });
 
-// --- ADMIN ROUTES (NOW SECURED) ---
+// --- CART ROUTES (NEW) ---
+app.get("/cart", verifyJWT, async (req, res) => {
+    const email = req.query.email;
+    if (req.decoded.email !== email) {
+        return res.status(403).send({ error: "Forbidden access." });
+    }
+    const result = await cartCollection.find({ email: email }).toArray();
+    res.send(result);
+});
 
-app.get("/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
+app.get("/cart/subtotal", verifyJWT, async(req, res) => {
+    const email = req.query.email;
+    if (req.decoded.email !== email) {
+        return res.status(403).send({ error: "Forbidden access." });
+    }
+    const userCart = await cartCollection.find({ email: email }).toArray();
+    const subtotal = userCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    res.send({ subtotal });
+})
+
+// --- ADMIN ROUTES (NOW SECURED & EXPANDED) ---
+
+// Corrected path to match frontend
+app.get("/admin-dashboard/all-stats", verifyJWT, verifyAdmin, async (req, res) => {
   try {
-    const ordersCollection = db.collection("orders");
     const totalUsers = await usersCollection.countDocuments();
     const totalProducts = await productsCollection.countDocuments();
     const totalOrders = await ordersCollection.countDocuments();
@@ -188,11 +212,9 @@ app.get("/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-// NEW: This is the missing route for adding a product
 app.post("/admin/add-product", verifyJWT, verifyAdmin, async (req, res) => {
   try {
     const newProduct = req.body;
-    // Optional: Add validation to ensure newProduct has required fields
     if (!newProduct.name || !newProduct.price) {
       return res.status(400).send({ message: "Product name and price are required." });
     }
@@ -204,9 +226,28 @@ app.post("/admin/add-product", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
+// NEW: Route to get all users for admin
+app.get("/admin/users", verifyJWT, verifyAdmin, async (req, res) => {
+    try {
+        const users = await usersCollection.find().toArray();
+        res.status(200).send(users);
+    } catch(err) {
+        res.status(500).send({ message: "Failed to fetch users." });
+    }
+});
+
+// NEW: Route to get all orders for admin
+app.get("/admin/orders", verifyJWT, verifyAdmin, async (req, res) => {
+    try {
+        const orders = await ordersCollection.find().sort({ date: -1 }).toArray();
+        res.status(200).send(orders);
+    } catch(err) {
+        res.status(500).send({ message: "Failed to fetch orders." });
+    }
+});
+
 app.get("/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
   try {
-    const ordersCollection = db.collection("orders");
     const totalSpentArray = await ordersCollection.aggregate([
       { $group: { _id: "$email", totalSpent: { $sum: "$price" } } },
       { $project: { email: "$_id", totalSpent: 1, _id: 0 } }
@@ -235,3 +276,4 @@ app.delete("/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res)
 
 // === Export App for Render ===
 module.exports = { api: app };
+
