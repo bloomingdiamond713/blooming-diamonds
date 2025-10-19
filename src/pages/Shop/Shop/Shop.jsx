@@ -110,7 +110,7 @@ const Shop = () => {
   useEffect(() => {
     // fetch all categories
     axios
-      .get("https://ub-jewellers-server.onrender.com/categories")
+      .get("/api/categories")
       .then((res) => {
         setAllCategories(res.data);
       })
@@ -447,10 +447,11 @@ const Shop = () => {
             </div>
           ) : (
             <>
-              {filteredProducts?.length ? (
+              {/* FIX: Check if filteredProducts is an array before mapping */}
+              {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-y-20 mt-8">
                   {filteredProducts
-                    ?.slice(
+                    .slice(
                       (currentPage - 1) * pageProductLimit,
                       currentPage * pageProductLimit
                     )
@@ -459,9 +460,12 @@ const Shop = () => {
                     ))}
                 </div>
               ) : (
-                <h4 className="text-center text-red-500 text-xl font-medium mt-8">
-                  No item matched {searchText}
-                </h4>
+                // This message shows only after loading is complete and no products are found
+                !filterLoading && (
+                  <h4 className="text-center text-red-500 text-xl font-medium mt-8 col-span-full">
+                    No products found matching your criteria.
+                  </h4>
+                )
               )}
             </>
           )}

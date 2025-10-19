@@ -40,7 +40,7 @@ const Header = () => {
   // Fetch notifications with a fallback
   useEffect(() => {
     axios
-      .get("https://ub-jewellers-server.onrender.com/nav-notifications")
+      .get("/api/nav-notifications")
       .then((res) => {
         if (res.data && res.data.length > 0) {
             setNavNotifications(res.data);

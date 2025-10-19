@@ -25,6 +25,7 @@ let usersCollection;
 let productsCollection;
 let cartCollection;
 let ordersCollection;
+let wishlistCollection
 
 async function connectToDb() {
   if (db) {
@@ -47,6 +48,7 @@ async function connectToDb() {
     cartCollection = db.collection("cart");
     ordersCollection = db.collection("orders");
     categoriesCollection = db.collection("categories");
+    wishlistCollection = db.collection("wishlist");
     console.log(`✅ Successfully connected to database: ${db.databaseName}`);
   } catch (error) {
     console.error("❌ MongoDB connection failed. Error:", error);
@@ -158,6 +160,66 @@ router.get("/products", async (req, res) => {
   }
 });
 
+// Get all Categories (Public)
+router.get("/categories", async (req, res) => {
+  try {
+    const categories = await categoriesCollection.find({}).toArray();
+    res.status(200).send(categories);
+  } catch (err) {
+     console.error("Failed to fetch public categories:", err);
+     res.status(500).send({ message: "Failed to fetch categories." });
+  }
+});
+
+// --- NEW ROUTE: Filter Products ---
+router.get("/products/filter", async (req, res) => {
+  try {
+    const { category, minPrice, maxPrice, priceOrder, size, carate, search } = req.query;
+
+    let query = {};
+
+    // Category filter
+    if (category && category.toLowerCase() !== "all") {
+      query.category = category;
+    }
+
+    // Price range filter
+    if (minPrice && maxPrice) {
+      query.price = { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) };
+    }
+
+    // Size filter
+    if (size && size.toLowerCase() !== "all") {
+      query.size = size;
+    }
+    
+    // Carate filter
+    if (carate && carate.toLowerCase() !== "all") {
+      query.carate = parseInt(carate);
+    }
+    
+    // Search text filter (searches in product name)
+    if (search) {
+      query.name = { $regex: search, $options: "i" }; // Case-insensitive search
+    }
+
+    let sort = {};
+    // Price sorting
+    if (priceOrder === "asc") {
+      sort.price = 1;
+    } else if (priceOrder === "desc") {
+      sort.price = -1;
+    }
+
+    const products = await productsCollection.find(query).sort(sort).toArray();
+    res.send(products);
+
+  } catch (err) {
+    console.error("Failed to filter products:", err);
+    res.status(500).send({ error: "Failed to filter products" });
+  }
+});
+
 // --- User Routes ---
 router.post("/users", async (req, res) => {
   try {
@@ -250,6 +312,115 @@ router.get("/cart/subtotal", verifyJWT, async(req, res) => {
        console.error("Error calculating cart subtotal:", err);
        res.status(500).send({ message: "Failed to calculate subtotal." });
     }
+});
+
+// --- Wishlist Routes (Protected) ---
+
+// GET User's Wishlist
+router.get("/wishlist", verifyJWT, async (req, res) => {
+  const email = req.query.email;
+  if (!email) {
+    return res.status(400).send({ error: "Email query parameter is required." });
+  }
+  if (req.decoded.email !== email) {
+    return res.status(403).send({ error: "Forbidden: You can only access your own wishlist." });
+  }
+  try {
+    // Find wishlist items and join with product data
+    const wishlistItems = await wishlistCollection.aggregate([
+      { $match: { email: email } },
+      {
+        $lookup: {
+          from: "products", // The name of your products collection
+          localField: "productId",
+          foreignField: "_id",
+          as: "productDetails"
+        }
+      },
+      { $unwind: "$productDetails" }, // Deconstruct the productDetails array
+      { 
+        $project: { // Reshape the output
+          _id: 1, // Keep the wishlist item ID
+          email: 1,
+          productId: 1,
+          addedAt: 1,
+          // Include specific product fields you need
+          name: "$productDetails.name", 
+          price: "$productDetails.price",
+          img: "$productDetails.img",
+          category: "$productDetails.category",
+          // Add other fields from productDetails as needed
+        }
+      }
+    ]).toArray();
+    res.status(200).send(wishlistItems);
+  } catch (err) {
+    console.error("Error fetching wishlist:", err);
+    res.status(500).send({ message: "Failed to fetch wishlist." });
+  }
+});
+
+// POST Add Item to Wishlist
+router.post("/wishlist", verifyJWT, async (req, res) => {
+  try {
+    const item = req.body; // Expecting { email, productId, ... potentially product details }
+    if (!item || !item.email || !item.productId) {
+       return res.status(400).send({ message: "Email and productId are required." });
+    }
+    if (req.decoded.email !== item.email) {
+       return res.status(403).send({ error: "Forbidden: You can only add to your own wishlist." });
+    }
+    if (!ObjectId.isValid(item.productId)) {
+       return res.status(400).send({ error: "Invalid productId format." });
+    }
+
+    // Check if item already exists for this user
+    const existingItem = await wishlistCollection.findOne({ 
+        email: item.email, 
+        productId: new ObjectId(item.productId) 
+    });
+    if (existingItem) {
+        return res.status(409).send({ message: "Item already in wishlist." }); // 409 Conflict
+    }
+
+    const newItem = {
+      email: item.email,
+      productId: new ObjectId(item.productId), // Store as ObjectId
+      addedAt: new Date()
+    };
+    const result = await wishlistCollection.insertOne(newItem);
+    res.status(201).send(result);
+  } catch (err) {
+     console.error("Error adding to wishlist:", err);
+     res.status(500).send({ message: "Failed to add item to wishlist.", errorDetails: err.message });
+  }
+});
+
+// DELETE Item from Wishlist (using wishlist item's _id)
+router.delete("/wishlist/:id", verifyJWT, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userEmail = req.decoded.email; // Get email from verified token
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send({ error: "Invalid wishlist item ID format." });
+    }
+
+    const filter = { 
+      _id: new ObjectId(id),
+      email: userEmail // Ensure user can only delete their own items
+    }; 
+    const result = await wishlistCollection.deleteOne(filter);
+
+    if (result.deletedCount === 0) {
+      // Could be not found OR belonged to another user
+      return res.status(404).send({ error: "Wishlist item not found or you don't have permission to delete it." });
+    }
+    res.status(200).send(result); 
+  } catch (err) {
+    console.error("Error deleting from wishlist:", err);
+    res.status(500).send({ message: "Failed to delete item from wishlist.", errorDetails: err.message });
+  }
 });
 
 // --- ADMIN ROUTES (Protected by verifyJWT and verifyAdmin) ---
