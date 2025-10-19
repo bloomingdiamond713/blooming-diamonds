@@ -21,8 +21,10 @@ const Shop = () => {
   // filters
   const location = useLocation();
   const [products] = useProducts();
-  const [filteredProducts, setFilteredProducts] = useState(products);
-  const [filterLoading, setFilterLoading] = useState(false);
+
+  // Initialize state with safe defaults
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filterLoading, setFilterLoading] = useState(true);
   const [category, setCategory] = useState(location.state?.category || "All");
   const [minimumPrice, setMinimumPrice] = useState(0);
   const [maximumPrice, setMaximumPrice] = useState(0);
@@ -32,23 +34,22 @@ const Shop = () => {
   const [searchText, setSearchText] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
-  // scroll to top upon route and pagination page change
-  // pagination settings
+  // Pagination settings
   const [currentPage, setCurrentPage] = useState(1);
   const pageProductLimit = 9;
+
   useEffect(() => {
     document.documentElement.scrollTo({
       top: 0,
       left: 0,
-      right: 0,
       behavior: "smooth",
     });
   }, [currentPage]);
 
-  // find max and min prices of the products
+  // Find max and min prices from the initial products load
   useEffect(() => {
     const prices = products?.map((p) => parseFloat(p.price));
-    if (prices) {
+    if (prices && prices.length > 0) {
       const minPrice = Math.min(...prices);
       const maxPrice = Math.max(...prices);
       setMinimumPrice(parseFloat(minPrice));
@@ -56,91 +57,92 @@ const Shop = () => {
     }
   }, [products]);
 
-  // filter products by category, price range, price sort, size, carate
+  // Main effect for filtering products
   useEffect(() => {
     setFilterLoading(true);
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/products/filter?category=${category}&minPrice=${minimumPrice}&maxPrice=${maximumPrice}&priceOrder=${priceSortingOrder}&size=${size}&carate=${carate}&search=${searchText}`;
 
     axios
-      .get(
-        `/api/products/filter?category=${category}&minPrice=${minimumPrice}&maxPrice=${maximumPrice}&priceOrder=${priceSortingOrder}&size=${size}&carate=${carate}&search=${searchText}`
-      )
+      .get(apiUrl)
       .then((res) => {
-        setFilteredProducts(res.data);
-        setFilterLoading(false);
-        location.state = {};
+        if (Array.isArray(res.data)) {
+          setFilteredProducts(res.data);
+        } else {
+          console.error("Filter API did not return an array:", res.data);
+          setFilteredProducts([]);
+        }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error fetching filtered products:", error);
+        setFilteredProducts([]);
+      })
+      .finally(() => {
         setFilterLoading(false);
+        if (location.state) {
+          location.state = {};
+        }
       });
-  }, [
-    category,
-    minimumPrice,
-    maximumPrice,
-    priceSortingOrder,
-    size,
-    carate,
-    searchText,
-    location,
-  ]);
+  }, [category, minimumPrice, maximumPrice, priceSortingOrder, size, carate, searchText, location]);
 
-  // show filters when category, carate or size changes
+  // Show or hide the "Clear Filters" section
   useEffect(() => {
-    if (
+    const shouldShow =
       category.toLowerCase() !== "all" ||
       carate.toLowerCase() !== "all" ||
-      size.toLowerCase() !== "all"
-    ) {
-      setShowFilters(true);
-    } else {
-      setShowFilters(false);
-    }
+      size.toLowerCase() !== "all";
+    setShowFilters(shouldShow);
   }, [category, carate, size]);
 
-  // left side filter options
+  // Prepare filter options for the sidebar
   const { getUniqueProducts } = useFilterProducts();
   const filterCategories = getUniqueProducts("category");
   const filterSizes = getUniqueProducts("size");
   const filterCarates = getUniqueProducts("carate");
   const [allFilteredCategories, setAllFilteredCategories] = useState([]);
-
-  // display categories on left side with 0 product as well
   const [allCategories, setAllCategories] = useState([]);
 
+  // Fetch all possible categories from the backend
   useEffect(() => {
-    // fetch all categories
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/categories`;
     axios
-      .get("/api/categories")
+      .get(apiUrl)
       .then((res) => {
-        setAllCategories(res.data);
+        if (Array.isArray(res.data)) {
+          setAllCategories(res.data);
+        } else {
+          console.error("Categories API did not return an array:", res.data);
+          setAllCategories([]);
+        }
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error("Error fetching categories:", e);
+        setAllCategories([]);
+      });
   }, []);
 
+    // Combine fetched categories with product counts
   useEffect(() => {
-    if (filterCategories && allCategories) {
-      const allValue =
-        filterCategories.find((category) => category.All)?.All || 0;
+    if (filterCategories && Array.isArray(allCategories)) {
+      const allValue = filterCategories.find((cat) => cat.All)?.All || 0;
 
       const resultArray = allCategories.map((category) => {
         const categoryName = category.categoryName;
         const correspondingValue = filterCategories.find(
-          (filterCategory) => filterCategory[categoryName]
+          (filterCat) => filterCat[categoryName]
         ) || { [categoryName]: 0 };
-
         return { [categoryName]: correspondingValue[categoryName] };
       });
 
       resultArray.unshift({ All: allValue });
-
       setAllFilteredCategories(resultArray);
     }
-  }, [allCategories]);
+  }, [allCategories, filterCategories]);
 
   const handleLinkClicked = () => {
-    document.getElementById("shop-page-drawer").click();
+    document.getElementById("shop-page-drawer")?.click();
   };
-
+  
+  // Restart the page loader on navigation to the shop
   useEffect(() => {
     if (location.pathname.includes("shop")) {
       Pace.restart();
@@ -155,122 +157,83 @@ const Shop = () => {
       <CustomHelmet title={"Shop"} />
       <div className="text-sm breadcrumbs text-gray-500 ml-5 md:ml-0">
         <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/shop">Shop</Link>
-          </li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/shop">Shop</Link></li>
         </ul>
       </div>
 
       <div className="shop-container mt-7">
-        {/* left side - filters in Small Screens */}
+        {/* Left Side Filters (Drawer for Mobile) */}
         <div className="drawer z-[9999] md:hidden">
-          <input
-            id="shop-page-drawer"
-            type="checkbox"
-            className="drawer-toggle"
-          />
-          <div className="drawer-content">{/* Page content here */}</div>
+          <input id="shop-page-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content"></div>
           <div className="drawer-side">
             <ul className="menu w-full min-h-screen bg-base-100 mobile-navbar py-20">
-              <div className={`absolute top-5 right-5`}>
+              <div className="absolute top-5 right-5">
                 <TfiClose className="text-3xl" onClick={handleLinkClicked} />
               </div>
-
-              {/* Sidebar content here */}
-              <div className="space-y-14">
+              <div className="space-y-14 p-4">
+                {/* Mobile Filter Options */}
                 <div className="w-full border-2">
                   <select
                     className="select select-bordered w-full h-[55px] rounded-none border-black"
                     onChange={(e) => setPriceSortingOrder(e.target.value)}
                   >
-                    <option defaultValue={"all"} value={"all"}>
-                      All Price
-                    </option>
-                    <option value={"asc"}>Low to High</option>
-                    <option value={"desc"}>High to Low</option>
+                    <option value="all">All Price</option>
+                    <option value="asc">Low to High</option>
+                    <option value="desc">High to Low</option>
                   </select>
                 </div>
+                {/* Categories */}
                 <div>
                   <h3>Category</h3>
                   <div className="space-y-2 mt-5">
-                    {allFilteredCategories?.map((category) => (
+                    {allFilteredCategories?.map((cat) => (
                       <div
-                        key={Object.keys(category)[0]}
+                        key={Object.keys(cat)[0]}
                         className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
-                        onClick={() =>
-                          setCategory(`${Object.keys(category)[0]}`)
-                        }
+                        onClick={() => setCategory(Object.keys(cat)[0])}
                       >
-                        <h5 className="text-gray-700">
-                          {Object.keys(category)[0]}
-                        </h5>
-                        <span className="text-xs">
-                          {category[Object.keys(category)[0]]}
-                        </span>
+                        <h5>{Object.keys(cat)[0]}</h5>
+                        <span className="text-xs">{Object.values(cat)[0]}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-
+                {/* Price Range */}
                 <div>
-                  <h3>Price</h3>
-                  <input
-                    type="range"
-                    min={499}
-                    max={maximumPrice}
-                    defaultValue={"0"}
-                    className="range mt-5"
-                    onChange={(e) => {
-                      setMinimumPrice(e.target.value);
-                    }}
-                  />
-                  <div className="flex justify-between items-center px-1 ">
-                    <p className="text-sm">Min: {minimumPrice}$</p>
-                    <p className="text-sm">Max: {maximumPrice}$</p>
-                  </div>
+                    <h3>Price</h3>
+                    <input type="range" min={499} max={maximumPrice} defaultValue="0" className="range mt-5" onChange={(e) => setMinimumPrice(e.target.value)} />
+                    <div className="flex justify-between items-center px-1">
+                        <p className="text-sm">Min: ${minimumPrice}</p>
+                        <p className="text-sm">Max: ${maximumPrice}</p>
+                    </div>
                 </div>
-
-                <div>
+                {/* Sizes */}
+                 <div>
                   <h3>Size</h3>
                   <div className="space-y-2 mt-5">
-                    {filterSizes?.map((size) => (
+                    {filterSizes?.map((s) => (
                       <div
-                        key={Object.keys(size)[0]}
+                        key={Object.keys(s)[0]}
                         className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
-                        onClick={() => setSize(Object.keys(size)[0])}
+                        onClick={() => setSize(Object.keys(s)[0])}
                       >
-                        <h5 className="text-gray-700">
-                          {Object.keys(size)[0]}
-                        </h5>
-                        <span className="text-xs">
-                          {size[Object.keys(size)[0]]}
-                        </span>
+                        <h5>{Object.keys(s)[0]}</h5>
+                        <span className="text-xs">{Object.values(s)[0]}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-
+                {/* Carats */}
                 <div>
                   <h3>Carate</h3>
                   <div className="space-y-2 mt-5">
-                    {filterCarates?.map((carate) => (
-                      <div
-                        key={Object.keys(carate)[0]}
-                        className="flex items-center gap-3 cursor-pointer hover:text-black hover:font-semibold"
-                        onClick={() => setCarate(Object.keys(carate)[0])}
-                      >
-                        <h5 className="text-gray-700">
-                          {Object.keys(carate)[0].toLowerCase() === "all"
-                            ? "All"
-                            : `${Object.keys(carate)[0].toString()}K`}
-                        </h5>
-                        <span className="text-xs text-gray-500">
-                          {carate[Object.keys(carate)[0]]}
-                        </span>
-                      </div>
+                    {filterCarates?.map((cr) => (
+                        <div key={Object.keys(cr)[0]} className="flex items-center gap-3 cursor-pointer hover:text-black hover:font-semibold" onClick={() => setCarate(Object.keys(cr)[0])}>
+                            <h5>{Object.keys(cr)[0].toLowerCase() === 'all' ? 'All' : `${Object.keys(cr)[0]}K`}</h5>
+                            <span className="text-xs text-gray-500">{Object.values(cr)[0]}</span>
+                        </div>
                     ))}
                   </div>
                 </div>
@@ -279,202 +242,119 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* left side - filters in Large Screens*/}
+        {/* Left Side Filters (Static for Desktop) */}
         <div className="space-y-8 pb-10 hidden md:block shop-lg-left-side">
-          <div>
-            <h3>Category</h3>
-            <div className="space-y-2 mt-5">
-              {allFilteredCategories?.map((category) => (
-                <div
-                  key={Object.keys(category)[0]}
-                  className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
-                  onClick={() => setCategory(`${Object.keys(category)[0]}`)}
-                >
-                  <h5 className="text-gray-700">{Object.keys(category)[0]}</h5>
-                  <span className="text-xs">
-                    {category[Object.keys(category)[0]]}
-                  </span>
+            {/* Categories */}
+            <div>
+              <h3>Category</h3>
+              <div className="space-y-2 mt-5">
+                {allFilteredCategories?.map((cat) => (
+                  <div key={Object.keys(cat)[0]} className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold" onClick={() => setCategory(Object.keys(cat)[0])}>
+                    <h5>{Object.keys(cat)[0]}</h5>
+                    <span className="text-xs">{Object.values(cat)[0]}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Price Range */}
+            <div>
+                <h3>Price</h3>
+                <input type="range" min={499} max={maximumPrice} defaultValue="0" className="range mt-5" onChange={(e) => setMinimumPrice(e.target.value)} />
+                <div className="flex justify-between items-center px-1">
+                    <p className="text-sm">Min: ${minimumPrice}</p>
+                    <p className="text-sm">Max: ${maximumPrice}</p>
                 </div>
-              ))}
             </div>
-          </div>
-
-          <div>
-            <h3>Price</h3>
-            <input
-              type="range"
-              min={499}
-              max={maximumPrice}
-              defaultValue={"0"}
-              className="range mt-5"
-              onChange={(e) => {
-                setMinimumPrice(e.target.value);
-              }}
-            />
-            <div className="flex justify-between items-center px-1 ">
-              <p className="text-sm">Min: {minimumPrice}$</p>
-              <p className="text-sm">Max: {maximumPrice}$</p>
+            {/* Sizes */}
+            <div>
+              <h3>Size</h3>
+              <div className="space-y-2 mt-5">
+                {filterSizes?.map((s) => (
+                  <div key={Object.keys(s)[0]} className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold" onClick={() => setSize(Object.keys(s)[0])}>
+                    <h5>{Object.keys(s)[0]}</h5>
+                    <span className="text-xs">{Object.values(s)[0]}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-
-          <div>
-            <h3>Size</h3>
-            <div className="space-y-2 mt-5">
-              {filterSizes?.map((size) => (
-                <div
-                  key={Object.keys(size)[0]}
-                  className="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black hover:font-semibold"
-                  onClick={() => setSize(Object.keys(size)[0])}
-                >
-                  <h5 className="text-gray-700">{Object.keys(size)[0]}</h5>
-                  <span className="text-xs">{size[Object.keys(size)[0]]}</span>
-                </div>
-              ))}
+            {/* Carats */}
+            <div>
+              <h3>Carate</h3>
+              <div className="space-y-2 mt-5">
+                {filterCarates?.map((cr) => (
+                    <div key={Object.keys(cr)[0]} className="flex items-center gap-3 cursor-pointer hover:text-black hover:font-semibold" onClick={() => setCarate(Object.keys(cr)[0])}>
+                        <h5>{Object.keys(cr)[0].toLowerCase() === 'all' ? 'All' : `${Object.keys(cr)[0]}K`}</h5>
+                        <span className="text-xs text-gray-500">{Object.values(cr)[0]}</span>
+                    </div>
+                ))}
+              </div>
             </div>
-          </div>
-
-          <div>
-            <h3>Carate</h3>
-            <div className="space-y-2 mt-5">
-              {filterCarates?.map((carate) => (
-                <div
-                  key={Object.keys(carate)[0]}
-                  className="flex items-center gap-3 cursor-pointer hover:text-black hover:font-semibold"
-                  onClick={() => setCarate(Object.keys(carate)[0])}
-                >
-                  <h5 className="text-gray-700">
-                    {Object.keys(carate)[0].toLowerCase() === "all"
-                      ? "All"
-                      : `${Object.keys(carate)[0].toString()}K`}
-                  </h5>
-                  <span className="text-xs text-gray-500">
-                    {carate[Object.keys(carate)[0]]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
-        {/* right side - products */}
+
+        {/* Right Side - Products Display */}
         <div className="shop-lg-right-side">
           <div className="flex justify-between items-center px-4">
             <div className="relative w-full md:w-[30%] border">
               <FiSearch className="absolute top-4 right-3 text-xl" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="border border-black outline-none pl-3 py-3 text-lg w-full"
-                onChange={(e) => setSearchText(e.target.value)}
-              />
+              <input type="text" placeholder="Search..." className="border border-black outline-none pl-3 py-3 text-lg w-full" onChange={(e) => setSearchText(e.target.value)} />
             </div>
-
             <div className="hidden md:block w-[30%] border-2">
-              <select
-                className="select select-bordered w-full h-[55px] rounded-none border-black"
-                onChange={(e) => setPriceSortingOrder(e.target.value)}
-              >
-                <option defaultValue={"all"} value={"all"}>
-                  All Price
-                </option>
-                <option value={"asc"}>Low to High</option>
-                <option value={"desc"}>High to Low</option>
+              <select className="select select-bordered w-full h-[55px] rounded-none border-black" onChange={(e) => setPriceSortingOrder(e.target.value)}>
+                <option value="all">All Price</option>
+                <option value="asc">Low to High</option>
+                <option value="desc">High to Low</option>
               </select>
             </div>
           </div>
 
-          <label
-            htmlFor="shop-page-drawer"
-            className="btn btn-outline drawer-button md:hidden ml-4 mt-4"
-          >
+          <label htmlFor="shop-page-drawer" className="btn btn-outline drawer-button md:hidden ml-4 mt-4">
             <RiEqualizerLine />
             <span>Filters</span>
           </label>
 
-          {/* display filters */}
           {showFilters && (
             <div className="mt-4 px-4 py-3 flex items-center gap-6 flex-wrap">
-              <button
-                className="text-error flex items-baseline gap-2 hover:text-gray-400"
-                onClick={() => {
-                  setCategory("all");
-                  setCarate("all");
-                  setSize("all");
-                }}
-              >
+              <button className="text-error flex items-baseline gap-2 hover:text-gray-400" onClick={() => { setCategory("all"); setCarate("all"); setSize("all"); }}>
                 <TfiClose className="text-sm" /> Clear Filters
               </button>
-
-              {category.toLowerCase() !== "all" && (
-                <button
-                  className="flex items-baseline gap-2 hover:text-gray-400"
-                  onClick={() => setCategory("all")}
-                >
-                  <TfiClose className="text-sm" /> {category}
-                </button>
-              )}
-
-              {size.toLowerCase() !== "all" && (
-                <button
-                  className="flex items-baseline gap-2 hover:text-gray-400"
-                  onClick={() => setSize("all")}
-                >
-                  <TfiClose className="text-sm" /> {size}
-                </button>
-              )}
-
-              {carate.toLowerCase() !== "all" && (
-                <button
-                  className="flex items-baseline gap-2 hover:text-gray-400"
-                  onClick={() => setCarate("all")}
-                >
-                  <TfiClose className="text-sm" /> {carate}K
-                </button>
-              )}
+              {category.toLowerCase() !== "all" && (<button className="flex items-baseline gap-2 hover:text-gray-400" onClick={() => setCategory("all")}><TfiClose className="text-sm" /> {category}</button>)}
+              {size.toLowerCase() !== "all" && (<button className="flex items-baseline gap-2 hover:text-gray-400" onClick={() => setSize("all")}><TfiClose className="text-sm" /> {size}</button>)}
+              {carate.toLowerCase() !== "all" && (<button className="flex items-baseline gap-2 hover:text-gray-400" onClick={() => setCarate("all")}><TfiClose className="text-sm" /> {carate}K</button>)}
             </div>
           )}
 
-          {/* products */}
+          {/* Products Grid */}
           {filterLoading ? (
             <div className="w-[90%] md:w-full grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-20 mt-8 mx-auto">
-              {/* iterate empty array of length 9 */}
-              {[...Array(9)].map((item, idx) => (
-                <CardSkeleton
-                  key={idx}
-                  height={isMobile ? "220px" : "340px"}
-                  width={"100%"}
-                />
+              {[...Array(9)].map((_, idx) => (
+                <CardSkeleton key={idx} height={isMobile ? "220px" : "340px"} width="100%" />
               ))}
             </div>
           ) : (
             <>
-              {/* FIX: Check if filteredProducts is an array before mapping */}
-              {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+              {filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-y-20 mt-8">
                   {filteredProducts
-                    .slice(
-                      (currentPage - 1) * pageProductLimit,
-                      currentPage * pageProductLimit
-                    )
+                    .slice((currentPage - 1) * pageProductLimit, currentPage * pageProductLimit)
                     .map((product) => (
                       <ProductCard key={product._id} cardData={product} />
                     ))}
                 </div>
               ) : (
-                // This message shows only after loading is complete and no products are found
-                !filterLoading && (
-                  <h4 className="text-center text-red-500 text-xl font-medium mt-8 col-span-full">
-                    No products found matching your criteria.
-                  </h4>
-                )
+                <h4 className="text-center text-red-500 text-xl font-medium mt-8 col-span-full">
+                  No products found matching your criteria.
+                </h4>
               )}
             </>
           )}
+
+          {/* Pagination */}
           <div className="shop-pagination mx-auto mb-40">
             <Pagination
               currentPage={currentPage}
               itemsPerPage={pageProductLimit}
               onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-              totalItems={filteredProducts?.length}
+              totalItems={filteredProducts?.length || 0}
               pageNeighbours={2}
             />
           </div>
