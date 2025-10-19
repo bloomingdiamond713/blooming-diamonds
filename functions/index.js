@@ -18,8 +18,9 @@ const app = express();
 const corsOptions = {
   origin: [
     "https://bloomingdiamond.com",
-    "https://www.blooming-diamonds.com",
+    "https://www.bloomingdiamond.com",
     "http://localhost:5173",
+    "https://blooming-diamonds-bmbn.onrender.com",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -124,9 +125,9 @@ const verifyAdmin = async (req, res, next) => {
 
 // === ROUTES ===
 
-app.get("/api", (req, res) => res.status(200).send("UB Jewellers API is running!"));
+app.get("/", (req, res) => res.status(200).send("UB Jewellers API is running!"));
 
-app.post("/api/jwt", (req, res) => {
+app.post("/jwt", (req, res) => {
   try {
     const user = req.body;
     const secret = process.env.JWT_SECRET;
@@ -137,7 +138,7 @@ app.post("/api/jwt", (req, res) => {
   }
 });
 
-app.get("/api/products", async (req, res) => {
+app.get("/products", async (req, res) => {
   try {
     const products = await db.collection("products").find().toArray();
     res.send(products);
@@ -147,7 +148,7 @@ app.get("/api/products", async (req, res) => {
 });
 
 // Database Health Check Route
-app.get("/api/db-status", async (req, res) => {
+app.get("/db-status", async (req, res) => {
   try {
     await db.command({ ping: 1 });
     res.status(200).send({ status: "success", message: "MongoDB connected successfully!" });
@@ -156,7 +157,7 @@ app.get("/api/db-status", async (req, res) => {
   }
 });
 
-app.post("/api/users", async (req, res) => {
+app.post("/users", async (req, res) => {
   try {
     const user = req.body;
     const existingUser = await usersCollection.findOne({ email: user.email });
@@ -171,7 +172,7 @@ app.post("/api/users", async (req, res) => {
 });
 
 // SECURED: This route now requires a valid login token
-app.get("/api/user", verifyJWT, async (req, res) => {
+app.get("/user", verifyJWT, async (req, res) => {
   try {
     const email = req.query.email;
     // Security check: Ensure the email in the query matches the one in the token
@@ -193,7 +194,7 @@ app.get("/api/user", verifyJWT, async (req, res) => {
 // --- ADMIN ROUTES (NOW SECURED) ---
 
 // SECURED: All admin routes now use both verifyJWT and verifyAdmin middleware
-app.get("/api/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
+app.get("/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
   try {
     const productsCollection = db.collection("products");
     const ordersCollection = db.collection("orders");
@@ -213,7 +214,7 @@ app.get("/api/admin-stats", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-app.get("/api/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
+app.get("/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
   try {
     const ordersCollection = db.collection("orders");
     const totalSpentArray = await ordersCollection.aggregate([
@@ -226,7 +227,7 @@ app.get("/api/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-app.delete("/api/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res) => {
+app.delete("/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     if (!ObjectId.isValid(id)) {
