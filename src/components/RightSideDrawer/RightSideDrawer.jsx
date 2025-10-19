@@ -75,7 +75,7 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
         setSubTotal(res.data.subtotal);
       });
     }
-  }, [cartData, user, isAuthLoading]);
+  }, [cartData, user, isAuthLoading, axiosSecure]); // Added axiosSecure dependency
 
   return (
     <div
@@ -122,23 +122,18 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
         <>
           <div className="right-drawer-items-con overflow-auto pr-3 flex-grow">
             {isCartLoading ? (
-              <div>
+              <div className="flex justify-center items-center h-full"> {/* Center spinner */}
                 <span className="loading loading-spinner loading-md"></span>
               </div>
             ) : (
               <>
-                {!cartData?.length ? (
-                  <div>
-                    <p className="text-center mt-2 text-medium">
-                      No product found.{" "}
-                      <Link to="/shop" className="underline text-blue-400">
-                        Shop Now
-                      </Link>
-                    </p>
-                  </div>
-                ) : (
+                {/* ===================================================
+                  FIX: Check if cartData is an array before mapping 
+                  ===================================================
+                */}
+                {Array.isArray(cartData) && cartData.length > 0 ? (
                   <div className="space-y-6 mb-10">
-                    {cartData?.map((product) => (
+                    {cartData.map((product) => ( // Use .map directly on cartData
                       <div
                         key={product._id}
                         className="flex items-center gap-4 w-full"
@@ -210,11 +205,20 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
                       </div>
                     ))}
                   </div>
+                ) : (
+                  <div className="flex flex-col justify-center items-center h-full text-center"> {/* Centered empty cart message */}
+                    <p className="text-medium">
+                      Your cart is empty.{" "}
+                      <Link to="/shop" className="underline text-blue-400" onClick={() => setShowRightDrawer(false)}>
+                        Shop Now
+                      </Link>
+                    </p>
+                  </div>
                 )}
               </>
             )}
           </div>
-          <div className="right-drawer-footer border-t-2 border-dashed py-3 px-2 mt-5 mb-1 space-y-8">
+          <div className="right-drawer-footer border-t-2 border-dashed py-3 px-2 mt-auto mb-1 space-y-8"> {/* Use mt-auto to push footer down */}
             <div className="text-gray-700 text-sm font-bold flex justify-between items-center">
               <p>Subtotal:</p>
               <p>${parseFloat(subtotal).toFixed(2)}</p>
@@ -224,6 +228,8 @@ const RightSideDrawer = ({ setShowRightDrawer }) => {
               <button
                 className="btn btn-neutral btn-block text-white"
                 onClick={() => setShowRightDrawer(false)}
+                // Disable checkout if cart is empty
+                disabled={!cartData || cartData.length === 0} 
               >
                 Checkout
               </button>
