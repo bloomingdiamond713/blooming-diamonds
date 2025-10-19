@@ -10,7 +10,7 @@ import CardSkeleton from "../../../components/CardSkeleton/CardSkeleton";
 import { useMediaQuery } from "react-responsive";
 
 const FlashSale = () => {
-  const { data: products, isLoading: isProductsLoading } = useProducts();
+  const [products, isProductsLoading] = useProducts();
   const [flashSaleData, setFlashSaleData] = useState([]);
   useEffect(() => {
     const filterFlashProducts = products?.filter((p) => p.flashSale === true);
@@ -60,7 +60,7 @@ const FlashSale = () => {
   return (
     <div
       id="flashSale"
-      className="mt-32 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex flex-col md:flex-row border items-center py-10 gap-8"
+      className="mt-16 mb-24 container shadow-xl shadow-gray-300 rounded-xl flex flex-col md:flex-row border items-center py-10 gap-8"
     >
       <div
         className="md:w-[30%] text-center px-4 md:px-6"

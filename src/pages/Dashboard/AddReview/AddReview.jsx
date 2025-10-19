@@ -27,7 +27,8 @@ const AddReview = () => {
     queryKey: ["reviews"],
     enabled: !isAuthLoading && user?.uid !== undefined,
     queryFn: async () => {
-      const reviews = await axios.get("/reviews");
+      // FIX: Use axiosSecure to get the correct API path
+      const reviews = await axiosSecure.get("/reviews"); 
       const reviewByUser = reviews.data?.find((r) => r.email === user.email);
       setUserReview(reviewByUser);
     },

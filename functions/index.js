@@ -25,7 +25,8 @@ let usersCollection;
 let productsCollection;
 let cartCollection;
 let ordersCollection;
-let wishlistCollection
+let wishlistCollection;
+let reviewsCollection;
 
 async function connectToDb() {
   if (db) {
@@ -270,6 +271,105 @@ router.get("/user", verifyJWT, async (req, res) => {
      console.error("Error fetching user:", err);
      res.status(500).send({ message: "An error occurred on the server.", errorDetails: err.message });
   }
+});
+
+// --- NEW ROUTE: Update User Details ---
+router.patch("/update-user", verifyJWT, async (req, res) => {
+  try {
+    const email = req.query.email;
+    const userDetails = req.body;
+
+    if (!email) {
+      return res.status(400).send({ error: "Email query parameter is required." });
+    }
+    // Security check: ensure the logged-in user can only update their own details
+    if (req.decoded.email !== email) {
+      return res.status(403).send({ error: "Forbidden: You can only update your own profile." });
+    }
+
+    const filter = { email: email };
+    const updateDoc = {
+      $set: {
+        fullName: userDetails.fullName,
+        mobileNumber: userDetails.mobileNumber,
+        gender: userDetails.gender,
+        dob: userDetails.dob,
+        location: userDetails.location,
+        updatedAt: new Date() // Add an updated timestamp
+      },
+    };
+
+    const result = await usersCollection.updateOne(filter, updateDoc);
+
+    if (result.matchedCount === 0) {
+      return res.status(404).send({ error: "User not found." });
+    }
+
+    res.status(200).send(result);
+  } catch (err) {
+    console.error("Error updating user details:", err);
+    res.status(500).send({ message: "Server error while updating user details." });
+  }
+});
+
+
+// --- NEW ROUTES: For Site Reviews ---
+
+// GET all reviews (can be public or protected, public for now)
+router.get("/reviews", async (req, res) => {
+    try {
+        const reviews = await reviewsCollection.find().sort({ addedAt: -1 }).toArray();
+        res.status(200).send(reviews);
+    } catch(err) {
+        console.error("Failed to fetch reviews:", err);
+        res.status(500).send({ message: "Failed to fetch reviews." });
+    }
+});
+
+// POST a new review
+router.post("/add-review", verifyJWT, async (req, res) => {
+    try {
+        const review = req.body;
+        // Security check: ensure the review's email matches the token's email
+        if (req.decoded.email !== review.email) {
+            return res.status(403).send({ error: "Forbidden: You can only post a review for yourself." });
+        }
+        
+        // Prevent duplicate reviews
+        const existingReview = await reviewsCollection.findOne({ email: review.email });
+        if (existingReview) {
+            return res.status(409).send({ message: "You have already submitted a review." });
+        }
+
+        const result = await reviewsCollection.insertOne(review);
+        res.status(201).send(result);
+    } catch(err) {
+        console.error("Error adding review:", err);
+        res.status(500).send({ message: "Failed to add review." });
+    }
+});
+
+// DELETE a user's review
+router.delete("/delete-review/:email", verifyJWT, async (req, res) => {
+    try {
+        const email = req.params.email;
+        // Security check: ensure the user can only delete their own review
+        if (req.decoded.email !== email) {
+            return res.status(403).send({ error: "Forbidden: You cannot delete another user's review." });
+        }
+
+        const filter = { email: email };
+        const result = await reviewsCollection.deleteOne(filter);
+
+        if (result.deletedCount === 0) {
+            return res.status(404).send({ error: "Review not found to delete." });
+        }
+
+        res.status(200).send(result);
+    } catch(err) {
+        console.error("Error deleting review:", err);
+        res.status(500).send({ message: "Failed to delete review." });
+    }
 });
 
 

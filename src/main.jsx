@@ -8,6 +8,9 @@ import { HelmetProvider } from "react-helmet-async";
 // Import from 'react-query' (Version 3)
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {

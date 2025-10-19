@@ -100,12 +100,15 @@ const MyDashboard = () => {
           </div>
         ) : (
           <div className="mt-8 mb-10">
+            // src/pages/Dashboard/MyDashboard/MyDashboard.jsx
+
             <form onSubmit={handleSubmit(onSubmit)} className="address-form">
               <div>
                 <p>Full Name *</p>
                 <input
                   type="text"
                   {...register("fullName", { required: true })}
+                  defaultValue={userFromDB?.fullName || user?.displayName} // Add this
                 />
                 {errors.fullName && (
                   <span className="text-red-400">Your Name is required</span>
@@ -117,11 +120,11 @@ const MyDashboard = () => {
                   type="number"
                   {...register("mobileNumber")}
                   placeholder="e.g +1 xxx-xxx"
+                  defaultValue={userFromDB?.mobileNumber} // Add this
                 />
               </div>
               <div>
                 <p className="mb-4">Gender</p>
-
                 <div className="flex items-center gap-5">
                   <label
                     htmlFor="male"
@@ -133,6 +136,7 @@ const MyDashboard = () => {
                       value={"male"}
                       className="radio radio-primary scale-75"
                       {...register("gender")}
+                      defaultChecked={userFromDB?.gender === "male"} // Add this
                     />
                     <span className="text-lg">Male</span>
                   </label>
@@ -146,6 +150,7 @@ const MyDashboard = () => {
                       value={"female"}
                       className="radio radio-primary scale-75"
                       {...register("gender")}
+                      defaultChecked={userFromDB?.gender === "female"} // Add this
                     />
                     <span className="text-lg">Female</span>
                   </label>
@@ -153,7 +158,11 @@ const MyDashboard = () => {
               </div>
               <div>
                 <p>Date of Birth</p>
-                <input type="date" {...register("dob")} />
+                <input
+                  type="date"
+                  {...register("dob")}
+                  defaultValue={userFromDB?.dob} // Add this
+                />
               </div>
               <div>
                 <p>Location</p>
@@ -162,10 +171,11 @@ const MyDashboard = () => {
                   rows={3}
                   className="w-full border-2 border-black outline-none rounded-lg mt-3 p-2 text-lg"
                   placeholder="Tell us about your location in details"
+                  defaultValue={userFromDB?.location} // Add this
                 />
               </div>
               <button className="btn btn-wide btn-neutral" type="submit">
-                Add
+                Save Changes {/* Changed button text */}
               </button>
             </form>
           </div>

@@ -34,17 +34,26 @@ const SectionTitle = ({ title }) => (
 const Categories = () => {
   const [categories, setCategories] = useState([]);
 
+  // src/pages/Home/Categories/Categories.jsx
   useEffect(() => {
-    // FIX: Replaced import.meta.env with the direct URL to resolve build warnings.
-    const apiUrl = `https://blooming-diamonds-bmbn.onrender.com/api/categories`;
+      // Use the environment variable for the API URL
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/categories`; // Changed this line
     axios
       .get(apiUrl)
       .then((res) => {
         if (Array.isArray(res.data)) {
           setCategories(res.data);
+        } else {
+           // Add better error logging
+           console.error("Categories API did not return an array:", res.data);
+           setCategories([]);
         }
       })
-      .catch((error) => console.error("Failed to fetch categories:", error));
+      .catch((error) => {
+         // Log the specific error
+         console.error("Failed to fetch categories:", error);
+         setCategories([]); // Set to empty array on error
+      });
   }, []);
 
   return (
@@ -103,7 +112,7 @@ const Categories = () => {
             }
         }
       `}</style>
-      <section className="pt-24 mb-16" id="categories">
+      <section className="pt-16 mb-16" id="categories">
         <SectionTitle title={"Shop By Categories"} />
 
         {/* FIX: Replaced react-slick Slider with a native horizontally scrolling container.

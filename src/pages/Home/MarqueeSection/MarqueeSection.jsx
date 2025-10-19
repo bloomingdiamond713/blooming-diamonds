@@ -15,7 +15,7 @@ const MarqueeSection = () => {
   ];
 
   return (
-    <div className="mt-24 py-6 border-y-[1px] border-slate-700 scroll-m-0">
+    <div className="py-6 border-y-[1px] border-slate-700 scroll-m-0">
       <Marquee speed={70} gradient gradientWidth={100} pauseOnHover>
         {marqueeData.map((data, idx) => (
           <div key={idx} className="flex items-center space-x-20">
