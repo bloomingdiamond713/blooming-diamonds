@@ -1,32 +1,13 @@
-// === Load Environment Variables ===
+// functions/index.js
 require("dotenv").config();
-
-// === Imports ===
 const express = require("express");
-const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const admin = require("firebase-admin");
 
-// === Express App ===
-const app = express();
+const router = express.Router(); // CHANGED: Use Router instead of app
 
-// === CORS Setup (CORRECTED) ===
-const corsOptions = {
-  origin: [
-    "http://localhost:5173", // For local development
-    "https://bloomingdiamond.com", // Your production domain
-    "https://www.bloomingdiamond.com", // Your production domain with www
-    // Add your Hostinger URL here if it's different
-    // "https://your-hostinger-frontend-url.com" 
-  ],
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
-app.use(express.json());
-
-// === Firebase Admin SDK Setup ===
+// === Firebase Admin SDK Setup (Unchanged) ===
 try {
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
   admin.initializeApp({
@@ -37,12 +18,12 @@ try {
   console.error("❌ Failed to initialize Firebase Admin SDK.", error);
 }
 
-// === MongoDB Setup ===
+// === MongoDB Setup (Unchanged) ===
 let db;
 let usersCollection;
 let productsCollection;
-let cartCollection; // Define cart collection
-let ordersCollection; // Define orders collection
+let cartCollection;
+let ordersCollection;
 
 async function connectToDb() {
   if (db) {
@@ -62,8 +43,8 @@ async function connectToDb() {
     db = client.db("bloomingDiamondsDB");
     usersCollection = db.collection("users");
     productsCollection = db.collection("products");
-    cartCollection = db.collection("cart"); // Initialize cart collection
-    ordersCollection = db.collection("orders"); // Initialize orders collection
+    cartCollection = db.collection("cart");
+    ordersCollection = db.collection("orders");
     console.log(`✅ Successfully connected to database: ${db.databaseName}`);
   } catch (error) {
     console.error("❌ MongoDB connection failed. Error:", error);
@@ -71,8 +52,8 @@ async function connectToDb() {
   }
 }
 
-// Middleware to ensure DB is connected before handling requests
-app.use(async (req, res, next) => {
+// CHANGED: Use router.use
+router.use(async (req, res, next) => {
     try {
         await connectToDb();
         next();
@@ -82,10 +63,11 @@ app.use(async (req, res, next) => {
 });
 
 // ===================================================
-// === MIDDLEWARE ===
+// === MIDDLEWARE (Unchanged) ===
 // ===================================================
 
 const verifyJWT = (req, res, next) => {
+  // ... (your existing verifyJWT function)
   const authorization = req.headers.authorization;
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return res.status(401).send({ error: true, message: "Unauthorized: No token provided." });
@@ -102,6 +84,7 @@ const verifyJWT = (req, res, next) => {
 };
 
 const verifyAdmin = async (req, res, next) => {
+  // ... (your existing verifyAdmin function)
   const email = req.decoded.email;
   const query = { email: email };
   try {
@@ -117,14 +100,14 @@ const verifyAdmin = async (req, res, next) => {
   }
 };
 
-// === ROUTES ===
+// === ROUTES (CHANGED: All 'app' replaced with 'router') ===
 
-// Health Check Route
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.status(200).send("✅ Blooming Diamonds API is alive!");
 });
 
-app.post("/jwt", (req, res) => {
+router.post("/jwt", (req, res) => {
+  // ... (your existing /jwt route)
   try {
     const user = req.body;
     const secret = process.env.JWT_SECRET;
@@ -135,7 +118,8 @@ app.post("/jwt", (req, res) => {
   }
 });
 
-app.get("/products", async (req, res) => {
+router.get("/products", async (req, res) => {
+  // ... (your existing /products route)
   try {
     const products = await productsCollection.find().toArray();
     res.send(products);
@@ -144,7 +128,8 @@ app.get("/products", async (req, res) => {
   }
 });
 
-app.post("/users", async (req, res) => {
+router.post("/users", async (req, res) => {
+  // ... (your existing /users route)
   try {
     const user = req.body;
     const existingUser = await usersCollection.findOne({ email: user.email });
@@ -158,7 +143,8 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.get("/user", verifyJWT, async (req, res) => {
+router.get("/user", verifyJWT, async (req, res) => {
+  // ... (your existing /user route)
   try {
     const email = req.query.email;
     if (req.decoded.email !== email) {
@@ -174,9 +160,10 @@ app.get("/user", verifyJWT, async (req, res) => {
   }
 });
 
-// --- CART ROUTES (NEW) ---
-app.get("/cart", verifyJWT, async (req, res) => {
-    const email = req.query.email;
+// --- CART ROUTES ---
+router.get("/cart", verifyJWT, async (req, res) => {
+  // ... (your existing /cart route)
+  const email = req.query.email;
     if (req.decoded.email !== email) {
         return res.status(403).send({ error: "Forbidden access." });
     }
@@ -184,20 +171,20 @@ app.get("/cart", verifyJWT, async (req, res) => {
     res.send(result);
 });
 
-app.get("/cart/subtotal", verifyJWT, async(req, res) => {
-    const email = req.query.email;
+router.get("/cart/subtotal", verifyJWT, async(req, res) => {
+  // ... (your existing /cart/subtotal route)
+  const email = req.query.email;
     if (req.decoded.email !== email) {
         return res.status(403).send({ error: "Forbidden access." });
     }
     const userCart = await cartCollection.find({ email: email }).toArray();
     const subtotal = userCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     res.send({ subtotal });
-})
+});
 
-// --- ADMIN ROUTES (NOW SECURED & EXPANDED) ---
-
-// Corrected path to match frontend
-app.get("/admin-dashboard/all-stats", verifyJWT, verifyAdmin, async (req, res) => {
+// --- ADMIN ROUTES ---
+router.get("/admin-dashboard/all-stats", verifyJWT, verifyAdmin, async (req, res) => {
+  // ... (your existing /admin-dashboard/all-stats route)
   try {
     const totalUsers = await usersCollection.countDocuments();
     const totalProducts = await productsCollection.countDocuments();
@@ -212,7 +199,8 @@ app.get("/admin-dashboard/all-stats", verifyJWT, verifyAdmin, async (req, res) =
   }
 });
 
-app.post("/admin/add-product", verifyJWT, verifyAdmin, async (req, res) => {
+router.post("/admin/add-product", verifyJWT, verifyAdmin, async (req, res) => {
+  // ... (your existing /admin/add-product route)
   try {
     const newProduct = req.body;
     if (!newProduct.name || !newProduct.price) {
@@ -226,9 +214,27 @@ app.post("/admin/add-product", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-// NEW: Route to get all users for admin
-app.get("/admin/users", verifyJWT, verifyAdmin, async (req, res) => {
-    try {
+// +++ ADD THIS NEW ROUTE FOR UPDATING PRODUCTS +++
+router.put("/admin/update-product/:id", verifyJWT, verifyAdmin, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedProduct = req.body;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send({ error: "Invalid product ID format." });
+    }
+    const filter = { _id: new ObjectId(id) };
+    const updateDoc = { $set: updatedProduct };
+    const result = await productsCollection.updateOne(filter, updateDoc);
+    res.status(200).send(result);
+  } catch (err) {
+    console.error("Error updating product:", err);
+    res.status(500).send({ message: "An error occurred while updating the product." });
+  }
+});
+
+router.get("/admin/users", verifyJWT, verifyAdmin, async (req, res) => {
+  // ... (your existing /admin/users route)
+  try {
         const users = await usersCollection.find().toArray();
         res.status(200).send(users);
     } catch(err) {
@@ -236,9 +242,9 @@ app.get("/admin/users", verifyJWT, verifyAdmin, async (req, res) => {
     }
 });
 
-// NEW: Route to get all orders for admin
-app.get("/admin/orders", verifyJWT, verifyAdmin, async (req, res) => {
-    try {
+router.get("/admin/orders", verifyJWT, verifyAdmin, async (req, res) => {
+  // ... (your existing /admin/orders route)
+  try {
         const orders = await ordersCollection.find().sort({ date: -1 }).toArray();
         res.status(200).send(orders);
     } catch(err) {
@@ -246,7 +252,8 @@ app.get("/admin/orders", verifyJWT, verifyAdmin, async (req, res) => {
     }
 });
 
-app.get("/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
+router.get("/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
+  // ... (your existing /admin/total-spent route)
   try {
     const totalSpentArray = await ordersCollection.aggregate([
       { $group: { _id: "$email", totalSpent: { $sum: "$price" } } },
@@ -258,7 +265,8 @@ app.get("/admin/total-spent", verifyJWT, verifyAdmin, async (req, res) => {
   }
 });
 
-app.delete("/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res) => {
+router.delete("/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res) => {
+  // ... (your existing /admin/delete-product/:id route)
   try {
     const id = req.params.id;
     if (!ObjectId.isValid(id)) {
@@ -274,6 +282,5 @@ app.delete("/admin/delete-product/:id", verifyJWT, verifyAdmin, async (req, res)
   }
 });
 
-// === Export App for Render ===
-module.exports = { api: app };
-
+// === Export Router ===
+module.exports = { api: router }; // CHANGED: Export the router

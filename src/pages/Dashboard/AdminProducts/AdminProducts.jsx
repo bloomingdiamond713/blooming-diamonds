@@ -20,12 +20,15 @@ const AdminProducts = () => {
   const [axiosSecure] = useAxiosSecure();
 
   useEffect(() => {
-    if (searchedProducts.length) {
+    // 1. === FIX === 
+    // Added 'Array.isArray(searchedProducts)' check to prevent crash
+    // when 'searchedProducts' is undefined during loading.
+    if (Array.isArray(searchedProducts) && searchedProducts.length > 0) {
       setDisplayedProducts(searchedProducts);
-    } else if (Array.isArray(products)) { // Add this check
+    } else if (Array.isArray(products)) {
       setDisplayedProducts(products);
     } else {
-      setDisplayedProducts([]); // Fallback to empty array
+      setDisplayedProducts([]); // Always fall back to an empty array
     }
   }, [searchedProducts, products]);
 
@@ -110,9 +113,12 @@ const AdminProducts = () => {
 
         {isProductsLoading || isSearchLoading ? (
           <div>
-            {searchedProducts?.length ? (
+            {/* 2. === FIX ===
+              Added 'Array.isArray' check for safety during skeleton loading
+            */}
+            {Array.isArray(searchedProducts) && searchedProducts.length > 0 ? (
               <>
-                {searchedProducts?.map((p) => (
+                {searchedProducts.map((p) => (
                   <div className="skeleton w-full h-16 my-4" key={p._id}></div>
                 ))}
               </>
@@ -139,89 +145,108 @@ const AdminProducts = () => {
                 </tr>
               </thead>
               <tbody>
-                {displayedProducts
-                  ?.slice(
-                    (currentPage - 1) * pageProductLimit,
-                    currentPage * pageProductLimit
-                  )
-                  .map((product) => (
-                    <tr key={product._id}>
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle w-12 h-12 bg-slate-300">
-                              <img src={product.img} alt={product.name} />
+                {/* 3. === FIX ===
+                  Ensured 'displayedProducts' is an array before mapping.
+                  This prevents the '...slice(...).map is not a function' crash.
+                */}
+                {Array.isArray(displayedProducts) &&
+                  displayedProducts
+                    .slice(
+                      (currentPage - 1) * pageProductLimit,
+                      currentPage * pageProductLimit
+                    )
+                    .map((product) => (
+                      <tr key={product._id}>
+                        <td>
+                          <div className="flex items-center gap-3">
+                            <div className="avatar">
+                              <div className="mask mask-squircle w-12 h-12 bg-slate-300">
+                                <img src={product.img} alt={product.name} />
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-bold">{product.name}</div>
                             </div>
                           </div>
-                          <div>
-                            <div className="font-bold">{product.name}</div>
+                        </td>
+                        <td>{product.category}</td>
+                        <td>
+                          {product.stock > 10 ? (
+                            <span className="bg-[#def2d0] text-[#4c7a2d] px-2 rounded">
+                              {product.stock} in stock
+                            </span>
+                          ) : (
+                            <>
+                              {product.stock > 0 ? (
+                                <span className="bg-[#f9f1c8] text-[#6a5c10] px-2 rounded">
+                                  {product.stock} Low in stock
+                                </span>
+                              ) : (
+                                <span className="bg-[#c15656] text-[#ad2c2c] px-2 rounded">
+                                  Out of stock
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </td>
+                        <td>{product.sold || 0}</td> {/* Default sold to 0 if not present */}
+                        <td>${product.discountPrice || product.price}</td>
+                        <td className="space-y-2 md:space-y-0 md:space-x-2 flex flex-col md:flex-row items-center">
+                          <div className="tooltip" data-tip="Edit">
+                            <Link
+                              to={`/dashboard/adminAddProducts`}
+                              state={{ id: product._id }}
+                            >
+                              <button className="bg-[var(--pink-gold)] text-white rounded-lg w-[32px] h-[32px]">
+                                <FiEdit2 className="text-lg block mx-auto" />
+                              </button>
+                            </Link>
                           </div>
-                        </div>
-                      </td>
-                      <td>{product.category}</td>
-                      <td>
-                        {product.stock > 10 ? (
-                          <span className="bg-[#def2d0] text-[#4c7a2d] px-2 rounded">
-                            {product.stock} in stock
-                          </span>
-                        ) : (
-                          <>
-                            {product.stock > 0 ? (
-                              <span className="bg-[#f9f1c8] text-[#6a5c10] px-2 rounded">
-                                {product.stock} Low in stock
-                              </span>
-                            ) : (
-                              <span className="bg-[#c15656] text-[#ad2c2c] px-2 rounded">
-                                Out of stock
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </td>
-                      <td>{product.sold}</td>
-                      <td>${product.discountPrice || product.price}</td>
-                      <td className="space-y-2 md:space-y-0 md:space-x-2 flex flex-col md:flex-row items-center">
-                        <div className="tooltip" data-tip="Edit">
-                          <Link
-                            to={`/dashboard/adminAddProducts`}
-                            state={{ id: product._id }}
-                          >
-                            <button className="bg-[var(--pink-gold)] text-white rounded-lg w-[32px] h-[32px]">
-                              <FiEdit2 className="text-lg block mx-auto" />
-                            </button>
-                          </Link>
-                        </div>
 
-                        <div className="tooltip" data-tip="Delete">
-                          <button
-                            className="bg-red-400 text-white rounded-lg w-[32px] h-[32px]"
-                            onClick={() => handleDeleteProduct(product._id)}
-                          >
-                            <FiTrash2 className="text-lg block mx-auto" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                          <div className="tooltip" data-tip="Delete">
+                            <button
+                              className="bg-red-400 text-white rounded-lg w-[32px] h-[32px]"
+                              onClick={() => handleDeleteProduct(product._id)}
+                            >
+                              <FiTrash2 className="text-lg block mx-auto" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
               </tbody>
             </table>
-            <p className="text-xs mt-3">
-              Showing {currentPage > 1 ? currentPage - 1 : currentPage}
-              {currentPage > 1 && displayedProducts?.length > 10 && "1"} to{" "}
-              {Math.ceil(displayedProducts?.length / 10) === currentPage
-                ? displayedProducts?.length % 10 !== 0
-                  ? (currentPage - 1) * 10 + (displayedProducts?.length % 10)
-                  : currentPage * 10
-                : currentPage * 10}{" "}
-              of {displayedProducts?.length}
-            </p>
-            <Pagination
-              currentPage={currentPage}
-              totalItems={displayedProducts?.length}
-              onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-              itemsPerPage={pageProductLimit}
-              pageNeighbours={3}
-            />
+
+            {/* Pagination display logic */}
+            {Array.isArray(displayedProducts) && displayedProducts.length > 0 && (
+              <>
+                <p className="text-xs mt-3">
+                  Showing{" "}
+                  {displayedProducts.length > 0
+                    ? (currentPage - 1) * pageProductLimit + 1
+                    : 0}{" "}
+                  to{" "}
+                  {Math.min(
+                    currentPage * pageProductLimit,
+                    displayedProducts.length
+                  )}{" "}
+                  of {displayedProducts.length}
+                </p>
+                <Pagination
+                  currentPage={currentPage}
+                  totalItems={displayedProducts.length}
+                  onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+                  itemsPerPage={pageProductLimit}
+                  pageNeighbours={3}
+                />
+              </>
+            )}
+
+            {/* Show message if no products are found */}
+            {(!Array.isArray(displayedProducts) ||
+              displayedProducts.length === 0) && (
+              <p className="text-center mt-8">No products found.</p>
+            )}
           </div>
         )}
       </div>
