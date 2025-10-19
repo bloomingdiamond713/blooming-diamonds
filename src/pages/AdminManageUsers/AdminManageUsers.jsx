@@ -1,89 +1,118 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
-import useUserInfo from "../../hooks/useUserInfo";
+// src/pages/AdminManageUsers/AdminManageUsers.jsx
+
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { GrUserAdmin, GrTrash } from "react-icons/gr";
-import { Pagination } from "react-pagination-bar";
+import useAxiosSecure from "../../hooks/useAxiosSecure"; // Ensure this hook exists and works
+import useAuthContext from "../../hooks/useAuthContext"; // Ensure this hook exists and works
+import { useQuery } from "react-query";
+import { FiCheckCircle, FiTrash2, FiUserCheck, FiXCircle } from "react-icons/fi";
 import Swal from "sweetalert2";
-import toast from "react-hot-toast";
-import useAuthContext from "../../hooks/useAuthContext";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { Pagination } from "react-pagination-bar";
+import "react-pagination-bar/dist/index.css";
 import AnimateText from "@moxy/react-animate-text";
-import { auth } from '@/firebase/firebase.config.js';
+import CustomHelmet from "../../components/CustomHelmet/CustomHelmet";
 
 const AdminManageUsers = () => {
-  const [userFromDB, , , totalSpentArray] = useUserInfo();
-  const { user, isAuthLoading } = useAuthContext();
   const [axiosSecure] = useAxiosSecure();
+  const { user, loading } = useAuthContext();
+  const [displayedUsers, setDisplayedUsers] = useState([]);
 
-  // fetch all users data
+  // Fetch users using react-query
   const {
-    data: allUsers,
+    data: users = [], // Default to empty array
     isLoading: isUsersLoading,
     refetch,
   } = useQuery({
-    enabled:
-      !isAuthLoading && user?.uid !== undefined && userFromDB?.admin === true,
-    queryKey: ["all-users"],
+    queryKey: ["users", user?.email],
+    enabled: !loading && !!user?.email, // Only run query when not loading and user email exists
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/users");
+      if (!user?.email) return []; // Return empty if no user email
+      const res = await axiosSecure.get(`/admin/users`); // Correct API endpoint
       return res.data;
     },
   });
 
-  // Handle Make Admin User
-  const handleMakeAdmin = (email) => {
-    axiosSecure
-      .patch(`/admin/users/make-admin/${email}`, {
-        admin: true,
-      })
-      .then((res) => {
-        if (res.data.modifiedCount > 0) {
-          toast.success("The user is now an Admin");
-          refetch();
-        }
-      })
-      .catch((e) => console.error(e));
-  };
+   // === FIX 1: Add useEffect to update displayedUsers safely ===
+   useEffect(() => {
+    if (Array.isArray(users)) {
+      setDisplayedUsers(users);
+    } else {
+      setDisplayedUsers([]); // Fallback to empty array if users is not an array
+    }
+  }, [users]);
 
-  // Handle delete user
-  const handleDeleteUser = (email) => {
+
+  // pagination settings
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageUserLimit = 10;
+
+  // Handle making a user admin
+  const handleMakeAdmin = (userId) => {
     Swal.fire({
-      title: "BE CAREFUL!",
-      text: "All information associated with this user will be removed.",
+      title: "Make Admin?",
+      text: "Are you sure you want to grant admin privileges to this user?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#000",
       cancelButtonColor: "#ef4c53",
-      confirmButtonText: "Yes, delete it!",
-      customClass: {
-        popup: "w-[85%] md:w-[32em] ml-14",
-      },
+      confirmButtonText: "Yes, Make Admin!",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .delete(`/admin/delete-user/${email}`)
+          .patch(`/admin/users/make-admin/${userId}`) // Assuming this is your endpoint
           .then((res) => {
-            if (res.data.success) {
-              Swal.fire({
-                title: "Deletion Successful!",
-                text: "All data associated with the user is deleted.",
-                icon: "success",
-              });
-              refetch();
+            if (res.data.modifiedCount > 0) {
+              refetch(); // Refetch users list
+              Swal.fire(
+                "Success!",
+                "User has been granted admin privileges.",
+                "success"
+              );
+            } else {
+              Swal.fire("Info", "Could not update user role.", "info");
             }
           })
-          .catch((e) => console.error(e));
+          .catch((err) => {
+            console.error("Error making user admin:", err);
+            Swal.fire("Error!", "Failed to update user role.", "error");
+          });
       }
     });
   };
 
-  // pagination settings
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageProductLimit = 6;
+  // Handle deleting a user
+  const handleDeleteUser = (userId) => {
+    Swal.fire({
+      title: "Delete User?",
+      text: "Are you sure you want to delete this user? This action cannot be undone.",
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, Delete User!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .delete(`/admin/users/delete/${userId}`) // Assuming this is your endpoint
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              refetch(); // Refetch users list
+              Swal.fire("Deleted!", "User has been deleted.", "success");
+            } else {
+               Swal.fire("Info", "Could not delete user.", "info");
+            }
+          })
+          .catch((err) => {
+            console.error("Error deleting user:", err);
+            Swal.fire("Error!", "Failed to delete user.", "error");
+          });
+      }
+    });
+  };
 
   return (
     <div className="px-4">
+       <CustomHelmet pageName={"Manage Users"} />
       <div>
         <div className="text-sm breadcrumbs">
           <ul>
@@ -91,137 +120,124 @@ const AdminManageUsers = () => {
               <Link to={"/dashboard/adminDashboard"}>Dashboard</Link>
             </li>
             <li>
-              <Link to="/dashboard/adminUsers">Users</Link>
+              <Link to="/dashboard/adminManageUsers">Manage Users</Link>
             </li>
           </ul>
         </div>
-
         <h2
-          className="mt-1 font-extrabold text-4xl tracking-wider"
+          className="mt-1 font-bold text-3xl"
           style={{ fontFamily: "var(--italiana)" }}
         >
           <AnimateText initialDelay={0.2} wordDelay={0.2} separator="">
-            Users
+            Manage Users
           </AnimateText>
         </h2>
       </div>
 
-      <div className="overflow-x-auto mb-5 mt-10 px-4">
+      <div className="p-4 shadow mt-10 border rounded-lg">
         {isUsersLoading ? (
           <div>
-            {Array.from({ length: 5 }).map((_, idx) => (
-              <div
-                className="skeleton w-full h-16 my-4 rounded-none"
-                key={idx}
-              ></div>
+            {/* Skeleton Loading */}
+            {Array.from({ length: 10 }).map((_, idx) => (
+              <div className="skeleton w-full h-16 my-4" key={idx}></div>
             ))}
           </div>
         ) : (
-          <table className="table table-zebra">
-            {/* head */}
-            <thead>
-              <tr className="font-bold text-black border-b-2 border-b-black">
-                <th>Name</th>
-                <th>Registered</th>
-                <th>Country</th>
-                <th>Spent</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUsers
-                ?.slice(
-                  (currentPage - 1) * pageProductLimit,
-                  currentPage * pageProductLimit
-                )
-                .map((user) => (
-                  <tr key={user._id}>
-                    <td>
-                      <div className="flex items-center gap-3">
-                        <div className="avatar">
-                          <div className="mask mask-squircle w-12 h-12">
-                            <img
-                              src={user.img}
-                              alt={user.name}
-                              referrerPolicy="no-referrer"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          {user?.admin ? (
-                            <div className="flex items-center gap-2 font-bold">
-                              <h4 className="font-bold">{user.name}</h4>
-                              <div className="badge badge-success badge-outline badge-sm">
-                                Admin
+          <div className="overflow-x-auto mt-8 pb-5">
+            <table className="table table-zebra">
+              <thead>
+                <tr className="text-black font-bold border-b-2 border-b-black">
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* === FIX 2: Check if displayedUsers is an array before slicing/mapping === */}
+                {Array.isArray(displayedUsers) && displayedUsers.length > 0 ? (
+                  displayedUsers
+                    .slice(
+                      (currentPage - 1) * pageUserLimit,
+                      currentPage * pageUserLimit
+                    )
+                    .map((usr) => (
+                      <tr key={usr._id}>
+                        <td>
+                          <div className="flex items-center gap-3">
+                            <div className="avatar">
+                              <div className="mask mask-squircle w-12 h-12 bg-slate-300">
+                                <img
+                                  src={usr.photoURL || "/path/to/default/avatar.png"} // Provide a default avatar
+                                  alt={usr.name || "User"}
+                                />
                               </div>
                             </div>
+                            <div>
+                              <div className="font-bold">{usr.name}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{usr.email}</td>
+                        <td>
+                          {usr.admin ? (
+                             <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs flex items-center gap-1 w-fit"> <FiCheckCircle /> Admin</span>
                           ) : (
-                            <h4 className="font-bold">{user.name}</h4>
+                             <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs flex items-center gap-1 w-fit"><FiXCircle /> User</span>
                           )}
-
-                          <div className="text-sm opacity-75">{user.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{user.createdAt.slice(0, 10)}</td>
-                    <td>
-                      {user.shippingAddress
-                        ? user.shippingAddress?.country
-                        : "-Not Added-"}
-                    </td>
-                    <td>
-                      $
-                      {totalSpentArray
-                        ?.find((item) => item.email === user.email)
-                        ?.totalSpent?.toFixed(2) || 0}
-                    </td>
-
-                    <td className="flex items-center gap-3">
-                      {!user?.admin && (
-                        <div className="tooltip" data-tip="Make Admin">
-                          <button
-                            className="btn btn-square text-white btn-sm btn-success"
-                            onClick={() => handleMakeAdmin(user.email)}
-                          >
-                            <GrUserAdmin />
-                          </button>
-                        </div>
-                      )}
-
-                      <div className="tooltip" data-tip="Remove User">
-                        <button
-                          className="btn btn-square text-white btn-sm btn-error"
-                          onClick={() => handleDeleteUser(user.email)}
-                        >
-                          <GrTrash />
-                        </button>
-                      </div>
+                        </td>
+                        <td className="space-x-2">
+                           {!usr.admin && (
+                              <div className="tooltip" data-tip="Make Admin">
+                                 <button
+                                 className="bg-green-500 text-white rounded-lg w-[32px] h-[32px]"
+                                 onClick={() => handleMakeAdmin(usr._id)}
+                                 >
+                                 <FiUserCheck className="text-lg block mx-auto" />
+                                 </button>
+                              </div>
+                           )}
+                           {/* Add a check to prevent deleting the currently logged-in admin */}
+                           {user?.email !== usr.email && (
+                              <div className="tooltip" data-tip="Delete User">
+                                 <button
+                                 className="bg-red-400 text-white rounded-lg w-[32px] h-[32px]"
+                                 onClick={() => handleDeleteUser(usr._id)}
+                                 >
+                                 <FiTrash2 className="text-lg block mx-auto" />
+                                 </button>
+                              </div>
+                           )}
+                        </td>
+                      </tr>
+                    ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-4">
+                      No users found.
                     </td>
                   </tr>
-                ))}
-            </tbody>
-          </table>
-        )}
+                )}
+              </tbody>
+            </table>
 
-        <div className="pb-5">
-          <p className="text-xs mt-8">
-            Showing {currentPage > 1 ? currentPage - 1 : currentPage}
-            {currentPage > 1 && allUsers?.length > 10 && "1"} to{" "}
-            {Math.ceil(allUsers?.length / 10) === currentPage
-              ? allUsers?.length % 10 !== 0
-                ? (currentPage - 1) * 10 + (allUsers?.length % 10)
-                : currentPage * 10
-              : currentPage * 10}{" "}
-            of {allUsers?.length}
-          </p>
-          <Pagination
-            currentPage={currentPage}
-            totalItems={allUsers?.length}
-            onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-            itemsPerPage={pageProductLimit}
-            pageNeighbours={3}
-          />
-        </div>
+            {/* Pagination display */}
+            {Array.isArray(displayedUsers) && displayedUsers.length > pageUserLimit && (
+              <>
+                 <p className="text-xs mt-3">
+                    Showing {(currentPage - 1) * pageUserLimit + 1} to {Math.min(currentPage * pageUserLimit, displayedUsers.length)} of {displayedUsers.length} users
+                 </p>
+                <Pagination
+                  currentPage={currentPage}
+                  totalItems={displayedUsers.length}
+                  onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+                  itemsPerPage={pageUserLimit}
+                  pageNeighbours={3}
+                />
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
