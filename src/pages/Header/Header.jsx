@@ -40,7 +40,7 @@ const Header = () => {
   // Fetch notifications with a fallback
   useEffect(() => {
     axios
-      .get("/api/nav-notifications")
+      .get(`${import.meta.env.VITE_API_URL}/api/nav-notifications`)
       .then((res) => {
         if (res.data && res.data.length > 0) {
             setNavNotifications(res.data);
@@ -131,7 +131,7 @@ const Header = () => {
               <Textra
                 effect="topDown"
                 stopDuration={2000}
-                data={navNotifications.map((n) => n.notification)}
+                data={Array.isArray(navNotifications) ? navNotifications.map((n) => n.notification) : []}
                 className="text-sm"
               />
             )}
